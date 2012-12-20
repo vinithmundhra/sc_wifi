@@ -16,6 +16,7 @@
 #include "hci_helper.h"
 #include "hci_defines.h"
 #include <string.h>
+#include <print.h>
 
 /*---------------------------------------------------------------------------
  constants
@@ -209,21 +210,18 @@ int hci_pkg_wlan_connect(wifi_ap_config_t *ap_config, int *opcode)
     
     buf = tiwisl_tx_buf;
     args = (buf + HEADERS_SIZE_CMD);
-    
     args = int_to_stream(args, 0x0000001c);
 	args = int_to_stream(args, ssid_len);
 	args = int_to_stream(args, ap_config->security_type);
 	args = int_to_stream(args, 0x00000010 + ssid_len);
 	args = int_to_stream(args, key_len);
 	args = short_to_stream(args, 0);
-    
     args = array_to_stream(args, bssid_zero, ETH_ALEN);
+    args = array_to_stream(args, ap_config->ssid, ssid_len);
     
-    array_to_stream(args, ap_config->ssid, ssid_len);
-
-    if(key_len && ap_config->key)
+    if(key_len)
     {
-    	array_to_stream(args, ap_config->key, key_len);
+        args = array_to_stream(args, ap_config->key, key_len);
     }
     
     len = hci_pkg_cmd(HCI_CMND_WLAN_CONNECT, buf, (WLAN_CONNECT_PARAM_LEN + ssid_len + key_len - 1));

@@ -195,12 +195,10 @@ static void create_socket(spi_master_interface &tiwisl_spi,
 {
     int len, opcode, rtn_val;
 
-    printstr("creating a socket...");
     // create a socket
     len = hci_pkg_skt_create(opcode);
     write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
     skt_id = hci_process_skt_create();
-    printstr(" skt_id = "); printintln(skt_id);
 
     // socket bind
     len = hci_pkg_skt_bind(opcode);
@@ -223,7 +221,6 @@ static void close_socket(int skt_d,
     int len, opcode;
     len = hci_pkg_skt_close(skt_d, opcode);
     write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
-    printstrln("closing socket...");
 }
 
 /*---------------------------------------------------------------------------
@@ -459,8 +456,6 @@ void wifi_tiwisl_server(chanend c_xtcp,
                     write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
                     skt_accept_status = hci_process_skt_accept();
 
-                    printstr("skt_accept_status = "); printintln(skt_accept_status);
-
                     if((skt_accept_status == -1) || (skt_accept_status == -2))
                     {}
                     else if(skt_accept_status == -57)
@@ -484,7 +479,6 @@ void wifi_tiwisl_server(chanend c_xtcp,
                         len = hci_pkg_skt_recv(opcode);
                         write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
                         data_len = hci_process_skt_recv();
-                        printstr("Data length = "); printintln(data_len);
 
                         if(data_len > 0)
                         {
@@ -516,14 +510,6 @@ void wifi_tiwisl_server(chanend c_xtcp,
 
             } // case t when timerafter(time) :> void :
         } // select
-
-
-        /*
-         * have polling here?
-         */
-
-
-
     } // while(1)
 }
 
