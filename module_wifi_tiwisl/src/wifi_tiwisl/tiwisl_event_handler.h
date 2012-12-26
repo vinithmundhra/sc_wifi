@@ -40,102 +40,70 @@
 
 /*==========================================================================*/
 /**
- *  Event Handler
+ *  Check if the received event matches the opcode supplied
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
- *  \return None
+ *  \param opcode  event opcode
+ *  \param rx_buf  pointer to the response buffer
+ *  \return 1 on event match. 0 on event mismatch.
  **/
 int event_checker(int opcode, REFERENCE_PARAM(unsigned char, rx_buf));
 
 /*==========================================================================*/
 /**
- *  Event Handler
+ *  Process wlan connect event
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
+ *  \param ipconfig  pointer to ipconfig
  *  \return None
  **/
 void hci_process_wlan_connect(REFERENCE_PARAM(xtcp_ipconfig_t, ipconfig));
 
 /*==========================================================================*/
 /**
- *  Event Handler
+ *  Process socket create event
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
- *  \return None
+ *  \return int
  **/
 int hci_process_skt_create();
 
 /*==========================================================================*/
 /**
- *  Event Handler
+ *  Process socket bind event
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
- *  \return None
+ *  \return int
  **/
 int hci_process_skt_bind();
 
 /*==========================================================================*/
 /**
- *  Event Handler
+ *  Process socket listen event
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
- *  \return None
+ *  \return int
  **/
 int hci_process_skt_listen();
 
 /*==========================================================================*/
 /**
- *  Event Handler
+ *  Process socket accept event
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
- *  \return None
+ *  \return int
  **/
 int hci_process_skt_accept();
 
 /*==========================================================================*/
 /**
- *  Event Handler
+ *  Process socket receive event
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
- *  \return None
+ *  \return int
  **/
 int hci_process_skt_recv();
 
 /*==========================================================================*/
 /**
- *  Event Handler
+ *  Process received data event
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
- *  \return None
+ *  \return int
  **/
 int hci_process_recv_data();
-
-/*==========================================================================*/
-/**
- *  Event Handler
- *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
- *  \return None
- **/
-
-/*==========================================================================*/
-/**
- *  Event Handler
- *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
- *  \return None
- **/
-
 
 #endif // _event_handler_h_
 /*==========================================================================*/

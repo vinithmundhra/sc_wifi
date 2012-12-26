@@ -22,13 +22,6 @@
 #include "notify.h"
 #include <print.h>
 
-#define ENABLE_XSCOPE 1
-
-#if ENABLE_XSCOPE == 1
-#include <print.h>
-#include <xscope.h>
-#endif
-
 /*---------------------------------------------------------------------------
  constants
  ---------------------------------------------------------------------------*/
@@ -68,10 +61,12 @@ static xtcp_ipconfig_t ipconfig;
 
 /*==========================================================================*/
 /**
- *  Description
+ *  write_and_wait_for_event
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
+ *  \param tiwisl_spi    SPI interface
+ *  \param tiwisl_ctrl   TiWi-Sl control interface
+ *  \param len           write length
+ *  \param opcode        wait for this event
  *  \return None
  **/
 static void write_and_wait_for_event(spi_master_interface &tiwisl_spi,
@@ -81,10 +76,11 @@ static void write_and_wait_for_event(spi_master_interface &tiwisl_spi,
 
 /*==========================================================================*/
 /**
- *  Description
+ *  read_and_wait_for_event
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
+ *  \param tiwisl_spi    SPI interface
+ *  \param tiwisl_ctrl   TiWi-Sl control interface
+ *  \param opcode        wait for this event
  *  \return None
  **/
 static void read_and_wait_for_event(spi_master_interface &tiwisl_spi,
@@ -93,10 +89,10 @@ static void read_and_wait_for_event(spi_master_interface &tiwisl_spi,
 
 /*==========================================================================*/
 /**
- *  Description
+ *  create_socket
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
+ *  \param tiwisl_spi    SPI interface
+ *  \param tiwisl_ctrl   TiWi-Sl control interface
  *  \return None
  **/
 static void create_socket(spi_master_interface &tiwisl_spi,
@@ -105,15 +101,17 @@ static void create_socket(spi_master_interface &tiwisl_spi,
 
 /*==========================================================================*/
 /**
- *  Description
+ *  close_socket
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
+ *  \param skt_d         socket descriptor
+ *  \param tiwisl_spi    SPI interface
+ *  \param tiwisl_ctrl   TiWi-Sl control interface
  *  \return None
  **/
 static void close_socket(int skt_d,
                          spi_master_interface &tiwisl_spi,
                          wifi_tiwisl_ctrl_ports_t &tiwisl_ctrl);
+
 
 
 
@@ -129,22 +127,17 @@ static void write_and_wait_for_event(spi_master_interface &tiwisl_spi,
                                      int len,
                                      int opcode)
 {
-    // SPI write
-
-    /*printstr("Command = ");
-    for(int i = 0; i < len; i++)
-    {
-        printint(tiwisl_tx_buf[i]); printstr("  ");
-    }
-    printstrln(" ");*/
-
     if(power_up)
     {
+        /*
+         * Power up has a delayed SPI write
+         */
         wifi_tiwisl_spi_first_write(tiwisl_spi, tiwisl_ctrl, tiwisl_tx_buf, len);
         power_up = 0;
     }
     else
     {
+        /* Normal SPI write */
         wifi_tiwisl_spi_write(tiwisl_spi, tiwisl_ctrl, tiwisl_tx_buf, len);
     }
 
@@ -152,7 +145,7 @@ static void write_and_wait_for_event(spi_master_interface &tiwisl_spi,
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ read_and_wait_for_event
  ---------------------------------------------------------------------------*/
 static void read_and_wait_for_event(spi_master_interface &tiwisl_spi,
                                     wifi_tiwisl_ctrl_ports_t &tiwisl_ctrl,
@@ -172,23 +165,16 @@ static void read_and_wait_for_event(spi_master_interface &tiwisl_spi,
         // Read the rest of packets
         wifi_tiwisl_spi_read(tiwisl_spi, tiwisl_ctrl, tiwisl_rx_buf, spi_read_len, 1);
 
-        /*printstr("Read = ");
-        for(int i = 0; i < spi_read_len; i++)
-        {
-            printint(tiwisl_rx_buf[i]); printstr("  ");
-        }
-        printstrln(" ");*/
-
         // Deassert nCS and wait for nIRQ deassertion
         wifi_tiwisl_spi_deassert_cs(tiwisl_ctrl);
 
         // Check received data
         opcode_event_rxd = event_checker(opcode, tiwisl_rx_buf[0]);
-    }
+    } // while(opcode_event_rxd == 0)
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ create_socket
  ---------------------------------------------------------------------------*/
 static void create_socket(spi_master_interface &tiwisl_spi,
                           wifi_tiwisl_ctrl_ports_t &tiwisl_ctrl)
@@ -212,7 +198,7 @@ static void create_socket(spi_master_interface &tiwisl_spi,
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ close_socket
  ---------------------------------------------------------------------------*/
 static void close_socket(int skt_d,
                          spi_master_interface &tiwisl_spi,
@@ -223,8 +209,12 @@ static void close_socket(int skt_d,
     write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
 }
 
+
+
+
+
 /*---------------------------------------------------------------------------
- implementation1
+ wifi_tiwisl_server
  ---------------------------------------------------------------------------*/
 void wifi_tiwisl_server(chanend c_xtcp,
                         spi_master_interface &tiwisl_spi,
@@ -234,6 +224,8 @@ void wifi_tiwisl_server(chanend c_xtcp,
     timer t;
     unsigned time;
     int conn_id, opcode, len;
+
+    // Mask out any event that we are not interested in
     int mask = (HCI_EVNT_WLAN_UNSOL_CONNECT |
                 HCI_EVNT_WLAN_UNSOL_DISCONNECT |
                 HCI_EVNT_WLAN_ASYNC_SIMPLE_CONFIG_DONE |
@@ -242,11 +234,6 @@ void wifi_tiwisl_server(chanend c_xtcp,
 
     t :> time;
     time += TIWISL_POLL;
-
-#if ENABLE_XSCOPE == 1
-    xscope_register(0, 0, "", 0, "");
-    xscope_config_io(XSCOPE_IO_BASIC);
-#endif
 
     skt_rtn.sock_addr.ifamily = AF_INET;
     skt_rtn.sock_addr.iport = 0;
@@ -354,6 +341,7 @@ void wifi_tiwisl_server(chanend c_xtcp,
                         conn.event = XTCP_IFUP;
                         send_notification(c_xtcp, conn);
 
+                        // Print out the assigned IP address by the access point
                         printstr("IP Address: "); printint(ipconfig.ipaddr[0]); printstr(".");
                         printint(ipconfig.ipaddr[1]); printstr("."); printint(ipconfig.ipaddr[2]); printstr("."); printintln(ipconfig.ipaddr[3]);
 
@@ -512,9 +500,5 @@ void wifi_tiwisl_server(chanend c_xtcp,
         } // select
     } // while(1)
 }
-
-/*---------------------------------------------------------------------------
- implementation1
- ---------------------------------------------------------------------------*/
 
 /*==========================================================================*/

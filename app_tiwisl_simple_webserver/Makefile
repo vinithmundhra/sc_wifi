@@ -9,7 +9,7 @@ TARGET = XK-SK-L2.xn
 APP_NAME = 
 
 # The USED_MODULES variable lists other module used by the application.
-USED_MODULES = module_spi_master module_wifi_spi
+USED_MODULES = module_spi_master module_wifi_tiwisl
 
 # The flags passed to xcc when building the application
 # You can also set the following to override flags for a particular language:

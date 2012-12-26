@@ -50,11 +50,11 @@ typedef struct wifi_tiwisl_ctrl_ports_t_
 
 /*==========================================================================*/
 /**
- *  Description
+ *  wifi_tiwisl_server
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
- *  \return None
+ *  \param c_xtcp      channel
+ *  \param tiwisl_spi  the SPI interface
+ *  \param tiwisl_ctrl the TiWi-Sl control interface
  **/
 void wifi_tiwisl_server(chanend c_xtcp,
                         REFERENCE_PARAM(spi_master_interface, tiwisl_spi),

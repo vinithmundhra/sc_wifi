@@ -12,11 +12,10 @@
 /*---------------------------------------------------------------------------
  include files
  ---------------------------------------------------------------------------*/
+#include <string.h>
 #include "hci_pkg.h"
 #include "hci_helper.h"
 #include "hci_defines.h"
-#include <string.h>
-#include <print.h>
 
 /*---------------------------------------------------------------------------
  constants
@@ -75,19 +74,47 @@ extern int skt_accept_status;
 /*---------------------------------------------------------------------------
  static prototypes
  ---------------------------------------------------------------------------*/
+
+/*==========================================================================*/
+/**
+ *  hci_pkg_spi_header: package the SPI header
+ *
+ *  \param buf   buffer pointing to tx
+ *  \param len   length of data other than SPI header
+ *  \return int  overall length
+ **/
 static int hci_pkg_spi_header(unsigned char *buf, unsigned short len);
 
+/*==========================================================================*/
+/**
+ *  hci_pkg_cmd: package command
+ *
+ *  \param opcode    opcode to check in the response
+ *  \param buf       buffer pointing to tx
+ *  \param args_len  length of command arguments
+ *  \return int      overall length
+ **/
 static unsigned int hci_pkg_cmd(unsigned short opcode,
                                 unsigned char *buf,
                                 unsigned char args_len);
 
+/*==========================================================================*/
+/**
+ *  hci_pkg_data: package data
+ *
+ *  \param opcode    opcode to check in the response
+ *  \param buf       buffer pointing to tx
+ *  \param args_len  length of command arguments
+ *  \param data_len  length of data
+ *  \return int      overall length
+ **/
 static unsigned int hci_pkg_data(unsigned char opcode,
                                  unsigned char *buf,
                                  unsigned short args_len,
                                  unsigned short data_len);
 
 /*---------------------------------------------------------------------------
- implementation1
+ hci_pkg_cmd
  ---------------------------------------------------------------------------*/
 static unsigned int hci_pkg_cmd(unsigned short opcode,
                                 unsigned char *buf,
@@ -107,7 +134,7 @@ static unsigned int hci_pkg_cmd(unsigned short opcode,
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_data
  ---------------------------------------------------------------------------*/
 static unsigned int hci_pkg_data(unsigned char opcode,
                                  unsigned char *buf,
@@ -129,7 +156,7 @@ static unsigned int hci_pkg_data(unsigned char opcode,
 }
 
 /*---------------------------------------------------------------------------
- pkg_spi
+ hci_pkg_spi_header
  ---------------------------------------------------------------------------*/
 static int hci_pkg_spi_header(unsigned char *buf, unsigned short len)
 {
@@ -152,7 +179,7 @@ static int hci_pkg_spi_header(unsigned char *buf, unsigned short len)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_wifi_on
  ---------------------------------------------------------------------------*/
 int hci_pkg_wifi_on(int *opcode)
 {
@@ -170,7 +197,7 @@ int hci_pkg_wifi_on(int *opcode)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_read_buffer_size
  ---------------------------------------------------------------------------*/
 int hci_pkg_read_buffer_size(int *opcode)
 {
@@ -181,7 +208,7 @@ int hci_pkg_read_buffer_size(int *opcode)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_set_event_mask
  ---------------------------------------------------------------------------*/
 int hci_pkg_set_event_mask(int mask, int *opcode)
 {
@@ -196,7 +223,7 @@ int hci_pkg_set_event_mask(int mask, int *opcode)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_wlan_connect
  ---------------------------------------------------------------------------*/
 int hci_pkg_wlan_connect(wifi_ap_config_t *ap_config, int *opcode)
 {
@@ -231,7 +258,7 @@ int hci_pkg_wlan_connect(wifi_ap_config_t *ap_config, int *opcode)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_wlan_set_connection_policy
  ---------------------------------------------------------------------------*/
 int hci_pkg_wlan_set_connection_policy(unsigned int should_connect_to_open_ap,
                                        unsigned int should_use_fast_connect,
@@ -254,7 +281,7 @@ int hci_pkg_wlan_set_connection_policy(unsigned int should_connect_to_open_ap,
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_skt_create
  ---------------------------------------------------------------------------*/
 int hci_pkg_skt_create(int *opcode)
 {
@@ -273,7 +300,7 @@ int hci_pkg_skt_create(int *opcode)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_skt_bind
  ---------------------------------------------------------------------------*/
 int hci_pkg_skt_bind(int *opcode)
 {
@@ -296,7 +323,7 @@ int hci_pkg_skt_bind(int *opcode)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_skt_listen
  ---------------------------------------------------------------------------*/
 int hci_pkg_skt_listen(int *opcode)
 {
@@ -314,7 +341,7 @@ int hci_pkg_skt_listen(int *opcode)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_skt_accept
  ---------------------------------------------------------------------------*/
 int hci_pkg_skt_accept(int *opcode)
 {
@@ -331,7 +358,7 @@ int hci_pkg_skt_accept(int *opcode)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_skt_recv
  ---------------------------------------------------------------------------*/
 int hci_pkg_skt_recv(int *opcode)
 {
@@ -350,7 +377,7 @@ int hci_pkg_skt_recv(int *opcode)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_skt_send
  ---------------------------------------------------------------------------*/
 int hci_pkg_skt_send(int dlen, int *opcode)
 {
@@ -370,7 +397,7 @@ int hci_pkg_skt_send(int dlen, int *opcode)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_pkg_skt_close
  ---------------------------------------------------------------------------*/
 int hci_pkg_skt_close(int sd, int *opcode)
 {

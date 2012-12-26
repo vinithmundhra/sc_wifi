@@ -40,11 +40,10 @@
 
 /*==========================================================================*/
 /**
- *  Description
+ *  send_notification
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
- *  \return None
+ *  \param c      channel on which the notification to be sent
+ *  \param conn   xtcp connection
  **/
 void send_notification(chanend c, REFERENCE_PARAM(xtcp_connection_t, conn));
 

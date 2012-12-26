@@ -13,7 +13,6 @@
  include files
  ---------------------------------------------------------------------------*/
 #include <xs1.h>
-#include <print.h>
 #include <xccompat.h>
 #include "xtcp_client.h"
 #include "xtcp_cmd.h"
@@ -42,10 +41,6 @@
  static prototypes
  ---------------------------------------------------------------------------*/
 
-/*---------------------------------------------------------------------------
- implementation1
- ---------------------------------------------------------------------------*/
-
 /** \brief Send command over the XTCP channel
  *
  * \param c        chanend connected to the xtcp server
@@ -59,7 +54,7 @@ static void send_cmd(chanend c_xtcp, xtcp_cmd_t cmd, int conn_id)
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ xtcp_listen
  ---------------------------------------------------------------------------*/
 void xtcp_listen(chanend c_xtcp, int port_number, xtcp_protocol_t p)
 {
@@ -72,19 +67,7 @@ void xtcp_listen(chanend c_xtcp, int port_number, xtcp_protocol_t p)
 }
 
 /*---------------------------------------------------------------------------
- implementation1
- ---------------------------------------------------------------------------*/
-void xtcp_unlisten(chanend c_xtcp, int port_number)
-{
-    send_cmd(c_xtcp, XTCP_CMD_UNLISTEN, 0);
-    master
-    {
-        c_xtcp <: port_number;
-    }
-}
-
-/*---------------------------------------------------------------------------
- implementation1
+ xtcp_connect
  ---------------------------------------------------------------------------*/
 void xtcp_connect(chanend c_xtcp, wifi_ap_config_t &ap_config)
 {
@@ -97,7 +80,7 @@ void xtcp_connect(chanend c_xtcp, wifi_ap_config_t &ap_config)
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ xtcp_disconnect
  ---------------------------------------------------------------------------*/
 void xtcp_disconnect(chanend c_xtcp)
 {
@@ -105,7 +88,7 @@ void xtcp_disconnect(chanend c_xtcp)
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ xtcp_wifi_on
  ---------------------------------------------------------------------------*/
 void xtcp_wifi_on(chanend c_xtcp)
 {
@@ -118,7 +101,7 @@ void xtcp_wifi_on(chanend c_xtcp)
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ xtcp_wifi_off
  ---------------------------------------------------------------------------*/
 void xtcp_wifi_off(chanend c_xtcp)
 {
@@ -126,36 +109,7 @@ void xtcp_wifi_off(chanend c_xtcp)
 }
 
 /*---------------------------------------------------------------------------
- implementation1
- ---------------------------------------------------------------------------*/
-void xtcp_bind_local(chanend c_xtcp, xtcp_connection_t &conn, int port_number)
-{
-    send_cmd(c_xtcp, XTCP_CMD_BIND_LOCAL, conn.id);
-    master
-    {
-        c_xtcp <: port_number;
-    }
-}
-
-/*---------------------------------------------------------------------------
- implementation1
- ---------------------------------------------------------------------------*/
-void xtcp_bind_remote(chanend c_xtcp,
-                      xtcp_connection_t &conn,
-                      xtcp_ipaddr_t addr,
-                      int port_number)
-{
-    send_cmd(c_xtcp, XTCP_CMD_BIND_REMOTE, conn.id);
-    master
-    {
-        for (int i = 0; i < 4; i++)
-            c_xtcp <: addr[i];
-        c_xtcp <: port_number;
-    }
-}
-
-/*---------------------------------------------------------------------------
- implementation1
+ xtcp_event
  ---------------------------------------------------------------------------*/
 #pragma unsafe arrays
 transaction xtcp_event(chanend c_xtcp, xtcp_connection_t &conn)
@@ -167,7 +121,7 @@ transaction xtcp_event(chanend c_xtcp, xtcp_connection_t &conn)
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ do_xtcp_event
  ---------------------------------------------------------------------------*/
 void do_xtcp_event(chanend c_xtcp, xtcp_connection_t &conn)
 {
@@ -178,7 +132,7 @@ void do_xtcp_event(chanend c_xtcp, xtcp_connection_t &conn)
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ xtcp_init_send
  ---------------------------------------------------------------------------*/
 void xtcp_init_send(chanend c_xtcp, REFERENCE_PARAM(xtcp_connection_t, conn))
 {
@@ -186,7 +140,7 @@ void xtcp_init_send(chanend c_xtcp, REFERENCE_PARAM(xtcp_connection_t, conn))
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ xtcp_set_connection_appstate
  ---------------------------------------------------------------------------*/
 void xtcp_set_connection_appstate(chanend c_xtcp,
                                   REFERENCE_PARAM(xtcp_connection_t, conn),
@@ -200,7 +154,7 @@ void xtcp_set_connection_appstate(chanend c_xtcp,
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ xtcp_close
  ---------------------------------------------------------------------------*/
 void xtcp_close(chanend c_xtcp, REFERENCE_PARAM(xtcp_connection_t, conn))
 {
@@ -208,7 +162,7 @@ void xtcp_close(chanend c_xtcp, REFERENCE_PARAM(xtcp_connection_t, conn))
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ xtcp_abort
  ---------------------------------------------------------------------------*/
 void xtcp_abort(chanend c_xtcp, REFERENCE_PARAM(xtcp_connection_t, conn))
 {
@@ -216,7 +170,7 @@ void xtcp_abort(chanend c_xtcp, REFERENCE_PARAM(xtcp_connection_t, conn))
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ xtcp_recv
  ---------------------------------------------------------------------------*/
 int xtcp_recv(chanend c_xtcp, unsigned char data[])
 {
@@ -232,7 +186,7 @@ int xtcp_recv(chanend c_xtcp, unsigned char data[])
 }
 
 /*---------------------------------------------------------------------------
- implementation1
+ xtcp_send
  ---------------------------------------------------------------------------*/
 void xtcp_send(chanend c_xtcp, unsigned char ?data[], int len)
 {
@@ -245,21 +199,7 @@ void xtcp_send(chanend c_xtcp, unsigned char ?data[], int len)
 }
 
 /*---------------------------------------------------------------------------
- implementation1
- ---------------------------------------------------------------------------*/
-void xtcp_uint_to_ipaddr(xtcp_ipaddr_t ipaddr, unsigned int i)
-{
-    ipaddr[0] = i & 0xff;
-    i >>= 8;
-    ipaddr[1] = i & 0xff;
-    i >>= 8;
-    ipaddr[2] = i & 0xff;
-    i >>= 8;
-    ipaddr[3] = i & 0xff;
-}
-
-/*---------------------------------------------------------------------------
- implementation1
+ xtcp_get_ipconfig
  ---------------------------------------------------------------------------*/
 void xtcp_get_ipconfig(chanend c_xtcp, xtcp_ipconfig_t &ipconfig)
 {

@@ -12,61 +12,17 @@
 /*---------------------------------------------------------------------------
  include files
  ---------------------------------------------------------------------------*/
+#include <string.h>
 #include "tiwisl_event_handler.h"
 #include "hci_helper.h"
 #include "hci_defines.h"
-#include <string.h>
-#include <print.h>
 
 /*---------------------------------------------------------------------------
  constants
  ---------------------------------------------------------------------------*/
-#define FLOW_CONTROL_EVENT_HANDLE_OFFSET        (0)
-#define FLOW_CONTROL_EVENT_BLOCK_MODE_OFFSET    (1)
-#define FLOW_CONTROL_EVENT_FREE_BUFFS_OFFSET    (2)
-#define FLOW_CONTROL_EVENT_SIZE                 (4)
-
-#define BSD_RSP_PARAMS_SOCKET_OFFSET        (0)
-#define BSD_RSP_PARAMS_STATUS_OFFSET        (4)
-
-#define GET_HOST_BY_NAME_RETVAL_OFFSET  (0)
-#define GET_HOST_BY_NAME_ADDR_OFFSET    (4)
-
-#define ACCEPT_SD_OFFSET            (0)
-#define ACCEPT_RETURN_STATUS_OFFSET (4)
-#define ACCEPT_ADDRESS__OFFSET      (8)
-
-#define SL_RECEIVE_SD_OFFSET            (0)
-#define SL_RECEIVE_NUM_BYTES_OFFSET     (4)
-#define SL_RECEIVE__FLAGS__OFFSET       (8)
-
-#define SELECT_STATUS_OFFSET            (0)
-#define SELECT_READFD_OFFSET            (4)
-#define SELECT_WRITEFD_OFFSET           (8)
-#define SELECT_EXFD_OFFSET              (12)
-
 #define NETAPP_IPCONFIG_IP_OFFSET               (0)
 #define NETAPP_IPCONFIG_SUBNET_OFFSET           (4)
 #define NETAPP_IPCONFIG_GW_OFFSET               (8)
-#define NETAPP_IPCONFIG_DHCP_OFFSET             (12)
-#define NETAPP_IPCONFIG_DNS_OFFSET              (16)
-#define NETAPP_IPCONFIG_MAC_OFFSET              (20)
-#define NETAPP_IPCONFIG_SSID_OFFSET             (26)
-
-#define NETAPP_IPCONFIG_MAC_LENGTH              (6)
-#define NETAPP_IPCONFIG_SSID_LENGTH             (32)
-
-#define NETAPP_PING_PACKETS_SENT_OFFSET         (0)
-#define NETAPP_PING_PACKETS_RCVD_OFFSET         (4)
-#define NETAPP_PING_MIN_RTT_OFFSET              (8)
-#define NETAPP_PING_MAX_RTT_OFFSET              (12)
-#define NETAPP_PING_AVG_RTT_OFFSET              (16)
-
-#define GET_SCAN_RESULTS_TABlE_COUNT_OFFSET             (0)
-#define GET_SCAN_RESULTS_SCANRESULT_STATUS_OFFSET       (4)
-#define GET_SCAN_RESULTS_ISVALID_TO_SSIDLEN_OFFSET      (8)
-#define GET_SCAN_RESULTS_FRAME_TIME_OFFSET              (10)
-#define GET_SCAN_RESULTS_SSID_MAC_LENGTH                (38)
 
 /*---------------------------------------------------------------------------
  ports and clocks
@@ -91,13 +47,13 @@ xtcp_ipconfig_t tiwisl_ipconfig;
  ---------------------------------------------------------------------------*/
 
 /*---------------------------------------------------------------------------
- implementation1
+ event_checker
  ---------------------------------------------------------------------------*/
 int event_checker(int opcode, unsigned char *rx_buf)
 {
     if(opcode == 0)
     {
-        //process_unsolicited_event(c_xtcp, rx_buf);
+        //TODO: process_unsolicited_event(c_xtcp, rx_buf);
         return 1;
     }
 
@@ -120,7 +76,7 @@ int event_checker(int opcode, unsigned char *rx_buf)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ tiwisl_get_ipconfig
  ---------------------------------------------------------------------------*/
 void tiwisl_get_ipconfig(xtcp_ipconfig_t *ipconfig)
 {
@@ -128,7 +84,7 @@ void tiwisl_get_ipconfig(xtcp_ipconfig_t *ipconfig)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_process_wlan_connect
  ---------------------------------------------------------------------------*/
 void hci_process_wlan_connect(xtcp_ipconfig_t *ipconfig)
 {
@@ -157,7 +113,7 @@ void hci_process_wlan_connect(xtcp_ipconfig_t *ipconfig)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_process_skt_create
  ---------------------------------------------------------------------------*/
 int hci_process_skt_create()
 {
@@ -167,7 +123,7 @@ int hci_process_skt_create()
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_process_skt_bind
  ---------------------------------------------------------------------------*/
 int hci_process_skt_bind()
 {
@@ -177,7 +133,7 @@ int hci_process_skt_bind()
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_process_skt_listen
  ---------------------------------------------------------------------------*/
 int hci_process_skt_listen()
 {
@@ -187,7 +143,7 @@ int hci_process_skt_listen()
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_process_skt_accept
  ---------------------------------------------------------------------------*/
 int hci_process_skt_accept()
 {
@@ -199,7 +155,7 @@ int hci_process_skt_accept()
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_process_skt_recv
  ---------------------------------------------------------------------------*/
 int hci_process_skt_recv()
 {
@@ -211,7 +167,7 @@ int hci_process_skt_recv()
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ hci_process_recv_data
  ---------------------------------------------------------------------------*/
 int hci_process_recv_data()
 {
