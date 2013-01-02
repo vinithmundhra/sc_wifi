@@ -39,10 +39,10 @@
 
 /*==========================================================================*/
 /**
- *  Description
+ *  httpd_init
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
+ *  \param tcp_svr    channel
+ *  \param ap_config  wireless access point ssid/key/security type
  *  \return None
  **/
 void httpd_init(chanend tcp_svr,
@@ -50,10 +50,10 @@ void httpd_init(chanend tcp_svr,
 
 /*==========================================================================*/
 /**
- *  Description
+ *  httpd_handle_event
  *
- *  \param xxx    description of xxx
- *  \param yyy    description of yyy
+ *  \param tcp_svr    channel
+ *  \param conn       connection
  *  \return None
  **/
 void httpd_handle_event(chanend tcp_svr, REFERENCE_PARAM(xtcp_connection_t, conn));

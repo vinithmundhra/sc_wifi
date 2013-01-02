@@ -16,14 +16,7 @@
 #include <xs1.h>
 #include <print.h>
 #include "httpd.h"
-#include "xtcp_client.h" 
-
-#define ENABLE_XSCOPE 1
-
-#if ENABLE_XSCOPE == 1
-#include <print.h>
-#include <xscope.h>
-#endif
+#include "wifi_tiwisl_server.h"
 
 /*---------------------------------------------------------------------------
  constants
@@ -44,7 +37,8 @@
 /*---------------------------------------------------------------------------
  static variables
  ---------------------------------------------------------------------------*/
-wifi_ap_config_t ap_config = {"xms6testap0", "", 0};
+// Wireless access point config: SSID, Key, Security Type
+wifi_ap_config_t ap_config = {"xms6testap0", "", TIWISL_SEC_TYPE_UNSEC};
 
 /*---------------------------------------------------------------------------
  static prototypes

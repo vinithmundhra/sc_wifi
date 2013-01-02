@@ -201,6 +201,18 @@ void xtcp_send(chanend c_xtcp, unsigned char ?data[], int len)
 /*---------------------------------------------------------------------------
  xtcp_get_ipconfig
  ---------------------------------------------------------------------------*/
+void xtcp_complete_send(chanend c_xtcp)
+{
+#ifdef __XC__
+	xtcp_send(c_xtcp, null, 0);
+#else
+	xtcp_send(c_xtcp, (void *) 0, 0);
+#endif
+}
+
+/*---------------------------------------------------------------------------
+ xtcp_get_ipconfig
+ ---------------------------------------------------------------------------*/
 void xtcp_get_ipconfig(chanend c_xtcp, xtcp_ipconfig_t &ipconfig)
 {
     send_cmd(c_xtcp, XTCP_CMD_GET_IPCONFIG, 0);

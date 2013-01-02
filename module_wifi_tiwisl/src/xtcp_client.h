@@ -334,13 +334,7 @@ void xtcp_send(chanend c_xtcp,
  *  
  *  \param c_xtcp   chanend connected to the tcp server
  */
-inline void xtcp_complete_send(chanend c_xtcp) {
-#ifdef __XC__
-  xtcp_send(c_xtcp, null, 0);
-#else
-  xtcp_send(c_xtcp, (void *) 0, 0);
-#endif
-}
+void xtcp_complete_send(chanend c_xtcp);
 
 #define xtcp_ignore_send xtcp_complete_send
 

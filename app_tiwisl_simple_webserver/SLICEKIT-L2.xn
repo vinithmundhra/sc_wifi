@@ -1,11 +1,13 @@
-<? xml version =" 1.0 " encoding =" UTF -8 "?>
-
+<?xml version ="1.0" encoding ="UTF-8"?>
 <Network xmlns="http://www.xmos.com"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.xmos.com http://www.xmos.com" >
+  <Type>Board</Type>
+  <Name>sliceKIT Core Board (L2)</Name>
+  <BoardId>0008011X</BoardId>
         
     <Declarations>
-        <Declaration>core stdcore[2]</Declaration>
+        <Declaration>tileref tile[2]</Declaration>
     </Declarations>
     
     
@@ -15,22 +17,23 @@
                 <Node Id="0" InPackageId="0" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz">
                     <Boot>
                         <Source Location="SPI:bootFlash" />
-                        <Bootee NodeId="1" Core="0"/>
+                        <Bootee NodeId="1" Tile="0"/>
                     </Boot>
-                    <Core Number="0" Reference="stdcore[0]">
+                    <Tile Number="0" Reference="tile[0]">
                         <Port Location="XS1_PORT_1A" Name="PORT_SPI_MISO"/>
                         <Port Location="XS1_PORT_1B" Name="PORT_SPI_SS"/>
                         <Port Location="XS1_PORT_1C" Name="PORT_SPI_CLK"/>
                         <Port Location="XS1_PORT_1D" Name="PORT_SPI_MOSI"/>
                         <Port Location="XS1_PORT_8D" Name="PORT_SPI_DISABLE"/>
-                    </Core>
+
+                    </Tile>
                 </Node>
                 <Node Id="1" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz">
                     <Boot>
-                        <Source Location="XMOSLINK"/>
+                        <Source Location="LINK"/>
                     </Boot>
-                    <Core Number="0" Reference="stdcore[1]">
-                    </Core>
+                    <Tile Number="0" Reference="tile[1]">
+                    </Tile>
                 </Node>
             </Nodes>
         </Package> 
@@ -57,14 +60,14 @@
 
 
 	<Links>-->
-		<Link Encoding="2wire" Delays="4,4" Flags="SOD">
+		<Link Encoding="2wire" Delays="4,4" Flags="XSCOPE">
 			<LinkEndpoint NodeId="0" Link="X0LA" />
 			<LinkEndpoint RoutingId="0x8000" Chanend="1" />
 		</Link>
     </Links>
   
     <ExternalDevices>
-        <Device NodeId="0" Core="0" Name="bootFlash" Class="SPIFlash" Type="M25P16">
+        <Device NodeId="0" Tile="0" Name="bootFlash" Class="SPIFlash" Type="M25P16">
             <Attribute Name="PORT_SPI_MISO" Value="PORT_SPI_MISO" />
             <Attribute Name="PORT_SPI_SS" Value="PORT_SPI_SS" />
             <Attribute Name="PORT_SPI_CLK" Value="PORT_SPI_CLK" />
@@ -78,4 +81,3 @@
     </JTAGChain>
 
 </Network>
-

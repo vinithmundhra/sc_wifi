@@ -16,8 +16,6 @@
 #include "xtcp_client.h"
 #include "httpd.h"
 
-#include <print.h>
-
 /*---------------------------------------------------------------------------
  constants
  ---------------------------------------------------------------------------*/
@@ -60,7 +58,7 @@ httpd_state_t connection_states[NUM_HTTPD_CONNECTIONS];
  ---------------------------------------------------------------------------*/
 
 /*---------------------------------------------------------------------------
- implementation1
+ httpd_init
  ---------------------------------------------------------------------------*/
 void httpd_init(chanend tcp_svr, wifi_ap_config_t *ap_config)
 {
@@ -78,7 +76,7 @@ void httpd_init(chanend tcp_svr, wifi_ap_config_t *ap_config)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ parse_http_request
  ---------------------------------------------------------------------------*/
 void parse_http_request(httpd_state_t *hs, char *data, int len)
 {
@@ -102,7 +100,7 @@ void parse_http_request(httpd_state_t *hs, char *data, int len)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ httpd_recv
  ---------------------------------------------------------------------------*/
 void httpd_recv(chanend tcp_svr, xtcp_connection_t *conn)
 {
@@ -130,11 +128,10 @@ void httpd_recv(chanend tcp_svr, xtcp_connection_t *conn)
         // when it's ready to send
         xtcp_init_send(tcp_svr, conn);
     }
-    ////
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ httpd_send
  ---------------------------------------------------------------------------*/
 void httpd_send(chanend tcp_svr, xtcp_connection_t *conn)
 {
@@ -173,7 +170,7 @@ void httpd_send(chanend tcp_svr, xtcp_connection_t *conn)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ httpd_init_state
  ---------------------------------------------------------------------------*/
 void httpd_init_state(chanend tcp_svr, xtcp_connection_t *conn)
 {
@@ -191,7 +188,7 @@ void httpd_init_state(chanend tcp_svr, xtcp_connection_t *conn)
     {
         xtcp_abort(tcp_svr, conn);
     }
-    // Otherwise, assign the connection to a slot        //
+    // Otherwise, assign the connection to a slot
     else
     {
         connection_states[i].active = 1;
@@ -202,7 +199,7 @@ void httpd_init_state(chanend tcp_svr, xtcp_connection_t *conn)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ httpd_free_state
  ---------------------------------------------------------------------------*/
 void httpd_free_state(xtcp_connection_t *conn)
 {
@@ -218,7 +215,7 @@ void httpd_free_state(xtcp_connection_t *conn)
 }
 
 /*---------------------------------------------------------------------------
- implementation2
+ httpd_handle_event
  ---------------------------------------------------------------------------*/
 void httpd_handle_event(chanend tcp_svr, xtcp_connection_t *conn)
 {
