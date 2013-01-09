@@ -47,6 +47,7 @@ wifi_ap_config_t ap_config = {"xms6testap0", "", TIWISL_SEC_TYPE_UNSEC};
 /*---------------------------------------------------------------------------
  The main webserver thread
  ---------------------------------------------------------------------------*/
+// ::webserver
 void xhttpd(chanend tcp_svr)
 {
     xtcp_connection_t conn;

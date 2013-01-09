@@ -2,8 +2,8 @@ Wi-Fi
 .....
 
 :Status: idea
-:Maintainer:  vinithmundhra
-:Description:  Wi-Fi interface.
+:Maintainer: vinithmundhra
+:Description: Wi-Fi interface.
 
 
 Key Features

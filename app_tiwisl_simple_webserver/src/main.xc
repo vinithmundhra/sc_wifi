@@ -65,7 +65,9 @@ int main(void)
 
     par
     {
+        // The main Wi-Fi server
         on stdcore[0]: wifi_tiwisl_server(c_xtcp, tiwisl_spi, tiwisl_ctrl);
+        // The webserver
         on stdcore[0]: xhttpd(c_xtcp);
     }
 

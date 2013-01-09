@@ -28,7 +28,7 @@
 /*---------------------------------------------------------------------------
  typedefs
  ---------------------------------------------------------------------------*/
-// Structure to hold HTTP state
+// ::Structure to hold HTTP state
 typedef struct httpd_state_t
 {
     int active; //< Whether this state structure is being used for a connection
@@ -37,6 +37,7 @@ typedef struct httpd_state_t
     int dlen; //< The length of remaining data to send
     char *prev_dptr; //< Pointer to the previously sent item of data
 } httpd_state_t;
+//::
 
 /*---------------------------------------------------------------------------
  global variables
@@ -60,6 +61,7 @@ httpd_state_t connection_states[NUM_HTTPD_CONNECTIONS];
 /*---------------------------------------------------------------------------
  httpd_init
  ---------------------------------------------------------------------------*/
+// ::httpd_init 
 void httpd_init(chanend tcp_svr, wifi_ap_config_t *ap_config)
 {
     int i;
@@ -74,10 +76,12 @@ void httpd_init(chanend tcp_svr, wifi_ap_config_t *ap_config)
         connection_states[i].dptr = NULL;
     }
 }
+//::
 
 /*---------------------------------------------------------------------------
  parse_http_request
  ---------------------------------------------------------------------------*/
+// ::parse_http_request
 void parse_http_request(httpd_state_t *hs, char *data, int len)
 {
     // Return if we have data already
@@ -98,10 +102,12 @@ void parse_http_request(httpd_state_t *hs, char *data, int len)
         // We did not receive a get request, so do nothing
     }
 }
+//::
 
 /*---------------------------------------------------------------------------
  httpd_recv
  ---------------------------------------------------------------------------*/
+// ::httpd_recv
 void httpd_recv(chanend tcp_svr, xtcp_connection_t *conn)
 {
     struct httpd_state_t *hs = (struct httpd_state_t *) conn->appstate;
@@ -128,6 +134,7 @@ void httpd_recv(chanend tcp_svr, xtcp_connection_t *conn)
         // when it's ready to send
         xtcp_init_send(tcp_svr, conn);
     }
+    ////
 }
 
 /*---------------------------------------------------------------------------
@@ -167,11 +174,13 @@ void httpd_send(chanend tcp_svr, xtcp_connection_t *conn)
         hs->dptr += len;
         hs->dlen -= len;
     }
+    ////
 }
 
 /*---------------------------------------------------------------------------
  httpd_init_state
  ---------------------------------------------------------------------------*/
+// ::httpd_init_state
 void httpd_init_state(chanend tcp_svr, xtcp_connection_t *conn)
 {
     int i;
@@ -201,6 +210,7 @@ void httpd_init_state(chanend tcp_svr, xtcp_connection_t *conn)
 /*---------------------------------------------------------------------------
  httpd_free_state
  ---------------------------------------------------------------------------*/
+// ::httpd_free_state
 void httpd_free_state(xtcp_connection_t *conn)
 {
     int i;
@@ -213,10 +223,11 @@ void httpd_free_state(xtcp_connection_t *conn)
         }
     }
 }
-
+//::
 /*---------------------------------------------------------------------------
  httpd_handle_event
  ---------------------------------------------------------------------------*/
+// ::httpd_handle_event 
 void httpd_handle_event(chanend tcp_svr, xtcp_connection_t *conn)
 {
     // We have received an event from the TCP stack, so respond
@@ -260,5 +271,5 @@ void httpd_handle_event(chanend tcp_svr, xtcp_connection_t *conn)
     }
     return;
 }
-
+//::
 /*==========================================================================*/
