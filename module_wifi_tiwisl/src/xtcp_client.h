@@ -14,13 +14,12 @@
 #define NULLABLE
 #endif
 
-#define TIWISL_BUF_SIZE  (1460)
 #ifndef XTCP_CLIENT_BUF_SIZE
-#define XTCP_CLIENT_BUF_SIZE TIWISL_BUF_SIZE
+#define XTCP_CLIENT_BUF_SIZE (1200)
 #endif
 
 #ifndef XTCP_MAX_RECEIVE_SIZE
-#define XTCP_MAX_RECEIVE_SIZE (1000)
+#define XTCP_MAX_RECEIVE_SIZE (XTCP_CLIENT_BUF_SIZE)
 #endif
 
 typedef unsigned int xtcp_appstate_t;

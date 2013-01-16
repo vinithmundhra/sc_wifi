@@ -61,8 +61,8 @@ For example, these ports are setup in the demo appilcation as:
 Setup the Wireless Access Point
 -------------------------------
 
-The external wireless access point needs to which the TiWi-SL will establish a
-connection needs to be configured with known parameters. The following
+The external wireless access point; to which the TiWi-SL will establish a
+connection, needs to be configured with known parameters. The following
 parameters must be known for the TiWi-SL to make a connection:
 
     * SSID

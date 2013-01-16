@@ -38,8 +38,8 @@
 /*---------------------------------------------------------------------------
  global variables
  ---------------------------------------------------------------------------*/
-unsigned char tiwisl_tx_buf[TIWISL_BUF_SIZE];
-unsigned char tiwisl_rx_buf[TIWISL_BUF_SIZE];
+unsigned char tiwisl_tx_buf[XTCP_CLIENT_BUF_SIZE];
+unsigned char tiwisl_rx_buf[XTCP_CLIENT_BUF_SIZE];
 
 bsd_rtn_t skt_rtn;
 xtcp_connection_t conn;

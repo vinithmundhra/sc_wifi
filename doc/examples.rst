@@ -51,7 +51,7 @@ The event handler is implemented in ``httpd.c`` and contains the main
 logic of the web server. The server can handle several connections at
 once. However, events for each connection may be interleaved so the
 handler needs to store separate state for each one. The
-``httpd_state_t`` structures holds this state:
+``httpd_state_t`` structure holds this state.
 
 .. literalinclude:: app_tiwisl_simple_webserver/src/httpd.c
    :start-after: // ::Structure to hold HTTP state
@@ -60,24 +60,24 @@ handler needs to store separate state for each one. The
 The ``http_init`` function is called at the start of the
 application. It initializes the connection state array and makes a
 request to accept incoming new TCP connections on port 80 (using the
-:c:func:`xtcp_listen` function):
+:c:func:`xtcp_listen` function).
 
 .. literalinclude:: app_tiwisl_simple_webserver/src/httpd.c
    :start-after: // ::httpd_init
    :end-before: //::
 
-When an event occurs the ``httpd_handle_event`` function is
+When an event occurs, the ``httpd_handle_event`` function is
 called. The behaviour of this function depends on the event
-type. Firstly, link status events are ignored:
+type. Firstly, link status events are ignored.
 
 .. literalinclude:: app_tiwisl_simple_webserver/src/httpd.c
    :start-after: // ::httpd_handle_event
    :end-before: //::
 
-For other events, we first check that the connection is definitely an
+For other events, we first check that the connection is definitely a
 http connection (is directed at port 80) and then call one of several
-event handlers for each type of event. The is a separate function for
-new connections, receiving data, sending data and closing connections:
+event handlers for each type of event. The are separate function for
+new connections, receiving data, sending data and closing connections.
 
 .. literalinclude:: app_tiwisl_simple_webserver/src/httpd.c
    :start-after: // Check if the connection
@@ -145,12 +145,7 @@ set up and the ``hs`` variable is non-null.
    :start-after: // If we
    :end-before: // Otherwise
 
-Now the connection state is known and the incoming data buffer filled. To keep
-things simple, this server makes the assumption that a single tcp packet gives
-us enough information to parse the http request. However, many applications
-will need to concatenate each tcp packet to a different buffer and handle data
-after several tcp packets have come in. The next step in the code is to call
-the ``parse_http_request`` function:
+Now the connection state is known and the incoming data buffer is filled. To keep things simple, this server makes the assumption that a single tcp packet gives us enough information to parse the http request. However, many applications will need to concatenate each tcp packet to a different buffer and handle data after several tcp packets have come in. The next step in the code is to call the ``parse_http_request`` function:
 
 .. literalinclude:: app_tiwisl_simple_webserver/src/httpd.c
    :start-after: // Otherwise
@@ -200,7 +195,7 @@ On receiving an :c:member:`XTCP_REQUEST_DATA`,
 :c:member:`XTCP_SENT_DATA` or :c:member:`XTCP_RESEND_DATA` event the
 function ``httpd_send`` is called.
 
-The first thing the function does is check whether we have been asked
+The first thing the function does is to check whether we have been asked
 to resend data. In this case it sends the previous amount of data
 using the ``prev_dptr`` pointer.
 
@@ -209,7 +204,7 @@ using the ``prev_dptr`` pointer.
    :end-before: // Check if we have no data
 
 If the request is for the next piece of data, then the function first
-checks that we have data left to send. If not, the function
+checks if there is any data left to send. If not, the function
 :c:func:`xtcp_complete_send` is called to finish the send transaction
 and then the connection is closed down with :c:func:`xtcp_close`
 (since HTTP only does one transfer per connection).
@@ -220,7 +215,7 @@ and then the connection is closed down with :c:func:`xtcp_close`
 
 If we have data to send, then first the amount of data to send is
 calculated. This is based on the amount of data we have left
-(``hs->dlen``) and the maximum we can send (``conn->mss``). Having
+(``hs->dlen``) and the maximum that can be sent (``conn->mss``). Having
 calculated this length, the data is sent using the :c:func:`xtcp_send`
 function.
 

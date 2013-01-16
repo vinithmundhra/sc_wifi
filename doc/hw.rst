@@ -16,7 +16,7 @@ This module may be evaluated using the Slicekit Modular Development Platform, av
 If using the LS Research's TiWi-SL evaluation board, make the following pin connections:
 
     +---------------+---------------------+----------------+
-    | Lsr Board pin | Slicekit core board | Function       |
+    | LSR Board pin | Slicekit core board | Function       |
     |               |    (Core0/Type1)    |                |
     |               |      Triangle       |                |
     +===============+=====================+================+

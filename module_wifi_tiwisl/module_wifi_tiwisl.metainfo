@@ -1,0 +1,95 @@
+-- -*- mode: lua -*-
+
+configPoints = {
+}
+
+derivedValues = {}
+
+
+ports = {
+  p_spi_master_clk = {
+    short   = "SCLK",
+    long    = "SPI Clock from master",
+    help    = "",
+    width   = 1
+  },
+  p_spi_master_mosi = {
+    short   = "MOSI",
+    long    = "Master Out Slave In",
+    help    = "",
+    width   = 1
+  },
+  p_spi_master_miso = {
+    short   = "MISO",
+    long    = "Master In Slave Out",
+    help    = "",
+    width   = 1
+  },
+  p_spi_cs = {
+    short   = "Chip Select",
+    long    = "Chip Select for LSR's TiWi-SL module",
+    help    = "",
+    width   = 1,
+  },
+  p_spi_irq = {
+    short   = "Interrupt",
+    long    = "Incoming interrupt from LSR's TiWi-SL module",
+    help    = "",
+    width   = 1,
+  },
+  p_pwr_en = {
+    short   = "Power Enable",
+    long    = "Power Enable for LSR's TiWi-SL module",
+    help    = "",
+    width   = 1,
+  }
+}
+
+channels = {
+   c_xtcp = {
+      short = "xtcp client channel array",
+      long = "Channels for connection to tcp server",
+      help = "",
+   }
+}
+
+function getConfigStatus()
+   return "Trusted", {}
+end
+
+generatedCode = {
+   includes = {"wifi_tiwisl_server.h"},
+   globals  = [[
+            spi_master_interface tiwisl_spi = { 
+              ${swblock.clocks[0]},  
+              ${swblock.clocks[1]},  
+              ${swblock.ports.p_spi_master_mosi}, 
+              ${swblock.ports.p_spi_master_clk}, 
+              ${swblock.ports.p_spi_master_miso}
+            };
+
+            wifi_tiwisl_ctrl_ports_t tiwisl_ctrl = { 
+              ${swblock.clocks[0]},  
+              ${swblock.clocks[1]},  
+              ${swblock.ports.p_spi_cs}, 
+              ${swblock.ports.p_spi_irq}, 
+              ${swblock.ports.p_pwr_en}
+            };
+            
+            wifi_ap_config_t ap_config = {
+                "xms6testap0", // SSID
+                "", // Key
+                TIWISL_SEC_TYPE_UNSEC // Security Type
+            };
+      ]],
+    body  =
+      [[
+          {
+            wifi_tiwisl_server(${swblock.chanends.c_xtcp},
+                               tiwisl_spi, 
+                               tiwisl_ctrl);
+          }
+      ]]
+}
+
+files = {}

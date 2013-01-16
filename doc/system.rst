@@ -8,7 +8,7 @@ and the module_wifi_tiwisl is SPI master.
 The default SPI clock frequency for this interface is set as 12.5MHz, operating
 in SPI mode 1 (CPHA 1; CPOL 0).
 
-The server gets is IP address dynamically assigned (default option, for now)
+The server gets its IP address dynamically assigned (default option, for now)
 from the wireless access point.
 
 Events and Connections

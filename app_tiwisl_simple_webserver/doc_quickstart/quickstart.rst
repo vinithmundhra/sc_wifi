@@ -6,9 +6,8 @@ TiWi-SL Simple Web Server Demo Quickstart Guide
 sc_wifi demo : Quick Start Guide
 --------------------------------
 
-This simple demonstration of xTIMEcomposer Studio functionality uses 
-the ``Wi-Fi`` Slice Card together with the xSOFTip ``module_wifi_tiwisl`` 
-to demonstrate how the module is used to:
+This simple demonstration the ``Wi-Fi`` Slice Card together with the xSOFTip 
+``module_wifi_tiwisl`` to demonstrate how the module is used to:
 
    * connect to a wireless access point, 
    * Run a very simple HTTP server to display a "Hello World!" webpage.
@@ -20,7 +19,7 @@ The XP-SKC-L2 Slicekit Core board has four slots with edge connectors: ``SQUARE`
 
 To setup up the system:
 
-   #. Connect ``Wi-Fi`` Slice Card to the XP-SKC-L2 Slicekit Core board using the connector marked with the ``TRIANGLE``.
+   #. Connect ``Wi-Fi`` slice card to the ``TRIANGLE`` slot of the XP-SKC-L2 Slicekit core board.
    #. Connect the XTAG Adapter to Slicekit Core board, and connect XTAG-2 to the Adapter. 
    #. Connect the XTAG-2 to host PC. Note that the USB cable is not provided with the Slicekit starter kit.
    #. Set the ``XMOS LINK`` to ``ON`` on the XTAG Adapter.
@@ -56,7 +55,7 @@ Run the Application
 
 Now that the application has been compiled, the next step is to run it on the 
 Slicekit Core Board using the tools to load the application over JTAG (via 
-the XTAG2 and Xtag Adapter card) into the xCORE multicore microcontroller.
+the XTAG2 and XTAG Adapter card) into the xCORE multicore microcontroller.
 
    #. Select the file ``main.xc`` in the ``app_tiwisl_simple_webserver`` project from the Project Explorer.
    #. Click on the ``Run`` icon (the white arrow in the green circle). 
@@ -92,7 +91,7 @@ Try the GPIO Wi-Fi combo Demo
 This example demonstrates the use of two Slice Cards, XA-SK-GPIO and Wi-Fi slice together with the xSOFTip components for Wi-Fi, SPI, I2C and WebServer to provide access to the GPIO slice features via a simple embedded webserver.
 
 A webpage served from the sliceKIT and accessed in a browser on a host PC has the following demo functions:
-   * Turn GPIO Slice Card LEDS on and off
+   * Turn GPIO Slice Card LEDs on and off
    * Read the room temperature via the on-board ADC and display on the web page
    * Display GPIO Slice Card button press status
 
