@@ -15,7 +15,7 @@
 #endif
 
 #ifndef XTCP_CLIENT_BUF_SIZE
-#define XTCP_CLIENT_BUF_SIZE (1200)
+#define XTCP_CLIENT_BUF_SIZE (1460)
 #endif
 
 #ifndef XTCP_MAX_RECEIVE_SIZE

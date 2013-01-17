@@ -18,7 +18,7 @@ The following defines can be set by adding the file
 within that file.
 
 ``XTCP_CLIENT_BUF_SIZE``
-       The buffer size used for incoming packets. Default is 1200.
+       The buffer size used for incoming packets. Default is 1460.
 
 Data Structures/Types
 +++++++++++++++++++++
