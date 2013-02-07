@@ -21,6 +21,7 @@
 #include "hci_pkg.h"
 #include "notify.h"
 #include <print.h>
+#include <xscope.h>
 
 /*---------------------------------------------------------------------------
  constants
@@ -235,6 +236,9 @@ void wifi_tiwisl_server(chanend c_xtcp,
     t :> time;
     time += TIWISL_POLL;
 
+    xscope_register(0, 0, "", 0, "");
+    xscope_config_io(XSCOPE_IO_BASIC);
+
     skt_rtn.sock_addr.ifamily = AF_INET;
     skt_rtn.sock_addr.iport = 0;
     skt_rtn.sock_addr.iaddr = 0;
@@ -262,6 +266,9 @@ void wifi_tiwisl_server(chanend c_xtcp,
                 {
                     case XTCP_CMD_WIFI_ON:
                     {
+                        int num_networks = 0;
+
+                        printstr("Switching on Wi-Fi module.... ");
                         // Initialize the TiWi-SL and SPI
                         wifi_tiwisl_spi_init(tiwisl_spi, tiwisl_ctrl);
 
@@ -285,6 +292,42 @@ void wifi_tiwisl_server(chanend c_xtcp,
                         write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
                         // nothing to check
 
+                        printstrln("ok!");
+
+                        // Scan and list available networks
+                        printstrln("Scanning available networks.... ");
+
+                        // Start scanning available networks
+                        len = hci_pkg_wlan_scan(opcode, 1);
+                        write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
+                        hci_process_wlan_scan();
+
+                        while(num_networks == 0)
+                        {
+                            // Keep getting result until we have a network found
+                            len = hci_pkg_wlan_get_scan_result(opcode);
+                            write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
+                            num_networks = hci_process_wlan_get_scan_result();
+                        }
+
+                        // num_networks > 0 : found networks. Now, keep getting
+                        // results until num_networks = 0
+
+                        while(num_networks > 0)
+                        {
+                            // Keep getting result until we have a network found
+                            len = hci_pkg_wlan_get_scan_result(opcode);
+                            write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
+                            num_networks = hci_process_wlan_get_scan_result();
+                        }
+
+                        // Stop scanning
+                        len = hci_pkg_wlan_scan(opcode, 0);
+                        write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
+                        hci_process_wlan_scan();
+
+                        printstrln("----end----");
+
                         // Power up sequence finished. Send dummy value.
                         c_xtcp <: power_up;
 
@@ -294,10 +337,11 @@ void wifi_tiwisl_server(chanend c_xtcp,
 
                     case XTCP_CMD_WIFI_OFF:
                     {
+                        printstr("Switching off Wi-Fi module.... ");
                         wifi_tiwisl_spi_shutdown(tiwisl_spi, tiwisl_ctrl);
                         power_up = 1;
                         tiwisl_connected_to_ap = 0;
-
+                        printstrln("ok!");
                         break;
                     } // case XTCP_CMD_WIFI_OFF:
 
@@ -309,6 +353,8 @@ void wifi_tiwisl_server(chanend c_xtcp,
                         {
                             c_xtcp :> ap_config;
                         }
+
+                        printstr("Connecting to "); printstrln(ap_config.ssid);
 
                         // Send wlan connect command
                         len = hci_pkg_wlan_connect(ap_config, opcode);
@@ -337,13 +383,16 @@ void wifi_tiwisl_server(chanend c_xtcp,
 
                         conn.local_port = port_number;
                         conn.protocol = p; // TODO: the TCP define is different
-                        conn.mss = XTCP_MAX_RECEIVE_SIZE; // send bytes in chunks of 300
+                        conn.mss = XTCP_MAX_RECEIVE_SIZE; // send in chunks
                         conn.event = XTCP_IFUP;
                         send_notification(c_xtcp, conn);
 
                         // Print out the assigned IP address by the access point
-                        printstr("IP Address: "); printint(ipconfig.ipaddr[0]); printstr(".");
-                        printint(ipconfig.ipaddr[1]); printstr("."); printint(ipconfig.ipaddr[2]); printstr("."); printintln(ipconfig.ipaddr[3]);
+                        printstr("IP Address: ");
+                        printint(ipconfig.ipaddr[0]); printstr(".");
+                        printint(ipconfig.ipaddr[1]); printstr(".");
+                        printint(ipconfig.ipaddr[2]); printstr(".");
+                        printintln(ipconfig.ipaddr[3]);
 
                         tiwisl_connected_to_ap = 1;
 

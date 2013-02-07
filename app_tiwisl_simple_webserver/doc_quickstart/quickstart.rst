@@ -38,6 +38,7 @@ Import and Build the Application
 
    #. Open xTIMEcomposer and check that it is operating in online mode. Open the edit perspective (Window->Open Perspective->XMOS Edit).
    #. Locate the ``'app_tiwisl_simple_webserver'`` item in the xSOFTip pane on the bottom left of the window and drag it into the Project Explorer window in the xTIMEcomposer. This will also cause the modules on which this application depends (in this case, module_wifi_tiwisl and module_spi_master) to be imported as well. 
+   #. Try changing the wireless configuration in the ``wifi_tiwisl_config.h``. They are: SSID, Key and Security type. Change this to connect to a different access point.
    #. Click on the ``app_tiwisl_simple_webserver`` item in the Project Explorer pane then click on the build icon (hammer) in xTIMEcomposer. Check the console window to verify that the application has built successfully.
 
 For help in using xTIMEcomposer, try the xTIMEcomposer tutorial, which you can 
@@ -83,7 +84,6 @@ Next Steps
 ++++++++++
 
   #. Examine the application code. In xTIMEcomposer navigate to the ``src`` directory under app_tiwisl_simple_webserver and double click on the ``xhttpd.xc`` file within it. The file will open in the central editor window.
-  #. Trying changing the ``ap_config`` variables on line 41. Members of this structure are: SSID, Key and Security type. Change this to connect to a different access point.
 
 Try the GPIO Wi-Fi combo Demo
 .............................

@@ -98,6 +98,25 @@ int hci_pkg_wlan_set_connection_policy(unsigned int should_connect_to_open_ap,
 
 /*==========================================================================*/
 /**
+ *  hci_pkg_wlan_scan
+ *
+ *  \param opcode  opcode to check in the response
+ *  \param enable  1 = enable scan; 0 = disable scan
+ *  \return int    length
+ **/
+int hci_pkg_wlan_scan(REFERENCE_PARAM(int, opcode), int enable);
+
+/*==========================================================================*/
+/**
+ *  hci_pkg_wlan_get_scan_result
+ *
+ *  \param opcode  opcode to check in the response
+ *  \return int    length
+ **/
+int hci_pkg_wlan_get_scan_result(REFERENCE_PARAM(int, opcode));
+
+/*==========================================================================*/
+/**
  *  hci_pkg_skt_create
  *
  *  \param opcode  opcode to check in the response

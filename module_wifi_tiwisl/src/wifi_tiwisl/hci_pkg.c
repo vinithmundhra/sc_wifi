@@ -47,6 +47,13 @@
 #define HCI_CMND_WLAN_IOCTL_SET_CONNECTION_POLICY       (0x0004)
 #define HCI_CMND_EVENT_MASK                             (0x0008)
 
+
+#define SL_SET_SCAN_PARAMS_INTERVAL_LIST_SIZE   (16)
+#define WLAN_SET_SCAN_PARAMS_LEN                (100)
+#define WLAN_GET_SCAN_RESULTS_PARAMS_LEN        (4)
+
+
+
 //------------ Socket Types ------------
 #define SOCK_STREAM             1
 #define IPPROTO_TCP             6
@@ -277,6 +284,56 @@ int hci_pkg_wlan_set_connection_policy(unsigned int should_connect_to_open_ap,
 
     len = hci_pkg_cmd(HCI_CMND_WLAN_IOCTL_SET_CONNECTION_POLICY, buf, WLAN_SET_CONNECTION_POLICY_PARAMS_LEN);
     *opcode = HCI_CMND_WLAN_IOCTL_SET_CONNECTION_POLICY;
+    return len;
+}
+
+/*---------------------------------------------------------------------------
+ hci_pkg_wlan_scan
+ ---------------------------------------------------------------------------*/
+int hci_pkg_wlan_scan(int *opcode, int enable)
+{
+    unsigned char *buf, *args;
+    int len;
+
+    buf = tiwisl_tx_buf;
+    args = (unsigned char *)(buf + HEADERS_SIZE_CMD);
+    args = int_to_stream(args, 36);
+    args = int_to_stream(args, enable);
+    args = int_to_stream(args, 100);
+    args = int_to_stream(args, 100);
+    args = int_to_stream(args, 5);
+    args = int_to_stream(args, 0x7FF);
+    args = int_to_stream(args, (-80));
+    args = int_to_stream(args, 0);
+    args = int_to_stream(args, 205);
+    for(int i = 0; i < 16; i++)
+    {
+        args = int_to_stream(args, 2000);
+    }
+
+    len = hci_pkg_cmd(HCI_CMND_WLAN_IOCTL_SET_SCANPARAM,
+                      buf,
+                      WLAN_SET_SCAN_PARAMS_LEN);
+    *opcode = HCI_CMND_WLAN_IOCTL_SET_SCANPARAM;
+    return len;
+}
+
+/*---------------------------------------------------------------------------
+ hci_pkg_wlan_get_scan_result
+ ---------------------------------------------------------------------------*/
+int hci_pkg_wlan_get_scan_result(int *opcode)
+{
+    unsigned char *buf, *args;
+    int len;
+
+    buf = tiwisl_tx_buf;
+    args = (unsigned char *)(buf + HEADERS_SIZE_CMD);
+    args = int_to_stream(args, 0);
+
+    len = hci_pkg_cmd(HCI_CMND_WLAN_IOCTL_GET_SCAN_RESULTS,
+                      buf,
+                      WLAN_GET_SCAN_RESULTS_PARAMS_LEN);
+    *opcode = HCI_CMND_WLAN_IOCTL_GET_SCAN_RESULTS;
     return len;
 }
 

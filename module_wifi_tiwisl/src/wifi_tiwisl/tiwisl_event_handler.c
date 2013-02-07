@@ -16,7 +16,7 @@
 #include "tiwisl_event_handler.h"
 #include "hci_helper.h"
 #include "hci_defines.h"
-
+#include <print.h>
 /*---------------------------------------------------------------------------
  constants
  ---------------------------------------------------------------------------*/
@@ -110,6 +110,40 @@ void hci_process_wlan_connect(xtcp_ipconfig_t *ipconfig)
      * Could have used this but the addresses returned are in reverse order (LSB first)
      * memcpy((unsigned char *)(ipconfig), (unsigned char *)(buf), sizeof(xtcp_ipconfig_t));
      */
+}
+
+/*---------------------------------------------------------------------------
+ hci_process_wlan_scan
+ ---------------------------------------------------------------------------*/
+void hci_process_wlan_scan()
+{
+    volatile int temp_delay = 90000000;
+    while(temp_delay > 0) { temp_delay--; }
+}
+
+/*---------------------------------------------------------------------------
+ hci_process_wlan_get_scan_result
+ ---------------------------------------------------------------------------*/
+int hci_process_wlan_get_scan_result()
+{
+    unsigned char *buf;
+    int num_networks;
+    unsigned char ssid[32];
+
+    buf = tiwisl_rx_buf + HCI_EVENT_HEADER_SIZE + 12;
+    num_networks = stream_to_int(buf, 0);
+
+    if(num_networks > 0)
+    {
+        memcpy((unsigned char *)(&ssid), (unsigned char *)(buf), 32);
+
+        for(int i = 0; i < 32; i++)
+        {
+            if(ssid[i] != 0) { printchar(ssid[i]); }
+        }
+        printstrln("");
+    }
+    return num_networks;
 }
 
 /*---------------------------------------------------------------------------

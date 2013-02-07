@@ -47,6 +47,9 @@
 #define HCI_CMND_READ_BUFFER_SIZE   (0x400B)
 #define HCI_CMND_SIMPLE_LINK_START  (0x4000)
 
+#define HCI_CMND_WLAN_IOCTL_SET_SCANPARAM     0x0003
+#define HCI_CMND_WLAN_IOCTL_GET_SCAN_RESULTS  0x0007
+
 //*****************************************************************************
 // Values that can be used as HCI Events defines
 //*****************************************************************************

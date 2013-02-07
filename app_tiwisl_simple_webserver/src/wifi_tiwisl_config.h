@@ -6,26 +6,22 @@
 /*===========================================================================
  Info
  ----
-
+ 
  ===========================================================================*/
 
-/*---------------------------------------------------------------------------
- include files
- ---------------------------------------------------------------------------*/
+#ifndef _template_h_
+#define _template_h_
 
-#include <xs1.h>
-#include <print.h>
-#include "httpd.h"
-#include "wifi_tiwisl_server.h"
-#include "wifi_tiwisl_config.h"
+/*---------------------------------------------------------------------------
+ nested include files
+ ---------------------------------------------------------------------------*/
 
 /*---------------------------------------------------------------------------
  constants
  ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- ports and clocks
- ---------------------------------------------------------------------------*/
+#define WIFI_SSID           "xms6testap0"
+#define WIFI_PASSWORD       ""
+#define WIFI_SECURITY_TYPE  TIWISL_SEC_TYPE_UNSEC
 
 /*---------------------------------------------------------------------------
  typedefs
@@ -36,43 +32,13 @@
  ---------------------------------------------------------------------------*/
 
 /*---------------------------------------------------------------------------
- static variables
+ extern variables
  ---------------------------------------------------------------------------*/
-// Wireless access point config: SSID, Key, Security Type
-wifi_ap_config_t ap_config = {WIFI_SSID, WIFI_PASSWORD, WIFI_SECURITY_TYPE};
-
+ 
 /*---------------------------------------------------------------------------
- static prototypes
+ prototypes
  ---------------------------------------------------------------------------*/
 
-/*---------------------------------------------------------------------------
- The main webserver thread
- ---------------------------------------------------------------------------*/
-// ::webserver
-void xhttpd(chanend tcp_svr)
-{
-    xtcp_connection_t conn;
 
-    printstrln("**WELCOME TO THE SIMPLE WEBSERVER DEMO**");
-
-    // Start the Wi-Fi module
-    xtcp_wifi_on(tcp_svr);
-
-    // Initiate the HTTP state
-    httpd_init(tcp_svr, ap_config);
-
-    // Loop forever processing TCP events
-    while(1)
-    {
-        select
-        {
-            case xtcp_event(tcp_svr, conn):
-            {
-                httpd_handle_event(tcp_svr, conn);
-                break;
-            } // case xtcp_event(tcp_svr, conn):
-        } // select
-    } // while(1)
-}
-
+#endif // _template_h_
 /*==========================================================================*/

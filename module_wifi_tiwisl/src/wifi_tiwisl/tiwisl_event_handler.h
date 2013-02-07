@@ -59,6 +59,22 @@ void hci_process_wlan_connect(REFERENCE_PARAM(xtcp_ipconfig_t, ipconfig));
 
 /*==========================================================================*/
 /**
+ *  Start/stop a wireless scan
+ *
+ *  \return int
+ **/
+void hci_process_wlan_scan();
+
+/*==========================================================================*/
+/**
+ *  Get scan results
+ *
+ *  \return int
+ **/
+int hci_process_wlan_get_scan_result();
+
+/*==========================================================================*/
+/**
  *  Process socket create event
  *
  *  \return int

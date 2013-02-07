@@ -1,12 +1,12 @@
-#Tue Jan 08 10:32:52 IST 2013
+#Tue Feb 05 16:17:44 IST 2013
 eclipse.preferences.version=1
 environment/project/com.xmos.cdt.toolchain.1308996256/XMOS_MODULE_PATH/delimiter=;
 environment/project/com.xmos.cdt.toolchain.1308996256/XMOS_MODULE_PATH/operation=append
-environment/project/com.xmos.cdt.toolchain.1308996256/XMOS_MODULE_PATH/value=C\:\\vinith\\mine\\wifi\\v9\\sw_gpio_examples\\app_sk_gpio_wifi_tiwisl_combo_demo
+environment/project/com.xmos.cdt.toolchain.1308996256/XMOS_MODULE_PATH/value=
 environment/project/com.xmos.cdt.toolchain.1308996256/append=true
 environment/project/com.xmos.cdt.toolchain.1308996256/appendContributed=true
 environment/project/com.xmos.cdt.toolchain.1321199731/XMOS_MODULE_PATH/delimiter=;
 environment/project/com.xmos.cdt.toolchain.1321199731/XMOS_MODULE_PATH/operation=append
-environment/project/com.xmos.cdt.toolchain.1321199731/XMOS_MODULE_PATH/value=C\:\\vinith\\mine\\wifi\\v9\\sw_gpio_examples\\app_sk_gpio_wifi_tiwisl_combo_demo
+environment/project/com.xmos.cdt.toolchain.1321199731/XMOS_MODULE_PATH/value=
 environment/project/com.xmos.cdt.toolchain.1321199731/append=true
 environment/project/com.xmos.cdt.toolchain.1321199731/appendContributed=true
