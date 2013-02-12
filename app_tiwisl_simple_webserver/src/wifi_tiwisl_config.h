@@ -9,8 +9,8 @@
  
  ===========================================================================*/
 
-#ifndef _template_h_
-#define _template_h_
+#ifndef _wifi_tiwisl_config_h_
+#define _wifi_tiwisl_config_h_
 
 /*---------------------------------------------------------------------------
  nested include files
@@ -19,8 +19,17 @@
 /*---------------------------------------------------------------------------
  constants
  ---------------------------------------------------------------------------*/
+/* SSID as advertized by your wireless router */
 #define WIFI_SSID           "xms6testap0"
+/* Password (if any) to connect to your wireless router */
 #define WIFI_PASSWORD       ""
+/*
+ * Security type of your wireless router
+ * If its unsecured (no password or open): TIWISL_SEC_TYPE_UNSEC
+ * If its WEP: TIWISL_SEC_TYPE_WEP
+ * If its WPA: TIWISL_SEC_TYPE_WPA
+ * If its WPA2: TIWISL_SEC_TYPE_WPA2
+ */
 #define WIFI_SECURITY_TYPE  TIWISL_SEC_TYPE_UNSEC
 
 /*---------------------------------------------------------------------------
@@ -40,5 +49,5 @@
  ---------------------------------------------------------------------------*/
 
 
-#endif // _template_h_
+#endif // _wifi_tiwisl_config_h_
 /*==========================================================================*/
