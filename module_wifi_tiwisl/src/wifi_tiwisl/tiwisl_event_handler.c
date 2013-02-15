@@ -157,26 +157,6 @@ int hci_process_skt_create()
 }
 
 /*---------------------------------------------------------------------------
- hci_process_skt_bind
- ---------------------------------------------------------------------------*/
-int hci_process_skt_bind()
-{
-    unsigned char *buf;
-    buf = tiwisl_rx_buf + HCI_EVENT_HEADER_SIZE;
-    return ( stream_to_int((char *)(buf), 0) );
-}
-
-/*---------------------------------------------------------------------------
- hci_process_skt_listen
- ---------------------------------------------------------------------------*/
-int hci_process_skt_listen()
-{
-    unsigned char *buf;
-    buf = tiwisl_rx_buf + HCI_EVENT_HEADER_SIZE;
-    return ( stream_to_int((char *)(buf), 0) );
-}
-
-/*---------------------------------------------------------------------------
  hci_process_skt_accept
  ---------------------------------------------------------------------------*/
 int hci_process_skt_accept()

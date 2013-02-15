@@ -6,7 +6,7 @@ TiWi-SL Simple Web Server Demo Quickstart Guide
 sc_wifi demo : Quick Start Guide
 --------------------------------
 
-This simple demonstration the ``Wi-Fi`` Slice Card together with the xSOFTip 
+This simple demonstration the XA-SK-WIFI Slice Card together with the xSOFTip 
 ``module_wifi_tiwisl`` to demonstrate how the module is used to:
 
    * connect to a wireless access point, 
@@ -25,7 +25,7 @@ Access point setup:
    
 System setup:
 
-   #. Connect ``Wi-Fi`` slice card to the ``TRIANGLE`` slot of the XP-SKC-L2 Slicekit core board.
+   #. Connect XA-SK-WIFI slice card to the ``TRIANGLE`` slot of the XP-SKC-L2 Slicekit core board.
    #. Connect the XTAG Adapter to Slicekit Core board, and connect XTAG-2 to the Adapter. 
    #. Connect the XTAG-2 to host PC. Note that the USB cable is not provided with the Slicekit starter kit.
    #. Set the ``XMOS LINK`` to ``ON`` on the XTAG Adapter.
@@ -112,7 +112,7 @@ the XTAG2 and XTAG Adapter card) into the xCORE multicore microcontroller.
         http://192.168.1.100
         
       using the IP adress printed out by the application. This should
-      display a "Hello World!" webpage. You have now got the Wi-Fi slice up and 
+      display a "Hello World!" webpage. You have now got the XA-SK-WIFI slice up and 
       running.
 
 .. figure:: images/hello_world.png
@@ -128,11 +128,11 @@ Next Steps
 Try the GPIO Wi-Fi combo Demo
 .............................
 
-This example demonstrates the use of two Slice Cards, XA-SK-GPIO and Wi-Fi slice together with the xSOFTip components for Wi-Fi, SPI, I2C and WebServer to provide access to the GPIO slice features via a simple embedded webserver.
+This example demonstrates the use of two Slice Cards, XA-SK-GPIO and XA-SK-WIFI slice together with the xSOFTip components for Wi-Fi, SPI, I2C and WebServer to provide access to the GPIO slice features via a simple embedded webserver.
 
 A webpage served from the sliceKIT and accessed in a browser on a host PC has the following demo functions:
    * Turn GPIO Slice Card LEDs on and off
    * Read the room temperature via the on-board ADC and display on the web page
    * Display GPIO Slice Card button press status
 
-Once you have both the XA-SK-GPIO and Wi-Fi slices you can try the GPIO Wi-Fi combo demo by :ref:`_Slicekit_GPIO_Wifi_Tiwisl_Demo_Quickstart` 
+Once you have both the XA-SK-GPIO and XA-SK-WIFI slices you can try the GPIO Wi-Fi combo demo by :ref:`_Slicekit_GPIO_Wifi_Tiwisl_Demo_Quickstart` 

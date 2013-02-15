@@ -13,13 +13,16 @@
  include files
  ---------------------------------------------------------------------------*/
 #include "wifi_tiwisl_spi.h"
-
+#include <print.h>
 /*---------------------------------------------------------------------------
  constants
  ---------------------------------------------------------------------------*/
 #define DELAY_FIRST_WRITE   6000 // 50us delay for first write
 #define DELAY_BOOT_TIME     100000000 // 1000ms for boot time
 #define READ            3
+
+#define DEASSERT_NCS    0x03 // while power enable (bit1) is high
+#define ASSERT_NCS      0x02 // while power enable (bit1) is high
 
 /*---------------------------------------------------------------------------
  ports and clocks
@@ -53,14 +56,14 @@ void wifi_tiwisl_spi_init(spi_master_interface &spi_if,
     unsigned time;
 
     // Deassert nCS
-    spi_tiwisl_ctrl.p_spi_cs <: 1;
+    spi_tiwisl_ctrl.p_cs_pwr <: 0x01;
 
     // Delay 1000ms - Vcc to Pwr_en time
     t :> time;
     t when timerafter(time + DELAY_BOOT_TIME) :> void;
 
     // Enable Wi-Fi power
-    spi_tiwisl_ctrl.p_pwr_en <: 1;
+    spi_tiwisl_ctrl.p_cs_pwr <: 0x03;
 
     // Read the interrupt pin
     spi_tiwisl_ctrl.p_spi_irq :> irq_val;
@@ -89,7 +92,7 @@ void wifi_tiwisl_spi_shutdown(spi_master_interface &spi_if,
                               wifi_tiwisl_ctrl_ports_t &spi_tiwisl_ctrl)
 {
     // Disable Wi-Fi power
-    spi_tiwisl_ctrl.p_pwr_en <: 0;
+    spi_tiwisl_ctrl.p_cs_pwr <: 0;
 
     // Init SPI
     spi_master_shutdown(spi_if);
@@ -108,7 +111,7 @@ void wifi_tiwisl_spi_read(spi_master_interface &spi_if,
     spi_tiwisl_ctrl.p_spi_irq when pinseq(0) :> void;
 
     // Assert CS
-    spi_tiwisl_ctrl.p_spi_cs <: 0;
+    spi_tiwisl_ctrl.p_cs_pwr <: ASSERT_NCS;
 
     if(!bypass_cmd)
     {
@@ -126,7 +129,7 @@ void wifi_tiwisl_spi_read(spi_master_interface &spi_if,
 void wifi_tiwisl_spi_deassert_cs(wifi_tiwisl_ctrl_ports_t &spi_tiwisl_ctrl)
 {
     // Deassert nCS
-    spi_tiwisl_ctrl.p_spi_cs <: 1;
+    spi_tiwisl_ctrl.p_cs_pwr <: DEASSERT_NCS;
 
     // wait for IRQ to be high
     spi_tiwisl_ctrl.p_spi_irq when pinseq(1) :> void;
@@ -147,7 +150,7 @@ void wifi_tiwisl_spi_first_write(spi_master_interface &spi_if,
     spi_tiwisl_ctrl.p_spi_irq when pinseq(0) :> void;
 
     // Assert nCS
-    spi_tiwisl_ctrl.p_spi_cs <: 0;
+    spi_tiwisl_ctrl.p_cs_pwr <: ASSERT_NCS;
 
     // Delay 50us
     t :> time;
@@ -169,7 +172,7 @@ void wifi_tiwisl_spi_first_write(spi_master_interface &spi_if,
     }
 
     // Deassert nCS
-    spi_tiwisl_ctrl.p_spi_cs <: 1;
+    spi_tiwisl_ctrl.p_cs_pwr <: DEASSERT_NCS;
 
     // wait for IRQ to be HI
     spi_tiwisl_ctrl.p_spi_irq when pinseq(1) :> void;
@@ -184,7 +187,7 @@ void wifi_tiwisl_spi_write(spi_master_interface &spi_if,
                            unsigned short num_bytes)
 {
     // Assert nCS
-    spi_tiwisl_ctrl.p_spi_cs <: 0;
+    spi_tiwisl_ctrl.p_cs_pwr <: ASSERT_NCS;
 
     // wait for IRQ to be low
     spi_tiwisl_ctrl.p_spi_irq when pinseq(0) :> void;
@@ -193,7 +196,7 @@ void wifi_tiwisl_spi_write(spi_master_interface &spi_if,
     spi_master_out_buffer(spi_if, buffer, num_bytes);
 
     // Deassert nCS
-    spi_tiwisl_ctrl.p_spi_cs <: 1;
+    spi_tiwisl_ctrl.p_cs_pwr <: DEASSERT_NCS;
 
     // wait for IRQ to be high
     spi_tiwisl_ctrl.p_spi_irq when pinseq(1) :> void;

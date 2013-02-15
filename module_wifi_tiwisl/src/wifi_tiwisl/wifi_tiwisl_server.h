@@ -31,9 +31,8 @@
  ---------------------------------------------------------------------------*/
 typedef struct wifi_tiwisl_ctrl_ports_t_
 {
-    out port p_spi_cs;
+    out port p_cs_pwr;
     in port p_spi_irq;
-    out port p_pwr_en;
 } wifi_tiwisl_ctrl_ports_t;
 
 /*---------------------------------------------------------------------------

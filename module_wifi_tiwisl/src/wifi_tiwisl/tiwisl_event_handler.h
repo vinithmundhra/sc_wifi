@@ -83,22 +83,6 @@ int hci_process_skt_create();
 
 /*==========================================================================*/
 /**
- *  Process socket bind event
- *
- *  \return int
- **/
-int hci_process_skt_bind();
-
-/*==========================================================================*/
-/**
- *  Process socket listen event
- *
- *  \return int
- **/
-int hci_process_skt_listen();
-
-/*==========================================================================*/
-/**
  *  Process socket accept event
  *
  *  \return int

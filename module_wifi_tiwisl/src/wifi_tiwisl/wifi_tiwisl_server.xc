@@ -190,12 +190,10 @@ static void create_socket(spi_master_interface &tiwisl_spi,
     // socket bind
     len = hci_pkg_skt_bind(opcode);
     write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
-    rtn_val = hci_process_skt_bind();
 
     // socket listen
     len = hci_pkg_skt_listen(opcode);
     write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
-    rtn_val = hci_process_skt_listen();
 }
 
 /*---------------------------------------------------------------------------

@@ -46,16 +46,15 @@ For example, these ports are setup in the demo appilcation as:
     {
       XS1_CLKBLK_1,
       XS1_CLKBLK_2,
-      XS1_PORT_1L, // MOSI
-      XS1_PORT_1M, // CLK
-      XS1_PORT_1O, // MISO
+      XS1_PORT_1K, // MOSI
+      XS1_PORT_1J, // CLK
+      XS1_PORT_1I, // MISO
     };
 
     on stdcore[0]: wifi_tiwisl_ctrl_ports_t tiwisl_ctrl =
     {
-      XS1_PORT_1P, // nCS
-      XS1_PORT_1N, // nIRQ
-      XS1_PORT_1K  // Wifi power enable
+      XS1_PORT_4E, // nCS - Bit0, Power enable - Bit1
+      XS1_PORT_1L, // nIRQ
     };
 
 Setup the Wireless Access Point

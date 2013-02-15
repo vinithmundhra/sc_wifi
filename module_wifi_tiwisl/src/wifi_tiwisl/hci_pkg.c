@@ -298,12 +298,12 @@ int hci_pkg_wlan_scan(int *opcode, int enable)
     buf = tiwisl_tx_buf;
     args = (unsigned char *)(buf + HEADERS_SIZE_CMD);
     args = int_to_stream(args, 36);
-    args = int_to_stream(args, enable);
+    args = int_to_stream(args, (100 * enable));
     args = int_to_stream(args, 100);
     args = int_to_stream(args, 100);
     args = int_to_stream(args, 5);
     args = int_to_stream(args, 0x7FF);
-    args = int_to_stream(args, (-80));
+    args = int_to_stream(args, (-100));
     args = int_to_stream(args, 0);
     args = int_to_stream(args, 205);
     for(int i = 0; i < 16; i++)
@@ -328,7 +328,7 @@ int hci_pkg_wlan_get_scan_result(int *opcode)
 
     buf = tiwisl_tx_buf;
     args = (unsigned char *)(buf + HEADERS_SIZE_CMD);
-    args = int_to_stream(args, 0);
+    args = int_to_stream(args, 100);
 
     len = hci_pkg_cmd(HCI_CMND_WLAN_IOCTL_GET_SCAN_RESULTS,
                       buf,
