@@ -1,5 +1,5 @@
-Wi-Fi TiWi-SL module interface 
-==============================
+WiFi TiWi-SL Module Driver
+==========================
 
 :scope: General Use
 :description: Interface component to provide Wi-Fi connectivity using LS Research's TiWi-SL module

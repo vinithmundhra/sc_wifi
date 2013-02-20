@@ -1,4 +1,13 @@
--- -*- mode: lua -*-
+-------------------------------------------------------------------------------
+-- Descriptive metadata
+-------------------------------------------------------------------------------
+
+componentName = "WiFi TiWi-SL Module Driver"
+componentFullName = ""
+alternativeNames = { }
+componentDescription = "A module for controlling the TI TiWi-Sl WIFI module from LS Research via an SPI master"
+componentVersion = "1v0"
+
 
 configPoints = {
 }
@@ -81,15 +90,15 @@ generatedCode = {
                 "", // Key
                 TIWISL_SEC_TYPE_UNSEC // Security Type
             };
-      ]],
+    ]],
     body  =
-      [[
-          {
+    [[
+          
             wifi_tiwisl_server(${swblock.chanends.c_xtcp},
                                tiwisl_spi, 
                                tiwisl_ctrl);
-          }
-      ]]
+          
+    ]]
 }
 
-files = {}
+
