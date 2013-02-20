@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <xpd>
     <components>
-        <component description = "Demonstrates how the module is used to connect to a wireless access point." type = "demoCode" scope = "Example" path = "app_tiwisl_simple_webserver" local = "false" id = "app_tiwisl_simple_webserver" name = "TiWi-SL Simple Web Server">
+        <component description = "Demonstrates how the TiWi SL Wifi component is used to connect to a wireless access point." type = "demoCode" scope = "Example" path = "app_tiwisl_simple_webserver" local = "false" id = "app_tiwisl_simple_webserver" name = "TiWi-SL Simple Web Server">
             <board>XA-SK-WIFI</board>
             <componentDependency>module_wifi_tiwisl</componentDependency>
             <componentDependency>module_spi_master</componentDependency>
@@ -24,6 +24,7 @@
     <name>sc_wifi</name>
     <maintainer>vinithmundhra</maintainer>
     <partnumber>XM-002499-DH</partnumber>
+    <release parenthash = "ad3255c1fdda729d3307e986b68cc499da66aa3f" version = "1.0.0beta0"></release>
     <subpartnumber>XM-002500-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <xcore_repo>sc_wifi.git</xcore_repo>

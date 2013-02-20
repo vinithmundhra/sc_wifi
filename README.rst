@@ -1,9 +1,9 @@
 Wi-Fi
 .....
 
-:Status: idea
+:Latest release: 1.0.0beta0
 :Maintainer: vinithmundhra
-:Description: Wi-Fi interface.
+:Description: Component for driving the TI TiWi SL Wifi module. The TiWi Sl module has an integrated TCP/IP stack and interfaces to this component via an SPI interface.
 
 
 Key Features
@@ -26,13 +26,13 @@ The TiWi-SL component is an SPI master to the external TiWi-SL Wi-Fi module.
 Known Issues
 ============
 
-
-Required Repositories
-=====================
-
-Please see individual component description for dependencies.
-
 Support
 =======
 
 * Raise issues via GitHub or a RT Ticket.
+
+Required software (dependencies)
+================================
+
+  * sc_spi (https://github.com/xcore/sc_spi.git)
+
