@@ -4,7 +4,7 @@ Wi-Fi TiWi-SL module interface
 :scope: General Use
 :description: Interface component to provide Wi-Fi connectivity using LS Research's TiWi-SL module
 :keywords: wifi
-:boards:
+:boards: XA-SK-WIFI
 
 Features
 --------
