@@ -38,7 +38,7 @@ ports = {
     short   = "Chip Select",
     long    = "Chip Select for LSR's TiWi-SL module",
     help    = "",
-    width   = 1,
+    width   = 4,
   },
   p_spi_irq = {
     short   = "Interrupt",
@@ -67,9 +67,9 @@ function getConfigStatus()
 end
 
 generatedCode = {
-   includes = {"wifi_tiwisl_server.h"},
+   includes = {"wifi_tiwisl_server.h", "xtcp_client.h"},
    globals  = [[
-            spi_master_interface tiwisl_spi = { 
+            spi_master_interface tiwisl_${swblock.id}_spi = { 
               ${swblock.clocks[0]},  
               ${swblock.clocks[1]},  
               ${swblock.ports.p_spi_master_mosi}, 
@@ -77,15 +77,12 @@ generatedCode = {
               ${swblock.ports.p_spi_master_miso}
             };
 
-            wifi_tiwisl_ctrl_ports_t tiwisl_ctrl = { 
-              ${swblock.clocks[0]},  
-              ${swblock.clocks[1]},  
+            wifi_tiwisl_ctrl_ports_t tiwisl_${swblock.id}_ctrl = { 
               ${swblock.ports.p_spi_cs}, 
               ${swblock.ports.p_spi_irq}, 
-              ${swblock.ports.p_pwr_en}
             };
             
-            wifi_ap_config_t ap_config = {
+            wifi_ap_config_t ap_${swblock.id}_config = {
                 "xms6testap0", // SSID
                 "", // Key
                 TIWISL_SEC_TYPE_UNSEC // Security Type
@@ -95,8 +92,8 @@ generatedCode = {
     [[
           
             wifi_tiwisl_server(${swblock.chanends.c_xtcp},
-                               tiwisl_spi, 
-                               tiwisl_ctrl);
+                               tiwisl_${swblock.id}_spi, 
+                               tiwisl_${swblock.id}_ctrl);
           
     ]]
 }
