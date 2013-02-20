@@ -2,7 +2,7 @@ TiWi-SL Simple Web Server
 =========================
 
 :scope: Example
-:description: Demonstrates how the module is used to connect to a wireless access point.
+:description: Demonstrates how the TiWi SL Wifi component is used to connect to a wireless access point.
 :keywords: Wi-Fi, TiWi-SL
 :boards: XA-SK-WIFI
 
