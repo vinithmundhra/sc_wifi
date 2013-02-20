@@ -21,7 +21,7 @@
 #include "hci_pkg.h"
 #include "notify.h"
 #include <print.h>
-#include <xscope.h>
+//#include <xscope.h>
 
 /*---------------------------------------------------------------------------
  constants
@@ -234,8 +234,8 @@ void wifi_tiwisl_server(chanend c_xtcp,
     t :> time;
     time += TIWISL_POLL;
 
-    xscope_register(0, 0, "", 0, "");
-    xscope_config_io(XSCOPE_IO_BASIC);
+    //xscope_register(0, 0, "", 0, "");
+    //xscope_config_io(XSCOPE_IO_BASIC);
 
     skt_rtn.sock_addr.ifamily = AF_INET;
     skt_rtn.sock_addr.iport = 0;
