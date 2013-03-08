@@ -28,7 +28,8 @@
     <maintainer>vinithmundhra</maintainer>
     <partnumber>XM-002499-DH</partnumber>
     <release parenthash = "ad3255c1fdda729d3307e986b68cc499da66aa3f" version = "1.0.0beta0" githash = "0bd8fb26d2f058989775e7be017f61c2942691e5"></release>
-    <release parenthash = "ee6e511fd564359540484709024d04508de6d4aa" version = "1.0.0beta1"></release>
+    <release parenthash = "ee6e511fd564359540484709024d04508de6d4aa" version = "1.0.0beta1" githash = "4c8ffa471aee2ffe7c7d0f036e715b6a4d642da9"></release>
+    <release parenthash = "c2a022e13e479945d643e6d5de683742657560b1" version = "1.0.0beta2"></release>
     <subpartnumber>XM-002500-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <xcore_repo>sc_wifi.git</xcore_repo>
