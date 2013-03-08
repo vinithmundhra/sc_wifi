@@ -32,7 +32,7 @@ System setup:
    #. Ensure the wireless access point is switched on and configured.
    #. Switch on the power supply to the Slicekit Core board.
 
-.. figure:: images/hardware_setup.png
+.. figure:: images/hardware_setup.jpg
    :width: 400px
    :align: center
 
