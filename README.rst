@@ -1,7 +1,7 @@
 Wi-Fi
 .....
 
-:Latest release: 1.0.0beta0
+:Latest release: 1.0.0beta1
 :Maintainer: vinithmundhra
 :Description: Component for driving the TI TiWi SL Wifi module. The TiWi Sl module has an integrated TCP/IP stack and interfaces to this component via an SPI interface.
 
