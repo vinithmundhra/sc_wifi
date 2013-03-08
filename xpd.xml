@@ -30,7 +30,8 @@
     <release parenthash = "ad3255c1fdda729d3307e986b68cc499da66aa3f" version = "1.0.0beta0" githash = "0bd8fb26d2f058989775e7be017f61c2942691e5"></release>
     <release parenthash = "ee6e511fd564359540484709024d04508de6d4aa" version = "1.0.0beta1" githash = "4c8ffa471aee2ffe7c7d0f036e715b6a4d642da9"></release>
     <release parenthash = "c2a022e13e479945d643e6d5de683742657560b1" version = "1.0.0beta2" githash = "5dabc1a2280071aac934a661df3e09a4a479e0dc"></release>
-    <release parenthash = "6395364beadfbe19a7ed56f607afe40469143529" version = "1.0.0beta3"></release>
+    <release parenthash = "6395364beadfbe19a7ed56f607afe40469143529" version = "1.0.0beta3" githash = "529ddbc3fb68308e6affd31e54333d8286069ef7"></release>
+    <release parenthash = "529ddbc3fb68308e6affd31e54333d8286069ef7" version = "1.0.0rc0"></release>
     <subpartnumber>XM-002500-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <xcore_repo>sc_wifi.git</xcore_repo>
