@@ -2,7 +2,7 @@ WiFi TiWi-SL Module Driver
 ==========================
 
 :scope: General Use
-:description: Interface component to provide Wi-Fi connectivity using LS Research's TiWi-SL module
+:description: Interface component to provide wireless ethernet Wi-Fi connectivity using LS Research's TiWi-SL module
 :keywords: wifi
 :boards: XA-SK-WIFI
 
