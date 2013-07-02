@@ -17,7 +17,7 @@ Source code structure
     - Header file containing the 'XTCP' style APIs for the Wi-Fi component
   * -
     - ``xtcp_client.xc``
-    - File containing the implementation 'XTCP' style APIs of the LCD component
+    - File containing the implementation 'XTCP' style APIs of the Wi-Fi component
   * -
     - ``/wifi_tiwisl/wifi_tiwisl_server.h``
     - Header file containing the TiWi-SL server
