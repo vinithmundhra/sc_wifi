@@ -1,10 +1,5 @@
-// Copyright (c) 2011, XMOS Ltd, All rights reserved
-// This software is freely distributable under a derivative of the
-// University of Illinois/NCSA Open Source License posted in
-// LICENSE.txt and at <http://github.xcore.com/>
-
-#ifndef   _xtcp_client_h_
-#define   _xtcp_client_h_
+#ifndef _XTCP_CLIENT_H_
+#define _XTCP_CLIENT_H_
 
 #include <xccompat.h>
 
@@ -171,27 +166,13 @@ typedef struct xtcp_connection_t {
  **/
 typedef struct wifi_ap_config_t_
 {
-    unsigned char ssid[32]; /**< SSID of the access point. Max 32 bytes long. */
-    unsigned char key[32]; /**< Security key to connect to AP. null for no security. */
-    int security_type; /**< Security type: TIWISL_SEC_TYPE_UNSEC or
-                                           TIWISL_SEC_TYPE_WEP or
-                                           TIWISL_SEC_TYPE_WPA or
-                                           TIWISL_SEC_TYPE_WPA2. */
+  unsigned char ssid[32]; /**< SSID of the access point. Max 32 bytes long. */
+  unsigned char key[32]; /**< Security key to connect to AP. null for no security. */
+  int security_type; /**< Security type: TIWISL_SEC_TYPE_UNSEC or
+                                         TIWISL_SEC_TYPE_WEP or
+                                         TIWISL_SEC_TYPE_WPA or
+                                         TIWISL_SEC_TYPE_WPA2. */
 } wifi_ap_config_t;
-
-#define XTCP_IPADDR_CPY(dest, src) do { dest[0] = src[0]; \
-                                        dest[1] = src[1]; \
-                                        dest[2] = src[2]; \
-                                        dest[3] = src[3]; \
-                                      } while (0)
-
-
-#define XTCP_IPADDR_CMP(a, b) (a[0] == b[0] && \
-                               a[1] == b[1] && \
-                               a[2] == b[2] && \
-                               a[3] == b[3])
-
-
 
 /** \brief Listen to a particular incoming port.
  *
@@ -351,5 +332,5 @@ void xtcp_get_ipconfig(chanend c_xtcp,
                        REFERENCE_PARAM(xtcp_ipconfig_t, ipconfig));
 
 
-#endif // _xtcp_client_h_
+#endif // _XTCP_CLIENT_H_
 

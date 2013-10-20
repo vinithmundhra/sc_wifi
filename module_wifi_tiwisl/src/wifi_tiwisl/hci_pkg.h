@@ -1,46 +1,13 @@
-// Copyright (c) 2011, XMOS Ltd., All rights reserved
-// This software is freely distributable under a derivative of the
-// University of Illinois/NCSA Open Source License posted in
-// LICENSE.txt and at <http://github.xcore.com/>
+#ifndef _HCI_PKG_H_
+#define _HCI_PKG_H_
 
-/*===========================================================================
- Info
- ----
- 
- ===========================================================================*/
-
-#ifndef _hci_pkg_h_
-#define _hci_pkg_h_
-
-/*---------------------------------------------------------------------------
- nested include files
- ---------------------------------------------------------------------------*/
 #include <xccompat.h>
 #include "xtcp_client.h"
 
-/*---------------------------------------------------------------------------
- constants
- ---------------------------------------------------------------------------*/
 #define SPI_HEADER_SIZE                                 (5)
 #define HEADERS_SIZE_DATA                               (SPI_HEADER_SIZE + 5)
 #define HCI_CMND_SEND_ARG_LENGTH                        (16)
 #define HCI_SEND_DATA_OFFSET                            (HEADERS_SIZE_DATA + HCI_CMND_SEND_ARG_LENGTH)
-
-/*---------------------------------------------------------------------------
- typedefs
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- global variables
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- extern variables
- ---------------------------------------------------------------------------*/
- 
-/*---------------------------------------------------------------------------
- prototypes
- ---------------------------------------------------------------------------*/
 
 /*==========================================================================*/
 /**
@@ -180,5 +147,14 @@ int hci_pkg_skt_send(int dlen, REFERENCE_PARAM(int, opcode));
  **/
 int hci_pkg_skt_close(int sd, REFERENCE_PARAM(int, opcode));
 
-#endif // _hci_pkg_h_
 /*==========================================================================*/
+/**
+ *  hci_pkg_skt_setopt_recv_nblock
+ *
+ *  \param opcode  opcode to check in the response
+ *  \param sd      socket descriptor
+ *  \return int    length
+ **/
+int hci_pkg_skt_setopt_recv_nblock(REFERENCE_PARAM(int, opcode), int sd);
+
+#endif // _HCI_PKG_H_

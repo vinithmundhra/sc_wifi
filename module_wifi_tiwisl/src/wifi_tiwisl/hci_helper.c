@@ -1,42 +1,4 @@
-// Copyright (c) 2011, XMOS Ltd., All rights reserved
-// This software is freely distributable under a derivative of the
-// University of Illinois/NCSA Open Source License posted in
-// LICENSE.txt and at <http://github.xcore.com/>
-
-/*===========================================================================
- Info
- ----
-
- ===========================================================================*/
-
-/*---------------------------------------------------------------------------
- include files
- ---------------------------------------------------------------------------*/
 #include "hci_helper.h"
-
-/*---------------------------------------------------------------------------
- constants
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- ports and clocks
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- typedefs
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- global variables
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- static variables
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- static prototypes
- ---------------------------------------------------------------------------*/
 
 /*---------------------------------------------------------------------------
  This function is used for copying 16 bit to stream while converting to 
@@ -100,8 +62,9 @@ unsigned char stream_to_char(char* p, unsigned int offset)
  ---------------------------------------------------------------------------*/
 unsigned short stream_to_short(char* p, unsigned int offset)
 {
-    return (unsigned short)((unsigned short)((unsigned short)
-           (*(p + offset + 1)) << 8) + (unsigned short)(*(p + offset)));
+  return (unsigned short) ((unsigned short)
+      ((unsigned short) (*(p + offset + 1)) << 8) +
+      (unsigned short) (*(p + offset)));
 }
 
 /*---------------------------------------------------------------------------
@@ -110,10 +73,9 @@ unsigned short stream_to_short(char* p, unsigned int offset)
  ---------------------------------------------------------------------------*/
 unsigned int stream_to_int(char* p, unsigned int offset)
 {
-    return (unsigned int)((unsigned int)((unsigned int)
-           (*(p + offset + 3)) << 24) + (unsigned int)((unsigned int)
-           (*(p + offset + 2)) << 16) + (unsigned int)((unsigned int)
-           (*(p + offset + 1)) << 8) + (unsigned int)(*(p + offset)));
+  return (unsigned int) ((unsigned int)
+      ((unsigned int) (*(p + offset + 3)) << 24) +
+      (unsigned int) ((unsigned int) (*(p + offset + 2)) << 16) +
+      (unsigned int) ((unsigned int) (*(p + offset + 1)) << 8) +
+      (unsigned int) (*(p + offset)));
 }
-
-/*==========================================================================*/

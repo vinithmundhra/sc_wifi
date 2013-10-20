@@ -39,10 +39,10 @@ module via the following pins:
   * CLK  - SPI clock (default 12.5MHz)
   * PWR_EN - Power enable to TiWi-SL
 
-For example, these ports are setup in the demo appilcation as:
+For example, these ports are setup in the demo application as:
 ::
 
-    on stdcore[0]: spi_master_interface tiwisl_spi =
+    on tile[0]: spi_master_interface tiwisl_spi =
     {
       XS1_CLKBLK_1,
       XS1_CLKBLK_2,
@@ -51,7 +51,7 @@ For example, these ports are setup in the demo appilcation as:
       XS1_PORT_1I, // MISO
     };
 
-    on stdcore[0]: wifi_tiwisl_ctrl_ports_t tiwisl_ctrl =
+    on tile[0]: wifi_tiwisl_ctrl_ports_t tiwisl_ctrl =
     {
       XS1_PORT_4E, // nCS - Bit0, Power enable - Bit1
       XS1_PORT_1L, // nIRQ
@@ -76,7 +76,7 @@ Initializing the Wi-Fi TiWi-SL module
 
 The application needs to initialize the TiWi-SL module using two APIs as:
 
-    #. ``xtcp_wifi_on``: This is the intial power-up sequence of TiWi-SL
+    #. ``xtcp_wifi_on``: This is the initial power-up sequence of TiWi-SL
        module. This may take up to 1 second to complete.
     #. ``xtcp_connect``: This API will take the wireless access point
        configuration as a parameter.

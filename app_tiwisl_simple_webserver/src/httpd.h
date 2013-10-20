@@ -1,45 +1,12 @@
-// Copyright (c) 2011, XMOS Ltd., All rights reserved
-// This software is freely distributable under a derivative of the
-// University of Illinois/NCSA Open Source License posted in
-// LICENSE.txt and at <http://github.xcore.com/>
+#ifndef _HTTPD_H_
+#define _HTTPD_H_
 
-/*===========================================================================
- Info
- ----
-
- ===========================================================================*/
-
-#ifndef _httpd_h_
-#define _httpd_h_
-
-/*---------------------------------------------------------------------------
- nested include files
- ---------------------------------------------------------------------------*/
 #include "xtcp_client.h"
-
-/*---------------------------------------------------------------------------
- constants
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- typedefs
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- global variables
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- extern variables
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- prototypes
- ---------------------------------------------------------------------------*/
 
 /*==========================================================================*/
 /**
- *  httpd_init
+ *  Connect to an access point defined in ``wifi_tiwisl_conf.h`` as WIFI_SSID
+ *  with password as WIFI_PASSWORD and start listening on port 80.
  *
  *  \param tcp_svr    channel
  *  \param ap_config  wireless access point ssid/key/security type
@@ -50,13 +17,13 @@ void httpd_init(chanend tcp_svr,
 
 /*==========================================================================*/
 /**
- *  httpd_handle_event
+ *  Handle events from the Wi-Fi component
  *
- *  \param tcp_svr    channel
- *  \param conn       connection
+ *  \param tcp_svr    channel to Wi-Fi TiWi-SL component
+ *  \param conn       associated connection
  *  \return None
  **/
-void httpd_handle_event(chanend tcp_svr, REFERENCE_PARAM(xtcp_connection_t, conn));
+void httpd_handle_event(chanend tcp_svr,
+                        REFERENCE_PARAM(xtcp_connection_t, conn));
 
-#endif // _httpd_h_
-/*==========================================================================*/
+#endif // _HTTPD_H_

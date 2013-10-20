@@ -52,6 +52,6 @@ Resource requirements
 Performance
 +++++++++++
 
-The achievable effective bandwidth varies according to the available XCore MIPS.
+The achievable effective bandwidth varies according to the available xCORE MIPS.
 The SPI interface is clocked at 12.5MHz.
 

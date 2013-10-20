@@ -1,40 +1,5 @@
-// Copyright (c) 2011, XMOS Ltd., All rights reserved
-// This software is freely distributable under a derivative of the
-// University of Illinois/NCSA Open Source License posted in
-// LICENSE.txt and at <http://github.xcore.com/>
-
-/*===========================================================================
- Info
- ----
- 
- ===========================================================================*/
-
-#ifndef _hci_helper_h_
-#define _hci_helper_h_
-
-/*---------------------------------------------------------------------------
- nested include files
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- constants
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- typedefs
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- global variables
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- extern variables
- ---------------------------------------------------------------------------*/
- 
-/*---------------------------------------------------------------------------
- prototypes
- ---------------------------------------------------------------------------*/
+#ifndef _HCI_HELPER_H_
+#define _HCI_HELPER_H_
 
 /*==========================================================================*/
 /**
@@ -82,7 +47,7 @@ unsigned char* array_to_stream(unsigned char *p, unsigned char *a, int l);
  *  Extract char from stream
  *
  *  \param *p      pointer to array location
- *  \param offset  offset - TODO: is this required?
+ *  \param offset  offset
  *  \return char
  **/
 unsigned char stream_to_char(char* p, unsigned int offset);
@@ -92,7 +57,7 @@ unsigned char stream_to_char(char* p, unsigned int offset);
  *  Extract short from stream
  *
  *  \param *p      pointer to array location
- *  \param offset  offset - TODO: is this required?
+ *  \param offset  offset
  *  \return short
  **/
 unsigned short stream_to_short(char* p, unsigned int offset);
@@ -102,10 +67,9 @@ unsigned short stream_to_short(char* p, unsigned int offset);
  *  Extract int from stream
  *
  *  \param *p      pointer to array location
- *  \param offset  offset - TODO: is this required?
+ *  \param offset  offset
  *  \return int
  **/
 unsigned int stream_to_int(char* p, unsigned int offset);
 
-#endif // _hci_helper_h_
-/*==========================================================================*/
+#endif // _HCI_HELPER_H_

@@ -5,7 +5,7 @@
 componentName = "WiFi TiWi-SL Module Driver"
 componentFullName = ""
 alternativeNames = { }
-componentDescription = "A module for controlling the TI TiWi-Sl WIFI module from LS Research via an SPI master"
+componentDescription = "A module for controlling the LS Research's TiWi-SL Wi-Fi module via an SPI master"
 componentVersion = "1v0"
 
 
@@ -55,9 +55,9 @@ ports = {
 }
 
 channels = {
-   c_xtcp = {
-      short = "xtcp client channel array",
-      long = "Channels for connection to tcp server",
+   c_wifi = {
+      short = "Wi-Fi client channel",
+      long = "Channels for connection to Wi-Fi server",
       help = "",
    }
 }
@@ -83,15 +83,15 @@ generatedCode = {
             };
             
             wifi_ap_config_t ap_${swblock.id}_config = {
-                "xms6testap0", // SSID
-                "", // Key
+                "testap", // SSID
+                "testpwd", // Key
                 TIWISL_SEC_TYPE_UNSEC // Security Type
             };
     ]],
     body  =
     [[
           
-            wifi_tiwisl_server(${swblock.chanends.c_xtcp},
+            wifi_tiwisl_server(${swblock.chanends.c_wifi},
                                tiwisl_${swblock.id}_spi, 
                                tiwisl_${swblock.id}_ctrl);
           

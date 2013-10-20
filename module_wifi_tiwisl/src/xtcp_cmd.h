@@ -1,12 +1,5 @@
-// Copyright (c) 2011, XMOS Ltd, All rights reserved
-// This software is freely distributable under a derivative of the
-// University of Illinois/NCSA Open Source License posted in
-// LICENSE.txt and at <http://github.xcore.com/>
-
-#ifndef   _xtcp_cmd_h_
-#define   _xtcp_cmd_h_
-
-#define XTCP_CMD_TOKEN 128
+#ifndef _XTCP_CMD_H_
+#define _XTCP_CMD_H_
 
 typedef enum xtcp_cmd_t {
   XTCP_CMD_LISTEN,
@@ -35,4 +28,4 @@ typedef enum xtcp_cmd_t {
   XTCP_CMD_DISCONNECT
 } xtcp_cmd_t;
 
-#endif // _xtcp_cmd_h_
+#endif // _XTCP_CMD_H_

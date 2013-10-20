@@ -1,78 +1,34 @@
-// Copyright (c) 2011, XMOS Ltd., All rights reserved
-// This software is freely distributable under a derivative of the
-// University of Illinois/NCSA Open Source License posted in
-// LICENSE.txt and at <http://github.xcore.com/>
-
-/*===========================================================================
- Info
- ----
-
- ===========================================================================*/
-
-/*---------------------------------------------------------------------------
- include files
- ---------------------------------------------------------------------------*/
-
-#include <xs1.h>
-#include <print.h>
+#include "xhttpd.h"
 #include "httpd.h"
 #include "wifi_tiwisl_server.h"
-#include "wifi_tiwisl_config.h"
+#include <print.h>
+#include "wifi_tiwisl_conf.h"
 
-/*---------------------------------------------------------------------------
- constants
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- ports and clocks
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- typedefs
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- global variables
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- static variables
- ---------------------------------------------------------------------------*/
 // Wireless access point config: SSID, Key, Security Type
 wifi_ap_config_t ap_config = {WIFI_SSID, WIFI_PASSWORD, WIFI_SECURITY_TYPE};
-
-/*---------------------------------------------------------------------------
- static prototypes
- ---------------------------------------------------------------------------*/
 
 /*---------------------------------------------------------------------------
  The main webserver thread
  ---------------------------------------------------------------------------*/
 // ::webserver
-void xhttpd(chanend tcp_svr)
+void xhttpd(chanend c_wifi)
 {
-    xtcp_connection_t conn;
+  xtcp_connection_t conn;
+  printstrln("**WELCOME TO THE SIMPLE WEBSERVER DEMO**");
+  // Start the Wi-Fi module
+  xtcp_wifi_on(c_wifi);
+  // Initiate the HTTP state
+  httpd_init(c_wifi, ap_config);
 
-    printstrln("**WELCOME TO THE SIMPLE WEBSERVER DEMO**");
-
-    // Start the Wi-Fi module
-    xtcp_wifi_on(tcp_svr);
-
-    // Initiate the HTTP state
-    httpd_init(tcp_svr, ap_config);
-
-    // Loop forever processing TCP events
-    while(1)
+  while(1)
+  {
+    select
     {
-        select
-        {
-            case xtcp_event(tcp_svr, conn):
-            {
-                httpd_handle_event(tcp_svr, conn);
-                break;
-            } // case xtcp_event(tcp_svr, conn):
-        } // select
-    } // while(1)
+      case xtcp_event(c_wifi, conn):
+      {
+        httpd_handle_event(c_wifi, conn);
+        break;
+      } // case xtcp_event(c_wifi, conn):
+    } // select
+  } // while(1)
 }
-
-/*==========================================================================*/

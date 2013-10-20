@@ -1,55 +1,26 @@
-// Copyright (c) 2011, XMOS Ltd., All rights reserved
-// This software is freely distributable under a derivative of the
-// University of Illinois/NCSA Open Source License posted in
-// LICENSE.txt and at <http://github.xcore.com/>
+#ifndef _WIFI_TIWISL_SERVER_H_
+#define _WIFI_TIWISL_SERVER_H_
 
-/*===========================================================================
- Info
- ----
-
- ===========================================================================*/
-
-#ifndef _wifi_tiwisl_server_h_
-#define _wifi_tiwisl_server_h_
-
-/*---------------------------------------------------------------------------
- nested include files
- ---------------------------------------------------------------------------*/
 #include "spi_master.h"
 #include <xccompat.h>
 
-/*---------------------------------------------------------------------------
- constants
- ---------------------------------------------------------------------------*/
-#define      TIWISL_SEC_TYPE_UNSEC (0)
-#define      TIWISL_SEC_TYPE_WEP   (1)
-#define      TIWISL_SEC_TYPE_WPA   (2)
-#define      TIWISL_SEC_TYPE_WPA2  (3)
+#define TIWISL_SEC_TYPE_UNSEC 0  /**< Wi-Fi security type = unsecured */
+#define TIWISL_SEC_TYPE_WEP   1  /**< Wi-Fi security type = WEP */
+#define TIWISL_SEC_TYPE_WPA   2  /**< Wi-Fi security type = WPA */
+#define TIWISL_SEC_TYPE_WPA2  3  /**< Wi-Fi security type = WPA2 */
 
-/*---------------------------------------------------------------------------
- typedefs
- ---------------------------------------------------------------------------*/
+/**
+ * Control ports for the TiWi-SL module
+ */
 typedef struct wifi_tiwisl_ctrl_ports_t_
 {
-    out port p_cs_pwr;
-    in port p_spi_irq;
+  out port p_cs_pwr;  /**< 1-bit output power enable port for TiWi-SL module */
+  in port p_spi_irq;  /**< 1-bit input port for interrupts from TiWi-SL module */
 } wifi_tiwisl_ctrl_ports_t;
-
-/*---------------------------------------------------------------------------
- global variables
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- extern variables
- ---------------------------------------------------------------------------*/
-
-/*---------------------------------------------------------------------------
- prototypes
- ---------------------------------------------------------------------------*/
 
 /*==========================================================================*/
 /**
- *  wifi_tiwisl_server
+ *  The Wi-Fi server
  *
  *  \param c_xtcp      channel
  *  \param tiwisl_spi  the SPI interface
@@ -59,5 +30,4 @@ void wifi_tiwisl_server(chanend c_xtcp,
                         REFERENCE_PARAM(spi_master_interface, tiwisl_spi),
                         REFERENCE_PARAM(wifi_tiwisl_ctrl_ports_t, tiwisl_ctrl));
 
-#endif // _wifi_tiwisl_server_h_
-/*==========================================================================*/
+#endif // _WIFI_TIWISL_SERVER_H_
