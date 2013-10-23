@@ -6,4 +6,6 @@ TiWi-SL Simple Web Server Demo
 :keywords: Wi-Fi, TiWi-SL
 :boards: XA-SK-WIFI
 
-This simple demonstration uses the Wi-Fi sliceCARD together with the xSOFTip module_wifi_tiwisl to demonstrate how the module is used to connect to a wireless access point and host a simple (Hello World!) web page.
+Description
+-----------
+This simple demonstration uses the Wi-Fi sliceCARD together with the xSOFTip module_wifi_tiwisl to demonstrate how the module is used to connect to a wireless access point (a Wi-Fi router) and host a simple (Hello World!) web page.

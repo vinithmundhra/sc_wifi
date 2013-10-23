@@ -247,7 +247,7 @@ int hci_pkg_wlan_scan(int *opcode, int enable)
   buf = tiwisl_tx_buf;
   args = (unsigned char *) (buf + HEADERS_SIZE_CMD);
   args = int_to_stream(args, 36);
-  args = int_to_stream(args, (100 * enable));
+  args = int_to_stream(args, enable);
   args = int_to_stream(args, 100);
   args = int_to_stream(args, 100);
   args = int_to_stream(args, 5);
@@ -418,7 +418,7 @@ int hci_pkg_skt_setopt_recv_nblock(int *opcode, int sd)
   args = int_to_stream(args, 1);
   args = int_to_stream(args, 0x00000008);
   args = int_to_stream(args, 4);
-  args = int_to_stream(args, 200);
+  args = int_to_stream(args, 50);
   len = hci_pkg_cmd(HCI_CMND_SETSOCKOPT,
                     buf,
                     (SOCKET_SET_SOCK_OPT_PARAMS_LEN + 4));

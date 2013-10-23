@@ -28,12 +28,12 @@ typedef unsigned char xtcp_ipaddr_t[4];
 
 /** IP configuration information structure.
  * 
- *  This structure describes IP configuration for an ip node.
+ *  This structure describes IP configuration for an IP node.
  *  
  **/
 typedef struct xtcp_ipconfig_t {
   xtcp_ipaddr_t ipaddr;    /**< The IP Address of the node */
-  xtcp_ipaddr_t netmask;   /**< The netmask of the node. The mask used 
+  xtcp_ipaddr_t netmask;   /**< The net-mask of the node. The mask used 
                                 to determine which address are routed locally.*/
   xtcp_ipaddr_t gateway;   /**< The gateway of the node */
 } xtcp_ipconfig_t;
@@ -45,26 +45,24 @@ typedef struct xtcp_ipconfig_t {
  **/
 typedef enum xtcp_protocol_t {
   XTCP_PROTOCOL_TCP=6, /**< Transmission Control Protocol */
-  XTCP_PROTOCOL_UDP=17  /**< User Datagram Protocol */
+  XTCP_PROTOCOL_UDP=17 /**< User Datagram Protocol. Not supported in this version */
 } xtcp_protocol_t;
 
 
 /** XTCP event type.
  *
- *  The event type represents what event is occuring on a particualr connection.
+ *  The event type represents what event is occurring on a particular connection.
  *  It is instantiated when an event is received by the client using the 
  *  xtcp_event() function.
  *
  **/
 typedef enum xtcp_event_type_t {
   XTCP_NEW_CONNECTION,  /**<  This event represents a new connection has been 
-                              made. In the case of a TCP server connections it
-                              occurs when a remote host firsts makes contact
+                              made. In the case of a TCP server connections, it
+                              occurs when a remote host first makes contact
                               with the local host. For TCP client connections  
                               it occurs when a stream is setup with the remote
-                              host.
-                              For UDP connections it occurs as soon as the 
-                              connection is created.        **/ 
+                              host. **/ 
 
   XTCP_RECV_DATA,       /**<  This event occurs when the connection has received
                               some data. The client **must** follow receipt of 
@@ -87,7 +85,7 @@ typedef enum xtcp_event_type_t {
                               with a call to xtcp_send() before any other
                               interaction with the server. */
 
-  XTCP_RESEND_DATA,    /**<  This event occurs when the server has failed to
+  XTCP_RESEND_DATA,     /**<  This event occurs when the server has failed to
                               send the previous piece of data that was given
                               to it via a call to xtcp_send(). The server
                               is now requesting for the same data to be sent
@@ -141,17 +139,16 @@ typedef enum xtcp_connection_type_t {
 } xtcp_connection_type_t;
 
 
-/** This type represents a TCP or UDP connection.
+/** This type represents a TCP connection.
  *
  *  This is the main type containing connection information for the client 
  *  to handle. Elements of this type are instantiated by the xtcp_event() 
  *  function which informs the client about an event and the connection
  *  the event is on.
- *
  **/
 typedef struct xtcp_connection_t {
   int id;  /**< A unique identifier for the connection */
-  xtcp_protocol_t protocol; /**< The protocol of the connection (TCP/UDP) */
+  xtcp_protocol_t protocol; /**< The protocol of the connection (TCP) */
   xtcp_connection_type_t connection_type; /**< The type of connection (client/sever) */
   xtcp_event_type_t event; /**< The last reported event on this connection. */
   xtcp_appstate_t appstate; /**< The application state associated with the connection. This is set using the xtcp_set_connection_appstate() function. */
@@ -179,17 +176,17 @@ typedef struct wifi_ap_config_t_
  *  After this call, when a connection is established an
  *  XTCP_NEW_CONNECTION event is signalled.
  *
- * \param c_xtcp      chanend connected to the xtcp server
+ * \param c_xtcp      chanend connected to the wifi server
  * \param port_number the local port number to listen to
- * \param proto       the protocol to listen to (TCP or UDP)
+ * \param proto       the protocol to listen to (TCP)
  */
 void xtcp_listen(chanend c_xtcp, int port_number, xtcp_protocol_t proto);
 
 /*==========================================================================*/
 /**
- *  xtcp_connect
+ *  Connect to a wireless access point (router)
  *
- *  \param c_xtcp     channel
+ *  \param c_xtcp     chanend connected to the wifi server
  *  \param ap_config  Access point configuration set by the host application
  **/
 void xtcp_connect(chanend c_xtcp,
@@ -197,25 +194,25 @@ void xtcp_connect(chanend c_xtcp,
 
 /*==========================================================================*/
 /**
- *  xtcp_disconnect
+ *  Disconnect from a wireless access point (router)
  *
- *  \param c_xtcp     channel
+ *  \param c_xtcp     chanend connected to the wifi server
  **/
 void xtcp_disconnect(chanend c_xtcp);
 
 /*==========================================================================*/
 /**
- *  xtcp_wifi_on
+ *  Switch ON the TiWi-SL Wi-Fi module.
  *
- *  \param c_xtcp     channel
+ *  \param c_xtcp     chanend connected to the wifi server
  **/
 void xtcp_wifi_on(chanend c_xtcp);
 
 /*==========================================================================*/
 /**
- *  xtcp_wifi_off
+ *  Switch OFF the TiWi-SL Wi-Fi module.
  *
- *  \param c_xtcp     channel
+ *  \param c_xtcp     chanend connected to the wifi server
  **/
 void xtcp_wifi_off(chanend c_xtcp);
 
@@ -224,10 +221,10 @@ void xtcp_wifi_off(chanend c_xtcp);
  *  \note This can be used in a select statement.
  *
  *  Upon receiving the event, the xtcp_connection_t structure conn
- *  is instatiated with information of the event and the connection
+ *  is instantiated with information of the event and the connection
  *  it is on.
  *
- * \param c_xtcp      chanend connected to the xtcp server
+ * \param c_xtcp      chanend connected to the wifi server
  * \param conn        the connection relating to the current event
  */
 #ifdef __XC__
@@ -243,7 +240,7 @@ void do_xtcp_event(chanend c_xtcp,  xtcp_connection_t *conn);
  *  server will respond with a XTCP_REQUEST_DATA event when it is
  *  ready to accept data.
  *
- * \param c_xtcp      chanend connected to the xtcp server
+ * \param c_xtcp      chanend connected to the wifi server
  * \param conn        the connection
  */
 void xtcp_init_send(chanend c_xtcp, 
@@ -254,7 +251,7 @@ void xtcp_init_send(chanend c_xtcp,
  * After this call, subsequent events on this connection
  * will have the appstate field of the connection set
  *
- * \param c_xtcp      chanend connected to the xtcp server
+ * \param c_xtcp      chanend connected to the wifi server
  * \param conn        the connection
  * \param appstate    An unsigned integer representing the state. In C
  *                    this is usually a pointer to some connection dependent
@@ -266,7 +263,7 @@ void xtcp_set_connection_appstate(chanend c_xtcp,
 
 /** \brief Close a connection.
  *
- * \param c_xtcp      chanend connected to the xtcp server
+ * \param c_xtcp      chanend connected to the wifi server
  * \param conn        the connection
  */
 void xtcp_close(chanend c_xtcp,
@@ -274,7 +271,7 @@ void xtcp_close(chanend c_xtcp,
 
 /** \brief Abort a connection.
  *
- * \param c_xtcp      chanend connected to the xtcp server
+ * \param c_xtcp      chanend connected to the wifi server
  * \param conn        the connection
  */
 void xtcp_abort(chanend c_xtcp,
@@ -284,7 +281,7 @@ void xtcp_abort(chanend c_xtcp,
  *
  *   This can be called after an XTCP_RECV_DATA event.
  *
- * \param c_xtcp      chanend connected to the xtcp server
+ * \param c_xtcp      chanend connected to the wifi server
  * \param data        A array to place the received data into
  * \returns           The length of the received data in bytes
  */
@@ -294,11 +291,10 @@ int xtcp_recv(chanend c_xtcp, char data[]);
  *
  *  Send data to the server. This should be called after a
  *  XTCP_REQUEST_DATA, XTCP_SENT_DATA or XTCP_RESEND_DATA event 
- *  (alternatively xtcp_write_buf can be called). 
- *  To finish sending this must be called with a length  of zero or
+ *  To finish sending this must be called with a length of zero or
  *  call the xtcp_complete_send() function.
  *
- * \param c_xtcp      chanend connected to the xtcp server
+ * \param c_xtcp      chanend connected to the wifi server
  * \param data        An array of data to send
  * \param len         The length of data to send. If this is 0, no data will
  *                    be sent and a XTCP_SENT_DATA event will not occur.
@@ -314,7 +310,7 @@ void xtcp_send(chanend c_xtcp,
  *  to finish any sending on the connection that the event
  *  related to.
  *  
- *  \param c_xtcp   chanend connected to the tcp server
+ *  \param c_xtcp   chanend connected to the wifi server
  */
 void xtcp_complete_send(chanend c_xtcp);
 
@@ -324,7 +320,7 @@ void xtcp_complete_send(chanend c_xtcp);
  *
  * Get the current host IP configuration of the server.
  *
- * \param c_xtcp      chanend connected to the xtcp server
+ * \param c_xtcp      chanend connected to the wifi server
  * \param ipconfig    the structure to be filled with the IP configuration
  *                    information
  **/

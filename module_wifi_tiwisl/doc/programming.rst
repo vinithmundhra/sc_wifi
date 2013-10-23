@@ -1,5 +1,5 @@
-Wi-Fi Programming Guide
-=======================
+TiWi-SL Wi-Fi Programming Guide
+===============================
 
 This section provides information on how to program applications using the Wi-Fi
 module.

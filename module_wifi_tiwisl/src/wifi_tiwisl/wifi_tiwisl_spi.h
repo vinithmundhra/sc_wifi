@@ -36,6 +36,7 @@ void wifi_tiwisl_spi_shutdown(spi_master_interface &spi_if,
  *  \param spi_tiwisl_ctrl  Other i/f lines: nCS, nIRQ, PWR_ENABLE
  *  \param buffer           The array the received data will be written to
  *  \param num_bytes        Number of bytes to receive
+ *  \param bypass_cmd       Jump the first read to get read length
  *
  **/
 void wifi_tiwisl_spi_read(spi_master_interface &spi_if,
