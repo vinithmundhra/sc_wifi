@@ -1,3 +1,5 @@
+-- -*- mode: lua -*-
+
 -------------------------------------------------------------------------------
 -- Descriptive metadata
 -------------------------------------------------------------------------------
@@ -8,31 +10,27 @@ alternativeNames = { }
 componentDescription = "A module for controlling the LS Research's TiWi-SL Wi-Fi module via an SPI master"
 componentVersion = "1v0"
 
-
-configPoints = {
-}
-
+configPoints = {}
 derivedValues = {}
-
 
 ports = {
   p_spi_master_clk = {
     short   = "SCLK",
     long    = "SPI Clock from master",
     help    = "",
-    width   = 1
+    width   = 1,
   },
   p_spi_master_mosi = {
     short   = "MOSI",
     long    = "Master Out Slave In",
     help    = "",
-    width   = 1
+    width   = 1,
   },
   p_spi_master_miso = {
     short   = "MISO",
     long    = "Master In Slave Out",
     help    = "",
-    width   = 1
+    width   = 1,
   },
   p_spi_cs = {
     short   = "Chip Select",
@@ -63,13 +61,13 @@ channels = {
 }
 
 function getConfigStatus()
-   return "Trusted", {}
+   return "Trusted Configuration", {}
 end
 
 generatedCode = {
    includes = {"wifi_tiwisl_server.h", "xtcp_client.h"},
    globals  = [[
-            spi_master_interface tiwisl_${swblock.id}_spi = { 
+            spi_master_interface tiwisl_spi = { 
               ${swblock.clocks[0]},  
               ${swblock.clocks[1]},  
               ${swblock.ports.p_spi_master_mosi}, 
@@ -77,12 +75,12 @@ generatedCode = {
               ${swblock.ports.p_spi_master_miso}
             };
 
-            wifi_tiwisl_ctrl_ports_t tiwisl_${swblock.id}_ctrl = { 
+            wifi_tiwisl_ctrl_ports_t tiwisl_ctrl = { 
               ${swblock.ports.p_spi_cs}, 
               ${swblock.ports.p_spi_irq}, 
             };
             
-            wifi_ap_config_t ap_${swblock.id}_config = {
+            wifi_ap_config_t ap_config = {
                 "testap", // SSID
                 "testpwd", // Key
                 TIWISL_SEC_TYPE_UNSEC // Security Type
@@ -92,10 +90,10 @@ generatedCode = {
     [[
           
             wifi_tiwisl_server(${swblock.chanends.c_wifi},
-                               tiwisl_${swblock.id}_spi, 
-                               tiwisl_${swblock.id}_ctrl);
+                               tiwisl_spi, 
+                               tiwisl_ctrl);
           
     ]]
 }
 
-
+files = {}
