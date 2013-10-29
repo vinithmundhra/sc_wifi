@@ -3,8 +3,8 @@
     <components>
         <component description = "Simple demonstration for the Wi-Fi sliceCARD showing basic wireless connectivity and running an embedded web server" type = "demoCode" scope = "Example" path = "app_tiwisl_simple_webserver" local = "false" id = "app_tiwisl_simple_webserver" name = "TiWi-SL Simple Web Server Demo">
             <board>XA-SK-WIFI</board>
-            <componentDependency version = "1.0.0">module_wifi_tiwisl</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_spi" version = "1.3.0">module_spi_master</componentDependency>
+            <componentDependency version = "1.0.0">module_wifi_tiwisl</componentDependency>
             <keyword>Wi-Fi</keyword>
             <keyword>TiWi-SL</keyword>
         </component>
@@ -19,9 +19,9 @@
         <uri>https://github.com/xcore/sc_spi.git</uri>
         <version>1.3.0rc1</version>
     </dependency>
-    <description>Component for driving the TI TiWi SL Wifi module. The TiWi Sl module has an integrated TCP/IP stack and interfaces to this component via an SPI interface.</description>
-    <docdir>doc</docdir>
+    <description>Component for driving the LS Research's TiWi-SL Wi-Fi module. The TiWi-SL module has an integrated TCP/IP stack and interfaces to this component via an SPI interface.</description>
     <docdir>app_tiwisl_simple_webserver/doc_quickstart</docdir>
+    <docdir>module_wifi_tiwisl/doc</docdir>
     <location>git@github.com:xcore/sc_wifi.git</location>
     <name>sc_wifi</name>
     <maintainer>vinithmundhra</maintainer>
