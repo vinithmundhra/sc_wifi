@@ -27,7 +27,7 @@ httpd_state_t connection_states[NUM_HTTPD_CONNECTIONS];
 /*---------------------------------------------------------------------------
  httpd_init
  ---------------------------------------------------------------------------*/
-// ::httpd_init 
+// ::httpd_init
 void httpd_init(chanend tcp_svr, wifi_ap_config_t *ap_config)
 {
   int i;
@@ -183,7 +183,7 @@ void httpd_free_state(xtcp_connection_t *conn)
 /*---------------------------------------------------------------------------
  httpd_handle_event
  ---------------------------------------------------------------------------*/
-// ::httpd_handle_event 
+// ::httpd_handle_event
 void httpd_handle_event(chanend tcp_svr, xtcp_connection_t *conn)
 {
   // Ignore events that are not directly relevant to http

@@ -1,9 +1,10 @@
 Wi-Fi Repository
 ................
 
-:Latest release: 1.0.0rc0
-:Maintainer: XMOS
+:Latest release: 1.1.0beta0
+:Maintainer: vinithmundhra
 :Description: Component for driving the LS Research's TiWi-SL Wi-Fi module. The TiWi-SL module has an integrated TCP/IP stack and interfaces to this component via an SPI interface.
+
 
 Firmware Overview
 =================
@@ -12,7 +13,6 @@ The TiWi-SL component is an SPI master to an external TiWi-SL Wi-Fi module (fitt
 
 Known Issues
 ============
-
 
 Support
 =======
@@ -23,4 +23,6 @@ Response to any issues submitted as at the discretion of the maintainer for this
 Required software (dependencies)
 ================================
 
+  * sc_slicekit_support (https://github.com/xcore/sc_slicekit_support.git)
   * sc_spi (https://github.com/xcore/sc_spi.git)
+

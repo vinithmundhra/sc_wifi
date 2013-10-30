@@ -17,7 +17,7 @@
  *  \return int    length
  **/
 int hci_pkg_wifi_on(REFERENCE_PARAM(int, opcode));
-                         
+
 /*==========================================================================*/
 /**
  *  hci_pkg_read_buffer_size
