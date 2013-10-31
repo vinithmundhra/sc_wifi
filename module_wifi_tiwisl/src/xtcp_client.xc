@@ -137,27 +137,18 @@ void xtcp_abort(chanend c_xtcp, REFERENCE_PARAM(xtcp_connection_t, conn))
 int xtcp_recv(chanend c_xtcp, unsigned char data[])
 {
   int len;
-  slave
-  {
-    //c_xtcp <: 1;
     c_xtcp :> len;
-    for(int i = 0; i < len; i++)
-      c_xtcp :> data[i];
-  }
+  for(int i = 0; i < len; i++) c_xtcp :> data[i];
   return len;
 }
 
 /*---------------------------------------------------------------------------
  xtcp_send
  ---------------------------------------------------------------------------*/
-void xtcp_send(chanend c_xtcp, unsigned char ?data[], int len)
-{
-  slave
+void xtcp_send(chanend c_xtcp, unsigned char data[], int len)
   {
     c_xtcp <: len;
-    for(int i = 0; i < len; i++)
-      c_xtcp <: data[i];
-  }
+  for(int i = 0; i < len; i++) c_xtcp <: data[i];
 }
 
 /*---------------------------------------------------------------------------
@@ -165,11 +156,8 @@ void xtcp_send(chanend c_xtcp, unsigned char ?data[], int len)
  ---------------------------------------------------------------------------*/
 void xtcp_complete_send(chanend c_xtcp)
 {
-#ifdef __XC__
-  xtcp_send(c_xtcp, null, 0);
-#else
-  xtcp_send(c_xtcp, (void *) 0, 0);
-#endif
+  char dummy_data[1];
+  xtcp_send(c_xtcp, dummy_data, 0);
 }
 
 /*---------------------------------------------------------------------------

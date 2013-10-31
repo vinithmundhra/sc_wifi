@@ -123,9 +123,10 @@ int hci_pkg_skt_accept(REFERENCE_PARAM(int, opcode));
  *  hci_pkg_skt_recv
  *
  *  \param opcode  opcode to check in the response
+ *  \param sd      socket descriptor
  *  \return int    length
  **/
-int hci_pkg_skt_recv(REFERENCE_PARAM(int, opcode));
+int hci_pkg_skt_recv(REFERENCE_PARAM(int, opcode), int sd);
 
 /*==========================================================================*/
 /**
@@ -133,9 +134,10 @@ int hci_pkg_skt_recv(REFERENCE_PARAM(int, opcode));
  *
  *  \param dlen    length of data to send
  *  \param opcode  opcode to check in the response
+ *  \param sd      socket descriptor
  *  \return int    length
  **/
-int hci_pkg_skt_send(int dlen, REFERENCE_PARAM(int, opcode));
+int hci_pkg_skt_send(int dlen, REFERENCE_PARAM(int, opcode), int sd);
 
 /*==========================================================================*/
 /**

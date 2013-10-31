@@ -3,12 +3,6 @@
 
 #include <xccompat.h>
 
-#ifdef __XC__
-#define NULLABLE ?
-#else
-#define NULLABLE
-#endif
-
 #ifndef XTCP_CLIENT_BUF_SIZE
 #define XTCP_CLIENT_BUF_SIZE (1460)
 #endif
@@ -300,7 +294,7 @@ int xtcp_recv(chanend c_xtcp, char data[]);
  *                    be sent and a XTCP_SENT_DATA event will not occur.
  */
 void xtcp_send(chanend c_xtcp,
-               char NULLABLE data[],
+               char data[],
                int len);
 
 /** \brief Complete a send transaction with the server.

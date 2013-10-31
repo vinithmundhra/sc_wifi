@@ -80,6 +80,8 @@ void httpd_recv(chanend tcp_svr, xtcp_connection_t *conn)
   // Receive the data from the Wi-Fi stack
   len = xtcp_recv(tcp_svr, data);
 
+  printstr("Recv from "); printint(conn->id); printstr(" length = "); printintln(len);
+
   // If we already have data to send, return
   if (hs == NULL || hs->dptr != NULL)
   {
@@ -92,6 +94,7 @@ void httpd_recv(chanend tcp_svr, xtcp_connection_t *conn)
   // If we are required to send data
   if (hs->dptr != NULL)
   {
+    //printstrln("sending init_send");
     xtcp_init_send(tcp_svr, conn);
   }
   ////
@@ -201,6 +204,7 @@ void httpd_handle_event(chanend tcp_svr, xtcp_connection_t *conn)
     switch(conn->event)
     {
       case XTCP_NEW_CONNECTION:
+        printstr("New connection = "); printintln(conn->id);
         httpd_init_state(tcp_svr, conn);
         break;
       case XTCP_RECV_DATA:
@@ -209,11 +213,13 @@ void httpd_handle_event(chanend tcp_svr, xtcp_connection_t *conn)
       case XTCP_SENT_DATA:
       case XTCP_REQUEST_DATA:
       case XTCP_RESEND_DATA:
+        //printstr("Sending to = "); printintln(conn->id);
         httpd_send(tcp_svr, conn);
         break;
       case XTCP_TIMED_OUT:
       case XTCP_ABORTED:
       case XTCP_CLOSED:
+        printstr("Closing = "); printintln(conn->id);
         httpd_free_state(conn);
         break;
       default: break;

@@ -47,7 +47,7 @@
 extern unsigned char tiwisl_tx_buf[];
 extern bsd_rtn_t skt_rtn;
 extern int skt_id;
-extern int skt_accept_status;
+
 
 /*==========================================================================*/
 /**
@@ -155,7 +155,9 @@ int hci_pkg_wifi_on(int *opcode)
   buf = tiwisl_tx_buf;
   args = (unsigned char *) (buf + HEADERS_SIZE_CMD);
   args = char_to_stream(args, SL_PATCHES_REQUEST_DEFAULT);
-  len = hci_pkg_cmd(HCI_CMND_SIMPLE_LINK_START, buf, WLAN_SL_INIT_START_PARAMS_LEN);
+  len = hci_pkg_cmd(HCI_CMND_SIMPLE_LINK_START,
+                    buf,
+                    WLAN_SL_INIT_START_PARAMS_LEN);
   *opcode = HCI_CMND_SIMPLE_LINK_START;
   return len;
 }
@@ -209,7 +211,9 @@ int hci_pkg_wlan_connect(wifi_ap_config_t *ap_config, int *opcode)
   {
     args = array_to_stream(args, ap_config->key, key_len);
   }
-  len = hci_pkg_cmd(HCI_CMND_WLAN_CONNECT, buf, (WLAN_CONNECT_PARAM_LEN + ssid_len + key_len - 1));
+  len = hci_pkg_cmd(HCI_CMND_WLAN_CONNECT,
+                    buf,
+                    (WLAN_CONNECT_PARAM_LEN + ssid_len + key_len - 1));
   *opcode = HCI_EVNT_WLAN_UNSOL_DHCP;
   return len;
 }
@@ -355,13 +359,13 @@ int hci_pkg_skt_accept(int *opcode)
 /*---------------------------------------------------------------------------
  hci_pkg_skt_recv
  ---------------------------------------------------------------------------*/
-int hci_pkg_skt_recv(int *opcode)
+int hci_pkg_skt_recv(int *opcode, int sd)
 {
   unsigned char *buf, *args;
   int len;
   buf = tiwisl_tx_buf;
   args = (unsigned char *) (buf + HEADERS_SIZE_CMD);
-  args = int_to_stream(args, skt_accept_status);
+  args = int_to_stream(args, sd);
   args = int_to_stream(args, 1200);
   args = int_to_stream(args, 0);
   len = hci_pkg_cmd(HCI_CMND_RECV, buf, SOCKET_RECV_FROM_PARAMS_LEN);
@@ -372,15 +376,14 @@ int hci_pkg_skt_recv(int *opcode)
 /*---------------------------------------------------------------------------
  hci_pkg_skt_send
  ---------------------------------------------------------------------------*/
-int hci_pkg_skt_send(int dlen, int *opcode)
+int hci_pkg_skt_send(int dlen, int *opcode, int sd)
 {
   unsigned char *buf, *args;
   int len;
   buf = tiwisl_tx_buf;
   args = (unsigned char *) (buf + HEADERS_SIZE_DATA);
-  args = int_to_stream(args, skt_accept_status);
-  args = int_to_stream(args,
-                       HCI_CMND_SEND_ARG_LENGTH - sizeof(skt_accept_status));
+  args = int_to_stream(args, sd);
+  args = int_to_stream(args, HCI_CMND_SEND_ARG_LENGTH - sizeof(sd));
   args = int_to_stream(args, dlen);
   args = int_to_stream(args, 0);
   len = hci_pkg_data(HCI_CMND_SEND, buf, HCI_CMND_SEND_ARG_LENGTH, dlen);
