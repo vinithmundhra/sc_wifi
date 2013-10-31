@@ -7,7 +7,7 @@
 #include "hci_pkg.h"
 #include <print.h>
 
-#define TIWISL_POLL 90000
+#define TIWISL_POLL 4000
 #define TIWISL_MAX_SKT 6
 
 unsigned char tiwisl_tx_buf[XTCP_CLIENT_BUF_SIZE];
@@ -278,7 +278,7 @@ void wifi_tiwisl_server(chanend c_xtcp,
             // nothing to check
 
             printstrln("ok!");
-
+#if 0
             // Scan and list available networks
             printstrln("Scanning available networks.... ");
 
@@ -313,7 +313,7 @@ void wifi_tiwisl_server(chanend c_xtcp,
             hci_process_wlan_scan();
 
             printstrln("----end----");
-
+#endif
             // Power up sequence finished. Send dummy value.
             c_xtcp <: power_up;
 

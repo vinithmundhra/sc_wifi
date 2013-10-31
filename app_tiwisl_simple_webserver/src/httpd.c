@@ -24,6 +24,8 @@ char page[] = "HTTP/1.0 200 OK\nServer: xc2/pre-1.0 (http://xmos.com)\nContent-t
 
 httpd_state_t connection_states[NUM_HTTPD_CONNECTIONS];
 
+static int recv_count = 0;
+
 /*---------------------------------------------------------------------------
  httpd_init
  ---------------------------------------------------------------------------*/
@@ -80,7 +82,8 @@ void httpd_recv(chanend tcp_svr, xtcp_connection_t *conn)
   // Receive the data from the Wi-Fi stack
   len = xtcp_recv(tcp_svr, data);
 
-  printstr("Recv from "); printint(conn->id); printstr(" length = "); printintln(len);
+  printstr("Recv Count "); printint(recv_count); printstr(" length = "); printintln(len);
+  recv_count++;
 
   // If we already have data to send, return
   if (hs == NULL || hs->dptr != NULL)

@@ -421,7 +421,7 @@ int hci_pkg_skt_setopt_recv_nblock(int *opcode, int sd)
   args = int_to_stream(args, 1);
   args = int_to_stream(args, 0x00000008);
   args = int_to_stream(args, 4);
-  args = int_to_stream(args, 50);
+  args = int_to_stream(args, 10);
   len = hci_pkg_cmd(HCI_CMND_SETSOCKOPT,
                     buf,
                     (SOCKET_SET_SOCK_OPT_PARAMS_LEN + 4));

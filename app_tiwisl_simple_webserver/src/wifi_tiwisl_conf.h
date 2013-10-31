@@ -1,8 +1,8 @@
 /* SSID as advertized by your wireless router */
-#define WIFI_SSID           "test"
+#define WIFI_SSID           "Xmos 2"
 
 /* Password (if any) to connect to your wireless router */
-#define WIFI_PASSWORD       "test"
+#define WIFI_PASSWORD       "xmoschennai0115"
 
 /*
  * Security type of your wireless router
