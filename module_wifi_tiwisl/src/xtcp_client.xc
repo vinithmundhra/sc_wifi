@@ -3,16 +3,28 @@
 #include <xccompat.h>
 #include "xtcp_cmd.h"
 
+#define XTCP_CMD_TOKEN 128
+
 /** \brief Send command over the XTCP channel
  *
  * \param c        chanend connected to the xtcp server
  * \param cmd      Command to send
  * \param conn_id  connection ID
  */
-static void send_cmd(chanend c_xtcp, xtcp_cmd_t cmd, int conn_id)
+static void send_cmd(chanend c, xtcp_cmd_t cmd, int conn_id)
 {
-  c_xtcp <: cmd;
-  c_xtcp <: conn_id;
+  /*
+  outct(c, XTCP_CMD_TOKEN);
+  outct(c, XS1_CT_PAUSE);
+  chkct(c, XS1_CT_END);
+  chkct(c, XS1_CT_END);
+  outuint(c, cmd);
+  outuint(c, conn_id);
+  outct(c, XS1_CT_END);
+  chkct(c, XS1_CT_END);
+  */
+  c <: cmd;
+  c <: conn_id;
 }
 
 /*---------------------------------------------------------------------------
@@ -137,8 +149,11 @@ void xtcp_abort(chanend c_xtcp, REFERENCE_PARAM(xtcp_connection_t, conn))
 int xtcp_recv(chanend c_xtcp, unsigned char data[])
 {
   int len;
+  slave
+  {
     c_xtcp :> len;
-  for(int i = 0; i < len; i++) c_xtcp :> data[i];
+    for(int i = 0; i < len; i++) c_xtcp :> data[i];
+  }
   return len;
 }
 
@@ -146,9 +161,12 @@ int xtcp_recv(chanend c_xtcp, unsigned char data[])
  xtcp_send
  ---------------------------------------------------------------------------*/
 void xtcp_send(chanend c_xtcp, unsigned char data[], int len)
+{
+  slave
   {
     c_xtcp <: len;
-  for(int i = 0; i < len; i++) c_xtcp <: data[i];
+    for(int i = 0; i < len; i++) c_xtcp <: data[i];
+  }
 }
 
 /*---------------------------------------------------------------------------

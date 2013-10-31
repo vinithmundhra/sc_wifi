@@ -7,7 +7,7 @@
 #include "hci_pkg.h"
 #include <print.h>
 
-#define TIWISL_POLL 900000 //90000000
+#define TIWISL_POLL 90000
 #define TIWISL_MAX_SKT 6
 
 unsigned char tiwisl_tx_buf[XTCP_CLIENT_BUF_SIZE];
@@ -22,6 +22,7 @@ static xtcp_ipconfig_t ipconfig;
 
 int skt_id = -1;
 static int skt_active[TIWISL_MAX_SKT] = {-1, -1, -1, -1, -1, -1};
+static int data_to_send[TIWISL_MAX_SKT] = {0,0,0,0,0,0};
 
 /*==========================================================================*/
 /**
@@ -169,6 +170,7 @@ static void close_socket(int skt_d,
   len = hci_pkg_skt_close(skt_active[skt_d], opcode);
   write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
   skt_active[skt_d] = -1;
+  data_to_send[skt_d] = 0;
   conn.appstate = 0;
   conn.id = skt_d;
   conn.event = XTCP_CLOSED;
@@ -195,10 +197,8 @@ static int get_first_free_socket()
 {
   int i;
   for(i = 0; i < TIWISL_MAX_SKT; i++)
-    if (skt_active[i] == -1)
-      break;
-  if (i >= TIWISL_MAX_SKT)
-    return -1;
+    if (skt_active[i] == -1) break;
+  if (i >= TIWISL_MAX_SKT) return -1;
   return i;
 }
 
@@ -215,11 +215,12 @@ void wifi_tiwisl_server(chanend c_xtcp,
   int conn_id, opcode, len;
 
   // Mask out any event that we are not interested in
-  int mask = (HCI_EVNT_WLAN_UNSOL_CONNECT | HCI_EVNT_WLAN_UNSOL_DISCONNECT
-      | HCI_EVNT_WLAN_ASYNC_SIMPLE_CONFIG_DONE
-      | HCI_EVNT_WLAN_ASYNC_PING_REPORT | HCI_EVNT_WLAN_KEEPALIVE);
-  t :> time;
-  time += TIWISL_POLL;
+  int mask = (HCI_EVNT_WLAN_UNSOL_CONNECT |
+              HCI_EVNT_WLAN_UNSOL_DISCONNECT |
+              HCI_EVNT_WLAN_ASYNC_SIMPLE_CONFIG_DONE |
+              HCI_EVNT_WLAN_ASYNC_PING_REPORT |
+              HCI_EVNT_WLAN_KEEPALIVE);
+
   skt_rtn.sock_addr.ifamily = AF_INET;
   skt_rtn.sock_addr.iport = 0;
   skt_rtn.sock_addr.iaddr = 0;
@@ -231,6 +232,9 @@ void wifi_tiwisl_server(chanend c_xtcp,
   skt_rtn.sock_addr.izero[5] = 0;
   skt_rtn.sock_addr.izero[6] = 0;
   skt_rtn.sock_addr.izero[7] = 0;
+
+  t :> time;
+  time += TIWISL_POLL;
 
   while(1)
   {
@@ -274,7 +278,7 @@ void wifi_tiwisl_server(chanend c_xtcp,
             // nothing to check
 
             printstrln("ok!");
-#if 0
+
             // Scan and list available networks
             printstrln("Scanning available networks.... ");
 
@@ -309,7 +313,7 @@ void wifi_tiwisl_server(chanend c_xtcp,
             hci_process_wlan_scan();
 
             printstrln("----end----");
-#endif
+
             // Power up sequence finished. Send dummy value.
             c_xtcp <: power_up;
 
@@ -382,45 +386,9 @@ void wifi_tiwisl_server(chanend c_xtcp,
 
           } // case XTCP_CMD_LISTEN:
 
-          case XTCP_CMD_SET_APPSTATE:
-          {
-            slave
-            {
-              c_xtcp :> conn.appstate;
-            }
-            break;
-          } // case XTCP_CMD_SET_APPSTATE:
-
           case XTCP_CMD_INIT_SEND:
           {
-            int tx_data_len = 1;
-            int data_offset;
-
-            //printstrln("XTCP_CMD_INIT_SEND");
-            do
-            {
-              // send the XTCP_REQUEST_DATA event
-              conn.event = XTCP_REQUEST_DATA;
-              send_notification(c_xtcp, conn);
-
-              c_xtcp :> tx_data_len;
-
-              if(tx_data_len > 0)
-              {
-                for(int i = 0; i < tx_data_len; i++)
-                {
-                  c_xtcp :> tiwisl_tx_buf[i + HCI_SEND_DATA_OFFSET];
-                }
-
-                // Send data to tiwisl
-                if(skt_active[conn_id] != -1)
-                {
-                  len = hci_pkg_skt_send(tx_data_len, opcode, skt_active[conn_id]);
-                  write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
-                } // if(skt_active[conn_id] != -1)
-              } // if(tx_data_len > 0)
-            }while(tx_data_len > 0);
-
+            data_to_send[conn_id] = 1;
             break;
           } // case XTCP_CMD_INIT_SEND:
 
@@ -431,13 +399,14 @@ void wifi_tiwisl_server(chanend c_xtcp,
             send_notification(c_xtcp, conn);
             break;
           } // case XTCP_CMD_CLOSE:
+
         } // switch(cmd)
         break;
       } // case c_xtcp :> cmd;
 
 
       // =========================================
-      // Handle Events from TiWiSL
+      // Handle Unsolicited Events from TiWi-SL
       // =========================================
       case !power_up => tiwisl_ctrl.p_spi_irq when pinseq(0) :> void:
       {
@@ -445,11 +414,10 @@ void wifi_tiwisl_server(chanend c_xtcp,
         break;
       } // case !power_up => tiwisl_ctrl.p_spi_irq when pinseq(0) :> void:
 
-
-      // =========================================
-      // Periodically check for new connections
-      // =========================================
-      case t when timerafter(time) :> void :
+      // =======================================================================
+      // Periodically check for new connections, data to send and incoming data
+      // =======================================================================
+      case t when timerafter(time) :> void:
       {
         if(tiwisl_connected_to_ap)
         {
@@ -466,6 +434,7 @@ void wifi_tiwisl_server(chanend c_xtcp,
             write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
 
             int new_conn_id = get_first_free_socket();
+
             if(new_conn_id == -1)
             {
               // no free sockets available
@@ -477,6 +446,10 @@ void wifi_tiwisl_server(chanend c_xtcp,
               conn.id = new_conn_id;
               conn.event = XTCP_NEW_CONNECTION;
               send_notification(c_xtcp, conn);
+
+              c_xtcp :> int _;
+              c_xtcp :> int _;
+              slave { c_xtcp :> conn.appstate; }
             } // else
           } // if(skt_status >= 0)
 
@@ -485,8 +458,49 @@ void wifi_tiwisl_server(chanend c_xtcp,
             int data_offset;
             int data_length = 0;
 
-            if((skt_active[i] == -1) || (conn.appstate == 0)) continue;
+            if(skt_active[i] == -1) continue;
 
+            /*
+             * SEND DATA
+             */
+            if(data_to_send[i])
+            {
+              int tx_data_len = 1;
+              int data_offset;
+
+              do
+              {
+                // send the XTCP_REQUEST_DATA event
+                conn.event = XTCP_REQUEST_DATA;
+                send_notification(c_xtcp, conn);
+
+                master
+                {
+                  c_xtcp :> tx_data_len;
+                  for(int i = 0; i < tx_data_len; i++)
+                  {
+                    c_xtcp :> tiwisl_tx_buf[i + HCI_SEND_DATA_OFFSET];
+                  }
+                }
+
+                if(tx_data_len > 0)
+                {
+                  // Send data to tiwisl
+                  if(skt_active[conn_id] != -1)
+                  {
+                    len = hci_pkg_skt_send(tx_data_len, opcode, skt_active[conn_id]);
+                    write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
+                  } // if(skt_active[conn_id] != -1)
+                } // if(tx_data_len > 0)
+              }while(tx_data_len > 0);
+
+              data_to_send[i] = 0;
+            } // if(data_to_send[i])
+
+
+            /*
+             * CHECK FOR INCOMING DATA
+             */
             len = hci_pkg_skt_recv(opcode, skt_active[i]);
             write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
             data_length = hci_process_skt_recv();
@@ -500,10 +514,13 @@ void wifi_tiwisl_server(chanend c_xtcp,
               read_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, -1);
               data_offset = hci_process_recv_data();
 
-              c_xtcp <: data_length;
-              for(int i = 0; i < data_length; i++)
+              master
               {
-                c_xtcp <: tiwisl_rx_buf[data_offset + i];
+                c_xtcp <: data_length;
+                for(int i = 0; i < data_length; i++)
+                {
+                  c_xtcp <: tiwisl_rx_buf[data_offset + i];
+                }
               }
             }
             else if(data_length < 0)
@@ -515,11 +532,15 @@ void wifi_tiwisl_server(chanend c_xtcp,
             else
             {}
           } // for(int i = 0; i < 7; i++)
+
+
         } // if(tiwisl_connected_to_ap)
         t :> time;
         time += TIWISL_POLL;
         break;
       } // case t when timerafter(time) :> void :
+
+
     } // select
   } // while(1)
 }
