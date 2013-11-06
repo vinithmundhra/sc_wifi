@@ -3,7 +3,7 @@
     <components>
         <component description = "Simple demonstration for the Wi-Fi sliceCARD showing basic wireless connectivity and running an embedded web server" type = "demoCode" scope = "Example" path = "app_tiwisl_simple_webserver" local = "false" id = "app_tiwisl_simple_webserver" name = "TiWi-SL Simple Web Server Demo">
             <board>XA-SK-WIFI</board>
-            <componentDependency version = "1.0.0">module_wifi_tiwisl</componentDependency>
+            <componentDependency repo = "git://github.com/xcore/sc_wifi.git" version = "1.1.0">module_wifi_tiwisl</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_spi" version = "1.3.1">module_spi_master</componentDependency>
             <keyword>Wi-Fi</keyword>
             <keyword>TiWi-SL</keyword>
@@ -15,9 +15,9 @@
         </component>
     </components>
     <dependency repo = "sc_spi">
-        <githash>f0cea5dfef6238ed6c013bd734a4182c573ba47f</githash>
+        <githash>813a44aef98a5312a478ab05263a5d0ab7c751eb</githash>
         <uri>https://github.com/xcore/sc_spi.git</uri>
-        <version>1.3.1rc0</version>
+        <version>1.3.1rc1</version>
     </dependency>
     <description>Component for driving the LS Research's TiWi-SL Wi-Fi module. The TiWi-SL module has an integrated TCP/IP stack and interfaces to this component via an SPI interface.</description>
     <docdir>app_tiwisl_simple_webserver/doc_quickstart</docdir>
@@ -31,7 +31,8 @@
     <release parenthash = "c2a022e13e479945d643e6d5de683742657560b1" version = "1.0.0beta2" githash = "5dabc1a2280071aac934a661df3e09a4a479e0dc"></release>
     <release parenthash = "6395364beadfbe19a7ed56f607afe40469143529" version = "1.0.0beta3" githash = "529ddbc3fb68308e6affd31e54333d8286069ef7"></release>
     <release parenthash = "529ddbc3fb68308e6affd31e54333d8286069ef7" version = "1.0.0rc0" githash = "11b769850eb5c2145238dc2cd5e116ccfd8881b3"></release>
-    <release parenthash = "a9d10eff8691c667c8fb925031985587a71db053" version = "1.1.0beta0"></release>
+    <release parenthash = "a9d10eff8691c667c8fb925031985587a71db053" version = "1.1.0beta0" githash = "0bea7b7ccdf5c120cd682a0538b6904f690ec447"></release>
+    <release parenthash = "0bea7b7ccdf5c120cd682a0538b6904f690ec447" version = "1.1.0beta1"></release>
     <subpartnumber>XM-002500-SM</subpartnumber>
     <vendor>XMOS</vendor>
     <version_defines></version_defines>
