@@ -1,6 +1,11 @@
 sc_wifi Change Log
 ==================
 
+1.1.1
+-----
+  * Change 'stdcore' to 'tile'
+  * Other document updates
+
 1.1.0
 -----
   * Document updates conforming to xSOFTip style.

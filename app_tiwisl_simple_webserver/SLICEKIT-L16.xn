@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.xmos.com http://www.xmos.com" >
   <Type>Board</Type>
-  <Name>sliceKIT Core Board (L2)</Name>
+  <Name>sliceKIT Core Board (L16)</Name>
   <BoardId>0008011X</BoardId>
         
     <Declarations>
@@ -12,9 +12,9 @@
     
     
     <Packages>
-        <Package Id="0" Type="XS1-L2A-QF124" >
+        <Package Id="0" Type="XS1-LnA-128-QF124" >
             <Nodes>
-                <Node Id="0" InPackageId="0" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz">
+                <Node Id="0" InPackageId="0" Type="XS1-L8A-64" Oscillator="25MHz" SystemFrequency="500MHz">
                     <Boot>
                         <Source Location="SPI:bootFlash" />
                         <Bootee NodeId="1" Tile="0"/>
@@ -28,7 +28,7 @@
 
                     </Tile>
                 </Node>
-                <Node Id="1" InPackageId="1" Type="XS1-L1A" Oscillator="25MHz" SystemFrequency="500MHz">
+                <Node Id="1" InPackageId="1" Type="XS1-L8A-64" Oscillator="25MHz" SystemFrequency="500MHz">
                     <Boot>
                         <Source Location="LINK"/>
                     </Boot>
@@ -38,6 +38,14 @@
             </Nodes>
         </Package> 
     </Packages>
+
+    <Nodes>
+      <Node Id="2" Type="device:" routingId="0x8000">
+        <Service Id="0" Proto="xscope_host_data(chanend c);">
+          <Chanend Identifier="c" end="3"/>
+        </Service>
+      </Node>
+    </Nodes>
 
     <Links>
         <Link Encoding="5wire" Delays="0,1">
@@ -56,14 +64,10 @@
             <LinkEndpoint NodeId="0" Link="XLF"/>
             <LinkEndpoint NodeId="1" Link="XLG"/>
         </Link>
-<!--    </Links>  
-
-
-	<Links>-->
-		<Link Encoding="2wire" Delays="4,4" Flags="XSCOPE">
-			<LinkEndpoint NodeId="0" Link="X0LA" />
-			<LinkEndpoint RoutingId="0x8000" Chanend="1" />
-		</Link>
+	<Link Encoding="2wire" Delays="4,4" Flags="XSCOPE">
+            <LinkEndpoint NodeId="0" Link="X0LA" />
+	    <LinkEndpoint NodeId="2" Chanend="1" />
+	</Link>
     </Links>
   
     <ExternalDevices>
