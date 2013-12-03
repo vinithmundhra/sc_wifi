@@ -4,6 +4,13 @@ sc_wifi Change Log
 1.1.2
 -----
 
+  * Changes to dependencies:
+
+    - sc_spi: 1.3.1rc1 -> 1.4.0rc0
+
+      + Added build option to allow SD card driver compatibility
+      + Updated documents
+
 1.1.1
 -----
   * Change 'stdcore' to 'tile'
