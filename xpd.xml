@@ -3,8 +3,8 @@
     <components>
         <component description = "Simple demonstration for the Wi-Fi sliceCARD showing basic wireless connectivity and running an embedded web server" type = "demoCode" scope = "Example" path = "app_tiwisl_simple_webserver" local = "false" id = "app_tiwisl_simple_webserver" name = "TiWi-SL Simple Web Server Demo">
             <board>XA-SK-WIFI</board>
+            <componentDependency repo = "git://github.com/xcore/sc_wifi.git" version = "1.1.2">module_wifi_tiwisl</componentDependency>
             <componentDependency repo = "git://github.com/xcore/sc_spi" version = "1.4.0">module_spi_master</componentDependency>
-            <componentDependency repo = "git://github.com/xcore/sc_wifi.git" version = "1.1.1">module_wifi_tiwisl</componentDependency>
             <keyword>Wi-Fi</keyword>
             <keyword>TiWi-SL</keyword>
         </component>

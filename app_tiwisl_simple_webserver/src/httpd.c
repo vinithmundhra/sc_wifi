@@ -1,7 +1,6 @@
-#include <string.h>
-#include <print.h>
-#include "xtcp_client.h"
 #include "httpd.h"
+#include <string.h>
+#include "xtcp_client.h"
 
 #define NUM_HTTPD_CONNECTIONS 7
 

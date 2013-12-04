@@ -43,11 +43,13 @@
 #define WLAN_GET_SCAN_RESULTS_PARAMS_LEN        (4)
 #define SOCK_STREAM                             (1)
 #define IPPROTO_TCP                             (6)
+#define TCP_NODELAY                             0x0001
+
 
 extern unsigned char tiwisl_tx_buf[];
 extern bsd_rtn_t skt_rtn;
 extern int skt_id;
-extern int skt_accept_status;
+
 
 /*==========================================================================*/
 /**
@@ -87,9 +89,7 @@ static unsigned int hci_pkg_data(unsigned char opcode,
                                  unsigned short args_len,
                                  unsigned short data_len);
 
-/*---------------------------------------------------------------------------
- hci_pkg_cmd
- ---------------------------------------------------------------------------*/
+//=============================================================================
 static unsigned int hci_pkg_cmd(unsigned short opcode,
                                 unsigned char *buf,
                                 unsigned char args_len)
@@ -104,9 +104,7 @@ static unsigned int hci_pkg_cmd(unsigned short opcode,
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_data
- ---------------------------------------------------------------------------*/
+//=============================================================================
 static unsigned int hci_pkg_data(unsigned char opcode,
                                  unsigned char *buf,
                                  unsigned short args_len,
@@ -123,9 +121,7 @@ static unsigned int hci_pkg_data(unsigned char opcode,
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_spi_header
- ---------------------------------------------------------------------------*/
+//=============================================================================
 static int hci_pkg_spi_header(unsigned char *buf, unsigned short len)
 {
   unsigned char *stream;
@@ -144,9 +140,7 @@ static int hci_pkg_spi_header(unsigned char *buf, unsigned short len)
   return (SPI_HEADER_SIZE + len + pad);
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_wifi_on
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_wifi_on(int *opcode)
 {
   unsigned char *args;
@@ -155,14 +149,14 @@ int hci_pkg_wifi_on(int *opcode)
   buf = tiwisl_tx_buf;
   args = (unsigned char *) (buf + HEADERS_SIZE_CMD);
   args = char_to_stream(args, SL_PATCHES_REQUEST_DEFAULT);
-  len = hci_pkg_cmd(HCI_CMND_SIMPLE_LINK_START, buf, WLAN_SL_INIT_START_PARAMS_LEN);
+  len = hci_pkg_cmd(HCI_CMND_SIMPLE_LINK_START,
+                    buf,
+                    WLAN_SL_INIT_START_PARAMS_LEN);
   *opcode = HCI_CMND_SIMPLE_LINK_START;
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_read_buffer_size
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_read_buffer_size(int *opcode)
 {
   unsigned char *buf;
@@ -171,9 +165,7 @@ int hci_pkg_read_buffer_size(int *opcode)
   return hci_pkg_cmd(HCI_CMND_READ_BUFFER_SIZE, buf, 0);
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_set_event_mask
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_set_event_mask(int mask, int *opcode)
 {
   unsigned char *buf, *args;
@@ -184,9 +176,7 @@ int hci_pkg_set_event_mask(int mask, int *opcode)
   return hci_pkg_cmd(HCI_CMND_EVENT_MASK, buf, WLAN_SET_MASK_PARAMS_LEN);
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_wlan_connect
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_wlan_connect(wifi_ap_config_t *ap_config, int *opcode)
 {
   unsigned char *args;
@@ -209,14 +199,14 @@ int hci_pkg_wlan_connect(wifi_ap_config_t *ap_config, int *opcode)
   {
     args = array_to_stream(args, ap_config->key, key_len);
   }
-  len = hci_pkg_cmd(HCI_CMND_WLAN_CONNECT, buf, (WLAN_CONNECT_PARAM_LEN + ssid_len + key_len - 1));
+  len = hci_pkg_cmd(HCI_CMND_WLAN_CONNECT,
+                    buf,
+                    (WLAN_CONNECT_PARAM_LEN + ssid_len + key_len - 1));
   *opcode = HCI_EVNT_WLAN_UNSOL_DHCP;
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_wlan_set_connection_policy
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_wlan_set_connection_policy(unsigned int should_connect_to_open_ap,
                                        unsigned int should_use_fast_connect,
                                        unsigned int use_profiles,
@@ -237,9 +227,7 @@ int hci_pkg_wlan_set_connection_policy(unsigned int should_connect_to_open_ap,
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_wlan_scan
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_wlan_scan(int *opcode, int enable)
 {
   unsigned char *buf, *args;
@@ -266,9 +254,7 @@ int hci_pkg_wlan_scan(int *opcode, int enable)
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_wlan_get_scan_result
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_wlan_get_scan_result(int *opcode)
 {
   unsigned char *buf, *args;
@@ -283,9 +269,7 @@ int hci_pkg_wlan_get_scan_result(int *opcode)
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_skt_create
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_skt_create(int *opcode)
 {
   unsigned char *buf, *args;
@@ -300,9 +284,7 @@ int hci_pkg_skt_create(int *opcode)
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_skt_bind
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_skt_bind(int *opcode)
 {
   unsigned char *buf, *args;
@@ -321,9 +303,7 @@ int hci_pkg_skt_bind(int *opcode)
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_skt_listen
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_skt_listen(int *opcode)
 {
   unsigned char *buf, *args;
@@ -337,9 +317,7 @@ int hci_pkg_skt_listen(int *opcode)
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_skt_accept
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_skt_accept(int *opcode)
 {
   unsigned char *buf, *args;
@@ -352,16 +330,14 @@ int hci_pkg_skt_accept(int *opcode)
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_skt_recv
- ---------------------------------------------------------------------------*/
-int hci_pkg_skt_recv(int *opcode)
+//=============================================================================
+int hci_pkg_skt_recv(int *opcode, int sd)
 {
   unsigned char *buf, *args;
   int len;
   buf = tiwisl_tx_buf;
   args = (unsigned char *) (buf + HEADERS_SIZE_CMD);
-  args = int_to_stream(args, skt_accept_status);
+  args = int_to_stream(args, sd);
   args = int_to_stream(args, 1200);
   args = int_to_stream(args, 0);
   len = hci_pkg_cmd(HCI_CMND_RECV, buf, SOCKET_RECV_FROM_PARAMS_LEN);
@@ -369,18 +345,15 @@ int hci_pkg_skt_recv(int *opcode)
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_skt_send
- ---------------------------------------------------------------------------*/
-int hci_pkg_skt_send(int dlen, int *opcode)
+//=============================================================================
+int hci_pkg_skt_send(int dlen, int *opcode, int sd)
 {
   unsigned char *buf, *args;
   int len;
   buf = tiwisl_tx_buf;
   args = (unsigned char *) (buf + HEADERS_SIZE_DATA);
-  args = int_to_stream(args, skt_accept_status);
-  args = int_to_stream(args,
-                       HCI_CMND_SEND_ARG_LENGTH - sizeof(skt_accept_status));
+  args = int_to_stream(args, sd);
+  args = int_to_stream(args, HCI_CMND_SEND_ARG_LENGTH - sizeof(sd));
   args = int_to_stream(args, dlen);
   args = int_to_stream(args, 0);
   len = hci_pkg_data(HCI_CMND_SEND, buf, HCI_CMND_SEND_ARG_LENGTH, dlen);
@@ -388,9 +361,7 @@ int hci_pkg_skt_send(int dlen, int *opcode)
   return len;
 }
 
-/*---------------------------------------------------------------------------
- hci_pkg_skt_close
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_skt_close(int sd, int *opcode)
 {
   unsigned char *buf, *args;
@@ -403,9 +374,7 @@ int hci_pkg_skt_close(int sd, int *opcode)
   return len;
 }
 
-/*---------------------------------------------------------------------------
- Set socket recv mode as non blocking
- ---------------------------------------------------------------------------*/
+//=============================================================================
 int hci_pkg_skt_setopt_recv_nblock(int *opcode, int sd)
 {
   unsigned char *buf, *args;
@@ -418,7 +387,7 @@ int hci_pkg_skt_setopt_recv_nblock(int *opcode, int sd)
   args = int_to_stream(args, 1);
   args = int_to_stream(args, 0x00000008);
   args = int_to_stream(args, 4);
-  args = int_to_stream(args, 50);
+  args = int_to_stream(args, 5);
   len = hci_pkg_cmd(HCI_CMND_SETSOCKOPT,
                     buf,
                     (SOCKET_SET_SOCK_OPT_PARAMS_LEN + 4));

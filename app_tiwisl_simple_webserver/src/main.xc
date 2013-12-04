@@ -1,7 +1,6 @@
 #include <platform.h>
 #include "wifi_tiwisl_server.h"
 #include "xhttpd.h"
-#include <print.h>
 
 on tile[0]: spi_master_interface tiwisl_spi =
 {
@@ -24,12 +23,10 @@ on tile[0]: wifi_tiwisl_ctrl_ports_t tiwisl_ctrl =
 int main(void)
 {
   chan c_wifi;
-    par
-    {
-    // The main Wi-Fi server
+  par
+  {
     on tile[0]: wifi_tiwisl_server(c_wifi, tiwisl_spi, tiwisl_ctrl);
-    // The webserver
     on tile[0]: xhttpd(c_wifi);
-    }
-    return 0;
+  }
+  return 0;
 }
