@@ -1,4 +1,6 @@
 DEPENDENT_MODULES = module_spi_master
 
+OPTIONAL_HEADERS += wifi_tiwisl_conf.h
+
 MODULE_XCC_XC_FLAGS = $(XCC_XC_FLAGS) -Os
 

@@ -5,8 +5,8 @@
 
 /*==========================================================================*/
 /**
- *  Connect to an access point defined in ``wifi_tiwisl_conf.h`` as WIFI_SSID
- *  with password as WIFI_PASSWORD and start listening on port 80.
+ *  Connect to an access point with name as WIFI_SSID
+ *  and password as WIFI_PASSWORD and start listening on port 80.
  *
  *  \param tcp_svr    channel
  *  \param ap_config  wireless access point ssid/key/security type

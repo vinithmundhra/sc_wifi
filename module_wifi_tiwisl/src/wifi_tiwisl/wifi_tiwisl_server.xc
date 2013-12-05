@@ -8,7 +8,6 @@
 #include <print.h>
 
 
-
 #define TIWISL_POLL 10000
 #define TIWISL_MAX_SKT 6
 
@@ -150,6 +149,14 @@ static void create_socket(spi_master_interface &tiwisl_spi,
   len = hci_pkg_skt_create(opcode);
   write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
   skt_id = hci_process_skt_create();
+
+#if WIFI_TCP_NODELAY
+  printstr("Setting NO DELAY for short packets... ");
+  len = hci_pkg_skt_setopt_tcp_nodelay(opcode);
+  write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
+  printstrln("done!");
+#endif
+
   // socket bind
   len = hci_pkg_skt_bind(opcode);
   write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
@@ -269,7 +276,7 @@ void wifi_tiwisl_server(chanend c_xtcp,
             // nothing to check
 
             printstrln("ok!");
-
+#if WIFI_SCAN
             // Scan and list available networks
             printstrln("Scanning available networks.... ");
 
@@ -304,7 +311,7 @@ void wifi_tiwisl_server(chanend c_xtcp,
             hci_process_wlan_scan();
 
             printstrln("----end----");
-
+#endif
             // Power up sequence finished. Send dummy value.
             c_xtcp <: power_up;
 

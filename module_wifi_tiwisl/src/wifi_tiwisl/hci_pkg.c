@@ -228,6 +228,7 @@ int hci_pkg_wlan_set_connection_policy(unsigned int should_connect_to_open_ap,
 }
 
 //=============================================================================
+#if WIFI_SCAN
 int hci_pkg_wlan_scan(int *opcode, int enable)
 {
   unsigned char *buf, *args;
@@ -268,6 +269,7 @@ int hci_pkg_wlan_get_scan_result(int *opcode)
   *opcode = HCI_CMND_WLAN_IOCTL_GET_SCAN_RESULTS;
   return len;
 }
+#endif
 
 //=============================================================================
 int hci_pkg_skt_create(int *opcode)
@@ -394,3 +396,26 @@ int hci_pkg_skt_setopt_recv_nblock(int *opcode, int sd)
   *opcode = HCI_CMND_SETSOCKOPT;
   return len;
 }
+
+//=============================================================================
+#if WIFI_TCP_NODELAY
+int hci_pkg_skt_setopt_tcp_nodelay(int *opcode)
+{
+  unsigned char *buf, *args;
+  int len;
+
+  buf = tiwisl_tx_buf;
+  args = (unsigned char *) (buf + HEADERS_SIZE_CMD);
+  args = int_to_stream(args, skt_id);
+  args = int_to_stream(args, 6);
+  args = int_to_stream(args, 0x0001);
+  args = int_to_stream(args, 0x00000008);
+  args = int_to_stream(args, 4);
+  args = int_to_stream(args, 1);
+  len = hci_pkg_cmd(HCI_CMND_SETSOCKOPT,
+                    buf,
+                    (SOCKET_SET_SOCK_OPT_PARAMS_LEN + 4));
+  *opcode = HCI_CMND_SETSOCKOPT;
+  return len;
+}
+#endif

@@ -2,7 +2,11 @@
 #include "hci_helper.h"
 #include "hci_defines.h"
 #include <string.h>
+
+#if WIFI_SCAN
 #include <print.h>
+#endif
+
 
 #define NETAPP_IPCONFIG_IP_OFFSET       (0)
 #define NETAPP_IPCONFIG_SUBNET_OFFSET   (4)
@@ -79,6 +83,7 @@ void hci_process_wlan_connect(xtcp_ipconfig_t *ipconfig)
 /*---------------------------------------------------------------------------
  hci_process_wlan_scan
  ---------------------------------------------------------------------------*/
+#if WIFI_SCAN
 void hci_process_wlan_scan()
 {
   volatile int temp_delay = 90000000;
@@ -119,6 +124,7 @@ int hci_process_wlan_get_scan_result()
   }
   return num_networks;
 }
+#endif
 
 /*---------------------------------------------------------------------------
  hci_process_skt_create

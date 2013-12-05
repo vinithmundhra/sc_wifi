@@ -10,7 +10,26 @@ alternativeNames = { }
 componentDescription = "A module for controlling the LS Research's TiWi-SL Wi-Fi module via an SPI master"
 componentVersion = "1v0"
 
-configPoints = {}
+configPoints = {
+  tcp_nodelay = {
+    short = "Send packets without any delay",
+    long = "Disable the Nagle algorithm and send short packets without combining multiple packets",
+    help = "",
+    type = "bool",
+    default = false,
+    define = "WIFI_TCP_NODELAY";
+  },
+  
+  scan = {
+    short = "Scan for available wireless networks",
+    long = "List the available wireless networks before connecting to one",
+    help = "",
+    type = "bool",
+    default = false,
+    define = "WIFI_SCAN";
+  },  
+}
+
 derivedValues = {}
 
 ports = {
@@ -96,4 +115,4 @@ generatedCode = {
     ]]
 }
 
-files = {}
+files = {["module_wifi_tiwisl/wifi_tiwisl_conf_example.h"] = "src/wifi_tiwisl_conf.h"}

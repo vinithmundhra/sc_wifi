@@ -159,4 +159,14 @@ int hci_pkg_skt_close(int sd, REFERENCE_PARAM(int, opcode));
  **/
 int hci_pkg_skt_setopt_recv_nblock(REFERENCE_PARAM(int, opcode), int sd);
 
+/*==========================================================================*/
+/**
+ *  hci_pkg_skt_setopt_tcp_nodelay
+ *
+ *  \param opcode  opcode to check in the response
+ *  \param sd      socket descriptor
+ *  \return int    length
+ **/
+int hci_pkg_skt_setopt_tcp_nodelay(REFERENCE_PARAM(int, opcode));
+
 #endif // _HCI_PKG_H_

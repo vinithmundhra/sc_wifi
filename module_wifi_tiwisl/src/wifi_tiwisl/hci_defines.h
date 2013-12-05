@@ -1,6 +1,22 @@
 #ifndef _HCI_DEFINES_H_
 #define _HCI_DEFINES_H_
 
+
+//============================================================================
+#ifdef __wifi_tiwisl_conf_h_exists__
+#include "wifi_tiwisl_conf.h"
+#endif
+
+#ifndef WIFI_TCP_NODELAY
+#define WIFI_TCP_NODELAY 0
+#endif
+
+#ifndef WIFI_SCAN
+#define WIFI_SCAN 0
+#endif
+//============================================================================
+
+
 #define HCI_TYPE_DATA                           (0x2)
 #define HCI_DATA_HEADER_SIZE                    (5)
 #define HCI_EVNT_WLAN_UNSOL_BASE                (0x8000)

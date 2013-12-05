@@ -55,8 +55,8 @@ Importing the TiWi-SL webserver demo application:
 
 Building the TiWi-SL webserver demo application:
 
-* Open the file (app_tiwisl_simple_webserver\\src\\wifi_tiwisl_config.h).
-* Change the SSID, password and security type according to your wireless router configuration.
+* Open the file (app_tiwisl_simple_webserver\\src\\xhttpd.xc).
+* Change the ``WIFI_SSID``, ``WIFI_PASSWORD`` and ``WIFI_SECURITY_TYPE`` according to your wireless router configuration.
 * Currently supported security types are: TIWISL_SEC_TYPE_UNSEC, TIWISL_SEC_TYPE_WEP, TIWISL_SEC_TYPE_WPA and TIWISL_SEC_TYPE_WPA2
 
    For example, if your wireless router is known as 'testwifirouter' with no password, then change the configuration as::

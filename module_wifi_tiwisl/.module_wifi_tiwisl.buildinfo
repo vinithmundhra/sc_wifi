@@ -2,12 +2,84 @@
 <allbuildresults>
 <buildresults component="module_wifi_tiwisl" packagename="xm-local-sc_wifi(f2f3e298)" packageversion="f2f3e298" toolsversion="latest">
 <buildresult>
-<configuration/>
+<configuration>
+<parameter id="tcp_nodelay" value="true"/>
+<parameter id="scan" value="true"/>
+</configuration>
+<resourceusage>
+<resourceusageitem id="cores" value="1"/>
+<resourceusageitem id="memory" value="0"/>
+<resourceusageitem id="codememory" value="5888"/>
+<resourceusageitem id="datamemory" value="3644"/>
+<resourceusageitem id="ports1bit" value="5"/>
+<resourceusageitem id="ports4bit" value="1"/>
+<resourceusageitem id="ports8bit" value="0"/>
+<resourceusageitem id="ports16bit" value="0"/>
+<resourceusageitem id="ports32bit" value="0"/>
+<resourceusageitem id="clocks" value="0"/>
+<resourceusageitem id="chanends" value="1"/>
+<resourceusageitem id="timers" value="0"/>
+<resourceusageitem id="hwtimers" value="0"/>
+<resourceusageitem id="distributed_tasks" value="0"/>
+<resourceusageitem id="combined_tasks" value="0"/>
+</resourceusage>
+</buildresult>
+<buildresult>
+<configuration>
+<parameter id="tcp_nodelay" value="true"/>
+<parameter id="scan" value="false"/>
+</configuration>
+<resourceusage>
+<resourceusageitem id="cores" value="1"/>
+<resourceusageitem id="memory" value="0"/>
+<resourceusageitem id="codememory" value="5368"/>
+<resourceusageitem id="datamemory" value="3584"/>
+<resourceusageitem id="ports1bit" value="5"/>
+<resourceusageitem id="ports4bit" value="1"/>
+<resourceusageitem id="ports8bit" value="0"/>
+<resourceusageitem id="ports16bit" value="0"/>
+<resourceusageitem id="ports32bit" value="0"/>
+<resourceusageitem id="clocks" value="0"/>
+<resourceusageitem id="chanends" value="1"/>
+<resourceusageitem id="timers" value="0"/>
+<resourceusageitem id="hwtimers" value="0"/>
+<resourceusageitem id="distributed_tasks" value="0"/>
+<resourceusageitem id="combined_tasks" value="0"/>
+</resourceusage>
+</buildresult>
+<buildresult>
+<configuration>
+<parameter id="tcp_nodelay" value="false"/>
+<parameter id="scan" value="true"/>
+</configuration>
 <resourceusage>
 <resourceusageitem id="cores" value="1"/>
 <resourceusageitem id="memory" value="0"/>
 <resourceusageitem id="codememory" value="5780"/>
 <resourceusageitem id="datamemory" value="3596"/>
+<resourceusageitem id="ports1bit" value="5"/>
+<resourceusageitem id="ports4bit" value="1"/>
+<resourceusageitem id="ports8bit" value="0"/>
+<resourceusageitem id="ports16bit" value="0"/>
+<resourceusageitem id="ports32bit" value="0"/>
+<resourceusageitem id="clocks" value="0"/>
+<resourceusageitem id="chanends" value="1"/>
+<resourceusageitem id="timers" value="0"/>
+<resourceusageitem id="hwtimers" value="0"/>
+<resourceusageitem id="distributed_tasks" value="0"/>
+<resourceusageitem id="combined_tasks" value="0"/>
+</resourceusage>
+</buildresult>
+<buildresult>
+<configuration>
+<parameter id="tcp_nodelay" value="false"/>
+<parameter id="scan" value="false"/>
+</configuration>
+<resourceusage>
+<resourceusageitem id="cores" value="1"/>
+<resourceusageitem id="memory" value="0"/>
+<resourceusageitem id="codememory" value="5256"/>
+<resourceusageitem id="datamemory" value="3536"/>
 <resourceusageitem id="ports1bit" value="5"/>
 <resourceusageitem id="ports4bit" value="1"/>
 <resourceusageitem id="ports8bit" value="0"/>
