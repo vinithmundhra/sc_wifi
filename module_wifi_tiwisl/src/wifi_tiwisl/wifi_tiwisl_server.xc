@@ -511,18 +511,18 @@ void wifi_tiwisl_server(chanend c_xtcp,
               int tx_data_len = 1;
               int data_offset;
 
+              // send the XTCP_REQUEST_DATA event
+              conn.event = XTCP_REQUEST_DATA;
+              send_notification(c_xtcp, conn);
+
               do
               {
-                // send the XTCP_REQUEST_DATA event
-                conn.event = XTCP_REQUEST_DATA;
-                send_notification(c_xtcp, conn);
-
                 master
                 {
                   c_xtcp :> tx_data_len;
-                  for(int i = 0; i < tx_data_len; i++)
+                  for(int j = 0; j < tx_data_len; j++)
                   {
-                    c_xtcp :> tiwisl_tx_buf[i + HCI_SEND_DATA_OFFSET];
+                    c_xtcp :> tiwisl_tx_buf[j + HCI_SEND_DATA_OFFSET];
                   }
                 }
 
@@ -533,6 +533,9 @@ void wifi_tiwisl_server(chanend c_xtcp,
                   {
                     len = hci_pkg_skt_send(tx_data_len, opcode, skt_active[conn_id]);
                     write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
+                    conn.event = XTCP_SENT_DATA;
+                    send_notification(c_xtcp, conn);
+
                   } // if(skt_active[conn_id] != -1)
                 } // if(tx_data_len > 0)
               }while(tx_data_len > 0);
