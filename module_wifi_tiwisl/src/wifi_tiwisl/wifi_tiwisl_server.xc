@@ -467,6 +467,43 @@ void wifi_tiwisl_server(chanend c_xtcp,
 
             if(skt_active[i] == -1) continue;
 
+            /*
+             * SEND DATA
+             */
+            if(data_to_send[i])
+            {
+              int tx_data_len = 1;
+              int data_offset;
+
+              // send the XTCP_REQUEST_DATA event
+              conn.event = XTCP_REQUEST_DATA;
+              send_notification(c_xtcp, conn);
+
+              do
+              {
+                master
+                {
+                  c_xtcp :> tx_data_len;
+                  for(int j = 0; j < tx_data_len; j++)
+                  {
+                    c_xtcp :> tiwisl_tx_buf[j + HCI_SEND_DATA_OFFSET];
+                  }
+                }
+
+                if(tx_data_len > 0)
+                {
+                  // Send data to tiwisl
+                  if(skt_active[conn_id] != -1)
+                  {
+                    conn.event = XTCP_SENT_DATA;
+                    send_notification(c_xtcp, conn);
+                    len = hci_pkg_skt_send(tx_data_len, opcode, skt_active[conn_id]);
+                    write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
+                  } // if(skt_active[conn_id] != -1)
+                } // if(tx_data_len > 0)
+              }while(tx_data_len > 0);
+              data_to_send[i] = 0;
+            } // if(data_to_send[i])
 
             /*
              * CHECK FOR INCOMING DATA
@@ -501,57 +538,12 @@ void wifi_tiwisl_server(chanend c_xtcp,
             }
             else
             {}
-
-
-            /*
-             * SEND DATA
-             */
-            if(data_to_send[i])
-            {
-              int tx_data_len = 1;
-              int data_offset;
-
-              // send the XTCP_REQUEST_DATA event
-              conn.event = XTCP_REQUEST_DATA;
-              send_notification(c_xtcp, conn);
-
-              do
-              {
-                master
-                {
-                  c_xtcp :> tx_data_len;
-                  for(int j = 0; j < tx_data_len; j++)
-                  {
-                    c_xtcp :> tiwisl_tx_buf[j + HCI_SEND_DATA_OFFSET];
-                  }
-                }
-
-                if(tx_data_len > 0)
-                {
-                  // Send data to tiwisl
-                  if(skt_active[conn_id] != -1)
-                  {
-                    len = hci_pkg_skt_send(tx_data_len, opcode, skt_active[conn_id]);
-                    write_and_wait_for_event(tiwisl_spi, tiwisl_ctrl, len, opcode);
-                    conn.event = XTCP_SENT_DATA;
-                    send_notification(c_xtcp, conn);
-
-                  } // if(skt_active[conn_id] != -1)
-                } // if(tx_data_len > 0)
-              }while(tx_data_len > 0);
-
-              data_to_send[i] = 0;
-            } // if(data_to_send[i])
           } // for(int i = 0; i < 7; i++)
-
-
         } // if(tiwisl_connected_to_ap)
         t :> time;
         time += TIWISL_POLL;
         break;
       } // case t when timerafter(time) :> void :
-
-
     } // select
   } // while(1)
 }
