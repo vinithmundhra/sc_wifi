@@ -3,8 +3,7 @@
 #include "wifi_tiwisl.h"
 #include <xscope.h>
 #include <print.h>
-
-#define TIWISL_POLL 10000
+#include <timer.h>
 
 on tile[0]: wifi_tiwisl_ports_t p_wifi = {
   XS1_PORT_4E, // nCS - Bit0, Power enable - Bit1
@@ -24,7 +23,9 @@ wifi_ap_config_t config = {
   TIWISL_SEC_TYPE_WPA2
 };
 
-static int hss;
+static wifi_state_t wifi_state;
+static int hss, dummy;
+static unsigned char data[1000];
 
 void xscope_user_init(void) {
   xscope_register(0);
@@ -33,56 +34,53 @@ void xscope_user_init(void) {
 
 static int wifi_server_init(wifi_tiwisl_ports_t &p)
 {
-  hss = wifi_socket_create(p, SOCK_STREAM, WIFI_PROTOCOL_TCP);
-
+  wifi_state = wifi_socket_create(p, SOCK_STREAM, WIFI_PROTOCOL_TCP, hss);
   if(hss == -1)
   {
     wifi_stop(p);
     return -1;
   }
-
-  while(wifi_socket_bind(p, 80) != WIFI_OK) {}
-  while(wifi_socket_listen(p) != WIFI_OK) {}
+  while(wifi_socket_bind(p, 80, dummy) != WIFI_OK) {}
+  while(wifi_socket_listen(p, dummy) != WIFI_OK) {}
   return 0;
 }
 
 void myapp()
 {
-  int bytes_rx = 0;
-  timer t;
-  unsigned time;
-  int cr;
+  int cr, data_len;
 
+  printstrln("started...");
   wifi_start(p_wifi);
+  printstrln("connecting...");
   wifi_connect(p_wifi, config);
   wifi_server_init(p_wifi);
 
-  t :> time;
-  time += TIWISL_POLL;
-
   while(1)
   {
-    select
+    wifi_state = wifi_socket_accept(p_wifi, cr);
+
+    if(cr == -1 || cr == -2)
     {
-      case t when timerafter(time) :> time:
-      {
-        cr = wifi_socket_accept(p_wifi);
+      delay_milliseconds(500);
+    }
 
-        if(cr == -1 || cr == -2) break;
-        if(cr == -57)
-        {
-          wifi_socket_close(p_wifi, hss);
-          wifi_server_init(p_wifi);
-          break;
-        }
+    else if(cr == -57)
+    {
+      wifi_state = wifi_socket_close(p_wifi, hss, dummy);
+      printstrln("socket closed...");
+      wifi_server_init(p_wifi);
+      delay_milliseconds(500);
+    }
 
-        // do normal stuff
-
-
-        time += TIWISL_POLL;
-        break;
-      }//case t when timerafter(time) :> void:
-    }//select
+    else
+    {
+      printstr("accept... "); printintln(cr);
+      wifi_state = wifi_recv(p_wifi, cr, data, data_len);
+      for(int i = 0; i < data_len; i++) printchar(data[i]);
+      printstrln(" ");
+      wifi_state = wifi_socket_close(p_wifi, cr, dummy);
+      delay_milliseconds(500);
+    }
   }
 }
 

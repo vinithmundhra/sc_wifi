@@ -10,8 +10,10 @@ typedef unsigned char ipaddr_t[4];
 
 typedef struct wifi_ipconfig_t {
   ipaddr_t ipaddr;
-  ipaddr_t netmask;
+  ipaddr_t subnet;
   ipaddr_t gateway;
+  ipaddr_t dhcp_server;
+  ipaddr_t dns_server;
 }wifi_ipconfig_t;
 
 typedef enum wifi_protocol_t {
@@ -26,15 +28,6 @@ typedef enum wifi_sock_type_t {
   SOCK_RAW = 3,
 }wifi_sock_type_t;
 
-/*typedef struct wifi_conn_t {
-  int id;
-  wifi_protocol_t protocol;
-  wifi_event_t event;
-  ipaddr_t remote_addr;
-  unsigned int remote_port;
-  unsigned int local_port;
-}wifi_conn_t;*/
-
 typedef enum wifi_sec_type_t {
   TIWISL_SEC_TYPE_UNSEC,
   TIWISL_SEC_TYPE_WEP,
@@ -48,5 +41,27 @@ typedef struct wifi_ap_config_t
   unsigned char key[32];
   wifi_sec_type_t security_type;
 } wifi_ap_config_t;
+
+typedef struct sock_addr_t_
+{
+  unsigned short ifamily;
+  unsigned short iport;
+  unsigned int iaddr;
+  char izero[8];
+}sock_addr_t;
+
+typedef struct bsd_rtn_t_
+{
+  int sd;
+  int status;
+  sock_addr_t sock_addr;
+}bsd_rtn_t;
+
+typedef struct bsd_read_rtn_t_
+{
+  int sd;
+  int num_bytes;
+  int flags;
+}bsd_read_rtn_t;
 
 #endif // _wifi_structs_h_

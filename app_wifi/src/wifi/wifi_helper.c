@@ -1,6 +1,7 @@
 #include "wifi_helper.h"
 #include "wifi_cmd.h"
 #include "wifi_structs.h"
+#include "wifi_util.h"
 #include <string.h>
 #include <print.h>
 
@@ -24,88 +25,6 @@
 #define NETAPP_IPCONFIG_GW_OFFSET       (8)
 #define HCI_EVENT_HEADER_SIZE           (5)
 #define HCI_PACKET_ARGSIZE_OFFSET       (2)
-
-static wifi_ipconfig_t ipconfig;
-
-/*---------------------------------------------------------------------------
- This function is used for copying 16 bit to stream while converting to
- little endian format.
- ---------------------------------------------------------------------------*/
-static unsigned char* char_to_stream(unsigned char *p, unsigned char u8)
-{
-  *(p)++ = (unsigned char)(u8);
-  return p;
-}
-
-/*---------------------------------------------------------------------------
- This function is used for copying 16 bit to stream while converting to
- little endian format.
- ---------------------------------------------------------------------------*/
-static unsigned char* short_to_stream(unsigned char *p, unsigned short u16)
-{
-  *(p)++ = (unsigned char)(u16);
-  *(p)++ = (unsigned char)((u16) >> 8);
-  return p;
-}
-
-/*---------------------------------------------------------------------------
- This function is used for copying 32 bit to stream while converting to
- little endian format.
- ---------------------------------------------------------------------------*/
-static unsigned char* int_to_stream(unsigned char *p, unsigned int u32)
-{
-  *(p)++ = (unsigned char)(u32);
-  *(p)++ = (unsigned char)((u32) >> 8);
-  *(p)++ = (unsigned char)((u32) >> 16);
-  *(p)++ = (unsigned char)((u32) >> 24);
-  return p;
-}
-
-/*---------------------------------------------------------------------------
- This macro is used for copying a specified value length bits (l) to stream
- while converting to little endian format.
- ---------------------------------------------------------------------------*/
-static unsigned char* array_to_stream(unsigned char *p, unsigned char *a, int l)
-{
-    for(int i = 0; i < l; i++)
-    {
-        *(p)++ = ((unsigned char *) a)[i];
-    }
-    return p;
-}
-
-/*---------------------------------------------------------------------------
- This function is used for copying received stream to 8 bit in little endian
- format.
- ---------------------------------------------------------------------------*/
-static unsigned char stream_to_char(char* p, unsigned int offset)
-{
-    return (unsigned char)(*(p + offset));
-}
-
-/*---------------------------------------------------------------------------
- This function is used for copying received stream to 16 bit in little endian
- format.
- ---------------------------------------------------------------------------*/
-static unsigned short stream_to_short(char* p, unsigned int offset)
-{
-  return (unsigned short) ((unsigned short)
-      ((unsigned short) (*(p + offset + 1)) << 8) +
-      (unsigned short) (*(p + offset)));
-}
-
-/*---------------------------------------------------------------------------
- This function is used for copying received stream to 32 bit in little endian
- format.
- ---------------------------------------------------------------------------*/
-static unsigned int stream_to_int(char* p, unsigned int offset)
-{
-  return (unsigned int) ((unsigned int)
-      ((unsigned int) (*(p + offset + 3)) << 24) +
-      (unsigned int) ((unsigned int) (*(p + offset + 2)) << 16) +
-      (unsigned int) ((unsigned int) (*(p + offset + 1)) << 8) +
-      (unsigned int) (*(p + offset)));
-}
 
 /*---------------------------------------------------------------------------
  ---------------------------------------------------------------------------*/
@@ -191,77 +110,3 @@ int pkg_cmd_connect(unsigned char *data, wifi_ap_config_t *config)
                     (WLAN_CONNECT_PARAM_LEN + ssid_len + key_len - 1));
   return len;
 }
-
-/*---------------------------------------------------------------------------
- ---------------------------------------------------------------------------*/
-int event_checker(unsigned char *data, int opcode, int *opc)
-{
-
-  unsigned short rx_opcode = (unsigned short) ((data[2] << 8) + data[1]);
-
-  //printstr("rx opcode = 0x"); printhexln(rx_opcode);
-
-  if (data[0] == HCI_TYPE_DATA)
-  {
-    *opc = 1;
-  }
-
-  if ((data[0] == HCI_TYPE_EVNT) && (opcode == rx_opcode))
-  {
-    int rtnval = 1;
-    *opc = 1;
-    data += HCI_EVENT_HEADER_SIZE;
-    switch(opcode)
-    {
-      case CMD_DHCP:
-      {
-        ipconfig.ipaddr[3] = stream_to_char((char *) (data), NETAPP_IPCONFIG_IP_OFFSET + 0);
-        ipconfig.ipaddr[2] = stream_to_char((char *) (data), NETAPP_IPCONFIG_IP_OFFSET + 1);
-        ipconfig.ipaddr[1] = stream_to_char((char *) (data), NETAPP_IPCONFIG_IP_OFFSET + 2);
-        ipconfig.ipaddr[0] = stream_to_char((char *) (data), NETAPP_IPCONFIG_IP_OFFSET + 3);
-        ipconfig.netmask[3] = stream_to_char((char *) (data), NETAPP_IPCONFIG_SUBNET_OFFSET + 0);
-        ipconfig.netmask[2] = stream_to_char((char *) (data), NETAPP_IPCONFIG_SUBNET_OFFSET + 1);
-        ipconfig.netmask[1] = stream_to_char((char *) (data), NETAPP_IPCONFIG_SUBNET_OFFSET + 2);
-        ipconfig.netmask[0] = stream_to_char((char *) (data), NETAPP_IPCONFIG_SUBNET_OFFSET + 3);
-        ipconfig.gateway[3] = stream_to_char((char *) (data), NETAPP_IPCONFIG_GW_OFFSET + 0);
-        ipconfig.gateway[2] = stream_to_char((char *) (data), NETAPP_IPCONFIG_GW_OFFSET + 1);
-        ipconfig.gateway[1] = stream_to_char((char *) (data), NETAPP_IPCONFIG_GW_OFFSET + 2);
-        ipconfig.gateway[0] = stream_to_char((char *) (data), NETAPP_IPCONFIG_GW_OFFSET + 3);
-        break;
-      }//case CMD_DHCP
-
-      case CMD_SOCKET_CREATE:
-      case CMD_BIND:
-      case CMD_LISTEN:
-      case CMD_CLOSE_SOCKET:
-      case CMD_SETSOCKOPT:
-      {
-        rtnval = stream_to_int((char *) (data), 0);
-        break;
-      }
-
-      case CMD_ACCEPT:
-      case CMD_RECV:
-      {
-        rtnval = stream_to_int((char *) (data), 4);
-        break;
-      }
-
-      default: break;
-    }//switch(opcode)
-    return rtnval;
-  }
-
-  *opc = 0;
-  return 0;
-}
-
-/*---------------------------------------------------------------------------
- ---------------------------------------------------------------------------*/
-void get_ipconfig(wifi_ipconfig_t *config)
-{
-  memcpy((unsigned char *)(config), (unsigned char *)(&ipconfig), sizeof(wifi_ipconfig_t));
-}
-
-/*---------------------------------------------------------------------------
- ---------------------------------------------------------------------------*/
