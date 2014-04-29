@@ -36,9 +36,10 @@ wifi_state_t wifi_recv(REFERENCE_PARAM(wifi_tiwisl_ports_t, p_wifi),
                        unsigned char wifi_data_rx[],
                        REFERENCE_PARAM(int, len));
 
-int wifi_send(REFERENCE_PARAM(wifi_tiwisl_ports_t, p_wifi),
-              unsigned char tx_buf[],
-              int len,
-              int skt);
+wifi_state_t wifi_send(REFERENCE_PARAM(wifi_tiwisl_ports_t, p_wifi),
+                       unsigned char sd,
+                       unsigned char wifi_data_tx[],
+                       int len,
+                       REFERENCE_PARAM(int, num_bytes_sent));
 
 #endif // _wifi_tiwisl_h_

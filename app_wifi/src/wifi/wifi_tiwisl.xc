@@ -6,16 +6,18 @@
 #include <string.h>
 #include <print.h>
 
-#define WIFI_RX_BUF_SIZE  1200
+#define WIFI_BUF_SIZE  1200
 #define MAX_CLIENTS       5
-
 
 
 static int socket_id = -1;
 
 static int clientlist[MAX_CLIENTS] = {-1,-1,-1,-1,-1};
-static unsigned char rx_buf[WIFI_RX_BUF_SIZE];
+
+static unsigned char rx_buf[WIFI_BUF_SIZE];
+
 static unsigned char first_write = 1;
+
 static wifi_ipconfig_t wifi_ipconfig;
 
 
@@ -97,6 +99,13 @@ static int event_checker(wifi_tiwisl_ports_t &p_wifi, unsigned short opcode)
     else if(rx_opcode == HCI_EVNT_CLOSE_SOCKET)
     {
       return -2;
+    }
+    else if(opcode == CMD_SEND)
+    {
+      if(rx_opcode == HCI_EVNT_DATA_UNSOL_FREE_BUFF)
+      {
+        return 0;
+      }
     }
     else
     {
@@ -353,5 +362,25 @@ wifi_state_t wifi_send(wifi_tiwisl_ports_t &p_wifi,
                        int len,
                        int &num_bytes_sent)
 {
+  if(len > (WIFI_BUF_SIZE - HCI_SEND_DATA_OFFSET)) return WIFI_ERR;
 
+  unsigned char tx_buf[WIFI_BUF_SIZE];
+  int spi_write_len;
+  int result = 0;
+
+  memcpy(&tx_buf[HCI_SEND_DATA_OFFSET], wifi_data_tx, len);
+  spi_write_len = hci_pkg_skt_send(tx_buf[0], len, sd);
+
+  spi_write(p_wifi, tx_buf, spi_write_len);
+
+  do
+  {
+    result = event_checker(p_wifi, CMD_SEND);
+    if(result == -2)
+    {
+      return WIFI_ERR;
+    }
+  }while(result != 0);
+  num_bytes_sent = len;
+  return WIFI_OK;
 }

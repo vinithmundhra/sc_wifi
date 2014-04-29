@@ -12,6 +12,7 @@
 #define SIMPLE_LINK_HCI_CMND_HEADER_SIZE        (4)
 #define HEADERS_SIZE_CMD                        (SPI_HEADER_SIZE + SIMPLE_LINK_HCI_CMND_HEADER_SIZE)
 #define HCI_CMND_WLAN_CONNECT                   (0x0001)
+#define HCI_CMND_SEND                           (0x81)
 #define WLAN_CONNECT_PARAM_LEN                  (29)
 #define ETH_ALEN                                (6)
 #define SPI_HEADER_SIZE                         (5)
@@ -108,5 +109,22 @@ int pkg_cmd_connect(unsigned char *data, wifi_ap_config_t *config)
   len = hci_pkg_cmd(HCI_CMND_WLAN_CONNECT,
                     data,
                     (WLAN_CONNECT_PARAM_LEN + ssid_len + key_len - 1));
+  return len;
+}
+
+/*---------------------------------------------------------------------------
+ Package the send command
+ ---------------------------------------------------------------------------*/
+int hci_pkg_skt_send(unsigned char *data, int dlen, int sd)
+{
+  unsigned char *args;
+  int len;
+
+  args = data + HEADERS_SIZE_DATA;
+  args = int_to_stream(args, sd);
+  args = int_to_stream(args, HCI_CMND_SEND_ARG_LENGTH - sizeof(sd));
+  args = int_to_stream(args, dlen);
+  args = int_to_stream(args, 0);
+  len = hci_pkg_data(HCI_CMND_SEND, data, HCI_CMND_SEND_ARG_LENGTH, dlen);
   return len;
 }

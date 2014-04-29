@@ -4,6 +4,7 @@
 #include <xscope.h>
 #include <print.h>
 #include <timer.h>
+#include <string.h>
 
 on tile[0]: wifi_tiwisl_ports_t p_wifi = {
   XS1_PORT_4E, // nCS - Bit0, Power enable - Bit1
@@ -47,7 +48,7 @@ static int wifi_server_init(wifi_tiwisl_ports_t &p)
 
 void myapp()
 {
-  int cr, data_len;
+  int cr, data_len, num_bytes_sent;
 
   printstrln("started...");
   wifi_start(p_wifi);
@@ -78,6 +79,11 @@ void myapp()
       wifi_state = wifi_recv(p_wifi, cr, data, data_len);
       for(int i = 0; i < data_len; i++) printchar(data[i]);
       printstrln(" ");
+
+      printstrln("sending...");
+      wifi_state = wifi_send(p_wifi, cr, data, strlen(data), num_bytes_sent);
+      printstrln("sent");
+
       wifi_state = wifi_socket_close(p_wifi, cr, dummy);
       delay_milliseconds(500);
     }
