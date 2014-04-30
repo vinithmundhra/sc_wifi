@@ -49,22 +49,6 @@ static int hci_pkg_spi_header(unsigned char *buf, unsigned short len)
 
 /*---------------------------------------------------------------------------
  ---------------------------------------------------------------------------*/
-static unsigned int hci_pkg_cmd(unsigned short opcode,
-                                unsigned char *buf,
-                                unsigned char args_len)
-{
-  unsigned char *stream;
-  unsigned int len;
-  len = hci_pkg_spi_header(buf, (args_len + SIMPLE_LINK_HCI_CMND_HEADER_SIZE));
-  stream = (unsigned char *) (buf + SPI_HEADER_SIZE);
-  stream = char_to_stream(stream, HCI_TYPE_CMND);
-  stream = short_to_stream(stream, opcode);
-  stream = char_to_stream(stream, args_len);
-  return len;
-}
-
-/*---------------------------------------------------------------------------
- ---------------------------------------------------------------------------*/
 static unsigned int hci_pkg_data(unsigned char opcode,
                                  unsigned char *buf,
                                  unsigned short args_len,
@@ -78,37 +62,6 @@ static unsigned int hci_pkg_data(unsigned char opcode,
   stream = char_to_stream(stream, opcode);
   stream = char_to_stream(stream, args_len);
   stream = short_to_stream(stream, (args_len + data_len));
-  return len;
-}
-
-/*---------------------------------------------------------------------------
- Package the connect command
- ---------------------------------------------------------------------------*/
-int pkg_cmd_connect(unsigned char *data, wifi_ap_config_t *config)
-{
-  unsigned char *args;
-  unsigned char bssid_zero[] = {0, 0, 0, 0, 0, 0};
-  int len, ssid_len, key_len;
-
-  ssid_len = strlen((char *) (config->ssid));
-  key_len = strlen((char *) (config->key));
-
-  args = (data + HEADERS_SIZE_CMD);
-  args = int_to_stream(args, 0x0000001c);
-  args = int_to_stream(args, ssid_len);
-  args = int_to_stream(args, config->security_type);
-  args = int_to_stream(args, 0x00000010 + ssid_len);
-  args = int_to_stream(args, key_len);
-  args = short_to_stream(args, 0);
-  args = array_to_stream(args, bssid_zero, ETH_ALEN);
-  args = array_to_stream(args, config->ssid, ssid_len);
-  if (key_len)
-  {
-    args = array_to_stream(args, config->key, key_len);
-  }
-  len = hci_pkg_cmd(HCI_CMND_WLAN_CONNECT,
-                    data,
-                    (WLAN_CONNECT_PARAM_LEN + ssid_len + key_len - 1));
   return len;
 }
 

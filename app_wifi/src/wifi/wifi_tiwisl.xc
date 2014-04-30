@@ -27,7 +27,15 @@ static wifi_ipconfig_t wifi_ipconfig;
 
 
 
-
+static void debug_print_data(unsigned char msg[], unsigned char dt[], int ln)
+{
+  printstrln(msg);
+  for(int i = 0; i < ln; i++)
+  {
+    printhex(dt[i]); printstr("  ");
+  }
+  printstrln("");
+}
 
 /*===========================================================================*/
 unsigned short stream_to_short(char p[], unsigned int offset)
@@ -170,11 +178,43 @@ void wifi_stop(wifi_tiwisl_ports_t &p_wifi)
 
 void wifi_connect(wifi_tiwisl_ports_t &p_wifi, wifi_ap_config_t &config)
 {
-  int len;
+  int len, index;
   unsigned char data[102];
-  len = pkg_cmd_connect(data[0], config);
+  unsigned char param_len;
+  unsigned char ssid_len = strlen(config.ssid);
+  unsigned char key_len = strlen(config.key);
+
+  memset(data, 0, 102);
+  param_len = 32 + ssid_len + key_len;
+  len = param_len + 5;
+
+  if (!(param_len & 0x0001)) len++;
+
+  data[0] = 1;
+  data[2] = param_len;
+  data[5] = 1;
+  data[6] = 1;
+  data[7] = 0;
+  data[8] = (28 + ssid_len + key_len);
+  data[9] = 0x1C;
+  data[13] = ssid_len;
+  data[17] = config.security_type;
+  data[21] = 0x10 + ssid_len;
+  data[25] = key_len;
+  for(int i = 0; i < ssid_len; i++)
+  {
+    data[37 + i] = config.ssid[i];
+  }
+  index = 37 + ssid_len;
+  for(int i = 0; i < key_len; i++)
+  {
+    data[index + i] = config.key[i];
+  }
+
+  debug_print_data("connect...", data, len);
 
   spi_write(p_wifi, data, len);
+
   while(event_checker(p_wifi, CMD_DHCP) != 0);
 
   // Get the IP configuration
