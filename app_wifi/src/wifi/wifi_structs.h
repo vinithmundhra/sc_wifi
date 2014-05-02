@@ -42,26 +42,4 @@ typedef struct wifi_ap_config_t
   wifi_sec_type_t security_type;
 } wifi_ap_config_t;
 
-typedef struct sock_addr_t_
-{
-  unsigned short ifamily;
-  unsigned short iport;
-  unsigned int iaddr;
-  char izero[8];
-}sock_addr_t;
-
-typedef struct bsd_rtn_t_
-{
-  int sd;
-  int status;
-  sock_addr_t sock_addr;
-}bsd_rtn_t;
-
-typedef struct bsd_read_rtn_t_
-{
-  int sd;
-  int num_bytes;
-  int flags;
-}bsd_read_rtn_t;
-
 #endif // _wifi_structs_h_
