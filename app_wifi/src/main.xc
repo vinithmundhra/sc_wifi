@@ -17,8 +17,8 @@ on tile[0]: wifi_tiwisl_ports_t p_wifi = {
 };
 
 wifi_ap_config_t config = {
-  "Xmos 2",
-  "xmoschennai0115",
+  "ssid",
+  "pwd",
   TIWISL_SEC_TYPE_WPA2
 };
 
