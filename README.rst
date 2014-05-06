@@ -1,7 +1,7 @@
 Wi-Fi Repository
 ................
 
-:Latest release: 1.1.2rc0
+:Latest release: 1.0.0
 :Maintainer: vinithmundhra
 :Description: Component for driving the LS Research's TiWi-SL Wi-Fi module. The TiWi-SL module has an integrated TCP/IP stack and interfaces to this component via an SPI interface.
 
