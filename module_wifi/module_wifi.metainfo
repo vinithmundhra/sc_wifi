@@ -1,0 +1,96 @@
+-- -*- mode: lua -*-
+
+-------------------------------------------------------------------------------
+-- Descriptive metadata
+-------------------------------------------------------------------------------
+
+componentName = "Wi-Fi Function Library"
+componentFullName = ""
+alternativeNames = { }
+componentDescription = "A module for controlling the LS Research's TiWi-SL Wi-Fi module via an SPI master"
+componentVersion = "1v0"
+
+configPoints = {}
+
+derivedValues = {}
+
+ports = {
+  p_spi_master_clk = {
+    short   = "SCLK",
+    long    = "SPI Clock from master",
+    help    = "",
+    width   = 1,
+  },
+  p_spi_master_mosi = {
+    short   = "MOSI",
+    long    = "Master Out Slave In",
+    help    = "",
+    width   = 1,
+  },
+  p_spi_master_miso = {
+    short   = "MISO",
+    long    = "Master In Slave Out",
+    help    = "",
+    width   = 1,
+  },
+  p_spi_cs = {
+    short   = "Chip Select",
+    long    = "Chip Select for LSR's TiWi-SL module",
+    help    = "",
+    width   = 4,
+  },
+  p_spi_irq = {
+    short   = "Interrupt",
+    long    = "Incoming interrupt from LSR's TiWi-SL module",
+    help    = "",
+    width   = 1,
+  },
+  p_pwr_en = {
+    short   = "Power Enable",
+    long    = "Power Enable for LSR's TiWi-SL module",
+    help    = "",
+    width   = 1,
+  }
+}
+
+channels = {}
+
+function getConfigStatus()
+   return "Trusted Configuration", {}
+end
+
+generatedCode = {
+   includes = {"wifi_tiwisl.h"},
+   globals  = [[
+            wifi_tiwisl_ports_t tiwisl_ctrl = { 
+              ${swblock.ports.p_spi_cs}, 
+              ${swblock.ports.p_spi_irq}, 
+              ${swblock.clocks[0]},  
+              ${swblock.clocks[1]},  
+              ${swblock.ports.p_spi_master_mosi}, 
+              ${swblock.ports.p_spi_master_clk}, 
+              ${swblock.ports.p_spi_master_miso},              
+            };
+            
+    ]],
+    body  =
+    [[          
+    ]]
+}
+
+api = {
+       'wifi_start',
+       'wifi_stop',
+       'wifi_connect',
+       'wifi_socket',
+       'wifi_socket_bind',
+       'wifi_socket_listen',
+       'wifi_socket_accept',
+       'wifi_socket_close',
+       'wifi_recv',
+       'wifi_send',
+       'wifi_connect_to',
+      }
+      
+
+

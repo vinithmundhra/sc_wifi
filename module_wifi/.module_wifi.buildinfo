@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<allbuildresults>
+<buildresults component="module_wifi" packagename="xm-local-sc_wifi(d8caac39)" packageversion="d8caac39" toolsversion="latest">
+<buildresult>
+<configuration/>
+<resourceusage>
+<resourceusageitem id="cores" value="0"/>
+<resourceusageitem id="memory" value="0"/>
+<resourceusageitem id="codememory" value="3744"/>
+<resourceusageitem id="datamemory" value="1756"/>
+<resourceusageitem id="ports1bit" value="5"/>
+<resourceusageitem id="ports4bit" value="1"/>
+<resourceusageitem id="ports8bit" value="0"/>
+<resourceusageitem id="ports16bit" value="0"/>
+<resourceusageitem id="ports32bit" value="0"/>
+<resourceusageitem id="clocks" value="0"/>
+<resourceusageitem id="chanends" value="0"/>
+<resourceusageitem id="timers" value="0"/>
+<resourceusageitem id="hwtimers" value="0"/>
+<resourceusageitem id="distributed_tasks" value="0"/>
+<resourceusageitem id="combined_tasks" value="0"/>
+</resourceusage>
+</buildresult>
+</buildresults>
+</allbuildresults>
